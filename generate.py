@@ -1,9 +1,13 @@
 import os
 import json
 import time
-from google import genai
+from openai import OpenAI
 
-client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
+# 初始化 DeepSeek 客户端（兼容 OpenAI 格式）
+client = OpenAI(
+    api_key=os.environ.get("DEEPSEEK_API_KEY"),
+    base_url="https://api.deepseek.com"
+)
 
 def generate_article_html(keyword_data):
     topic = keyword_data["topic"]
@@ -30,12 +34,26 @@ def generate_article_html(keyword_data):
     3. Tone: Informative, authoritative, friendly, and practical (E-E-A-T compliant).
     """
     
-    # 使用更新后的最新模型
-    response = client.models.generate_content(
-        model='gemini-3.8-flash',
-        contents=prompt,
-    )
-    return response.text
+    # 使用 DeepSeek 稳定的主力聊天模型
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            response = client.chat.completions.create(
+                model="deepseek-chat",
+                messages=[
+                    {"role": "system", "content": "You are a professional SEO content writer and expert pet blogger."},
+                    {"role": "user", "content": prompt}
+                ],
+                stream=False
+            )
+            return response.choices[0].message.content
+        except Exception as e:
+            print(f"第 {attempt + 1} 次请求遇到波动: {e}")
+            if attempt < max_retries - 1:
+                print("等待 5 秒后自动重试...")
+                time.sleep(5)
+            else:
+                raise e
 
 def main():
     if not os.path.exists("keywords.json"):
