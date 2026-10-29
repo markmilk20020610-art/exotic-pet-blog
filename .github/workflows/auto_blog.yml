@@ -2,9 +2,8 @@ name: Auto Generate Blog Articles
 
 on:
   schedule:
-    # 每天 UTC 时间 0 点自动运行 (相当于北京时间早上 8 点)
     - cron: '0 0 * * *'
-  workflow_dispatch: # 允许你在 GitHub 网页端手动一键触发
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -27,7 +26,7 @@ jobs:
 
       - name: Run generation script
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
         run: |
           python generate.py
 
@@ -36,5 +35,5 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m "Auto-generate new blog posts via Gemini API [skip ci]" || exit 0
+          git commit -m "Auto-generate new blog posts via DeepSeek API [skip ci]" || exit 0
           git push
