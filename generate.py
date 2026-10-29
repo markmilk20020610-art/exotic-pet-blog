@@ -29,8 +29,10 @@ def generate_article_html(keyword_data):
        - FAQ section with 2-3 common questions.
     3. Tone: Informative, authoritative, friendly, and practical (E-E-A-T compliant).
     """
+    
+    # 使用更新后的最新模型
     response = client.models.generate_content(
-        model='gemini-2.5-flash',
+        model='gemini-3.8-flash',
         contents=prompt,
     )
     return response.text
