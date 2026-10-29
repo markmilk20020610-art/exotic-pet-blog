@@ -3,41 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exotic Pet Care & Guide Hub</title>
+    <title>Exotic Pet Care & Guide Hub | Expert Advice for Rare Pets</title>
+    <meta name="description" content="Your ultimate automated guide to raising jumping spiders, geckos, isopods, and rare exotic pets.">
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 40px 20px; background: #f4f7f6; }
-        header { text-align: center; margin-bottom: 40px; }
-        h1 { color: #2c3e50; font-size: 2.5em; }
-        .subtitle { color: #7f8c8d; font-size: 1.1em; }
-        .post-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-        .post-card { background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: transform 0.2s; }
-        .post-card:hover { transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        .post-card h2 { margin: 0 0 10px 0; font-size: 1.4em; }
-        .post-card h2 a { color: #2980b9; text-decoration: none; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: #2c3e50; max-width: 1000px; margin: 0 auto; padding: 40px 20px; background: #f4f7f6; }
+        header { text-align: center; margin-bottom: 50px; }
+        h1 { color: #1a252f; font-size: 2.8em; margin-bottom: 10px; }
+        .subtitle { color: #718096; font-size: 1.2em; }
+        .post-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .post-card { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
+        .post-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .card-img { width: 100%; height: 180px; object-fit: cover; }
+        .card-content { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
+        .post-card h2 { margin: 0 0 15px 0; font-size: 1.25em; line-height: 1.4; }
+        .post-card h2 a { color: #2b6cb0; text-decoration: none; }
         .post-card h2 a:hover { text-decoration: underline; }
-        .tag { display: inline-block; background: #eef2f3; color: #555; padding: 4px 10px; border-radius: 4px; font-size: 0.85em; margin-top: 10px; }
+        .tag { display: inline-block; background: #edf2f7; color: #4a5568; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; font-weight: 500; margin-top: auto; align-self: flex-start; }
     </style>
 </head>
 <body>
     <header>
         <h1>Exotic Pet Care Hub</h1>
-        <p class="subtitle">Your ultimate guide to raising jumping spiders, geckos, and rare pets.</p >
+        <p class="subtitle">Your ultimate guide to raising jumping spiders, geckos, and rare pets.</p>
     </header>
     <main class="post-grid">
 
         <div class="post-card">
-            <h2><a href="pet-001.html">How Often Should You Feed A Adult Jumping Spider And What Do They Eat</a ></h2>
-            <span class="tag">Feeding Guide</span>
+            <img src="https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=1200&q=80" alt="How Often Should You Feed A Adult Jumping Spider And What Do They Eat" class="card-img">
+            <div class="card-content">
+                <h2><a href="pet-001.html">How Often Should You Feed A Adult Jumping Spider And What Do They Eat</a></h2>
+                <span class="tag">Feeding Guide</span>
+            </div>
         </div>
         
         <div class="post-card">
-            <h2><a href="pet-002.html">Best Bioactive Substrate Mix For Crested Gecko Tank Setup</a ></h2>
-            <span class="tag">Habitat Setup</span>
+            <img src="https://images.unsplash.com/photo-1543852786-1cf6624b9987?auto=format&fit=crop&w=1200&q=80" alt="Best Bioactive Substrate Mix For Crested Gecko Tank Setup" class="card-img">
+            <div class="card-content">
+                <h2><a href="pet-002.html">Best Bioactive Substrate Mix For Crested Gecko Tank Setup</a></h2>
+                <span class="tag">Habitat Setup</span>
+            </div>
         </div>
         
         <div class="post-card">
-            <h2><a href="pet-003.html">How To Fix High Humidity And Mold Issues In Isopod Cultures</a ></h2>
-            <span class="tag">Troubleshooting</span>
+            <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=1200&q=80" alt="How To Fix High Humidity And Mold Issues In Isopod Cultures" class="card-img">
+            <div class="card-content">
+                <h2><a href="pet-003.html">How To Fix High Humidity And Mold Issues In Isopod Cultures</a></h2>
+                <span class="tag">Troubleshooting</span>
+            </div>
+        </div>
+        
+        <div class="post-card">
+            <img src="https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=1200&q=80" alt="Why Is My Ball Python Refusing To Eat Frozen Thawed Rats" class="card-img">
+            <div class="card-content">
+                <h2><a href="pet-004.html">Why Is My Ball Python Refusing To Eat Frozen Thawed Rats</a></h2>
+                <span class="tag">Feeding Guide</span>
+            </div>
+        </div>
+        
+        <div class="post-card">
+            <img src="https://images.unsplash.com/photo-1543852786-1cf6624b9987?auto=format&fit=crop&w=1200&q=80" alt="Do Leopard Geckos Need Uvb Light Or Just Heat Mats" class="card-img">
+            <div class="card-content">
+                <h2><a href="pet-005.html">Do Leopard Geckos Need Uvb Light Or Just Heat Mats</a></h2>
+                <span class="tag">Habitat Setup</span>
+            </div>
+        </div>
+        
+        <div class="post-card">
+            <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=1200&q=80" alt="How To Maintain Proper Humidity And Salt Water Pools For Land Hermit Crabs" class="card-img">
+            <div class="card-content">
+                <h2><a href="pet-006.html">How To Maintain Proper Humidity And Salt Water Pools For Land Hermit Crabs</a></h2>
+                <span class="tag">Troubleshooting</span>
+            </div>
         </div>
         
     </main>
