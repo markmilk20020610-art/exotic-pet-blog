@@ -1,0 +1,23 @@
+[
+  {
+    "id": "pet-001",
+    "topic": "Jumping Spider Care",
+    "target_keyword": "how often should you feed a adult jumping spider and what do they eat",
+    "category": "Feeding Guide",
+    "affiliate_product": "Jumping Spider Enclosure Starter Kit"
+  },
+  {
+    "id": "pet-002",
+    "topic": "Crested Gecko Terrarium",
+    "target_keyword": "best bioactive substrate mix for crested gecko tank setup",
+    "category": "Habitat Setup",
+    "affiliate_product": "Reptile Bioactive Substrate Soil"
+  },
+  {
+    "id": "pet-003",
+    "topic": "Isopod Culture Care",
+    "target_keyword": "how to fix high humidity and mold issues in isopod cultures",
+    "category": "Troubleshooting",
+    "affiliate_product": "Digital Hygrometer Thermometer for Terrarium"
+  }
+]
