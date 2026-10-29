@@ -1,0 +1,40 @@
+name: Auto Generate Blog Articles
+
+on:
+  schedule:
+    # 每天 UTC 时间 0 点自动运行 (相当于北京时间早上 8 点)
+    - cron: '0 0 * * *'
+  workflow_dispatch: # 允许你在 GitHub 网页端手动一键触发
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run generation script
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python generate.py
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Auto-generate new blog posts via Gemini API [skip ci]" || exit 0
+          git push
