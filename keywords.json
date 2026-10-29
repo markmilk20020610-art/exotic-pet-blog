@@ -4,41 +4,83 @@
     "topic": "Jumping Spider Care",
     "target_keyword": "how often should you feed a adult jumping spider and what do they eat",
     "category": "Feeding Guide",
-    "affiliate_product": "Jumping Spider Enclosure Starter Kit"
+    "affiliate": {
+      "affiliate_product_id": "spider-enclosure",
+      "affiliate_title": "Jumping Spider Enclosure Starter Kit",
+      "affiliate_url": "https://www.amazon.com/s?k=jumping+spider+enclosure+starter+kit+arboreal&tag=exoticpethub-20",
+      "affiliate_image": "",
+      "affiliate_price": "$28–42",
+      "affiliate_category": "habitat"
+    }
   },
   {
     "id": "pet-002",
     "topic": "Crested Gecko Terrarium",
     "target_keyword": "best bioactive substrate mix for crested gecko tank setup",
     "category": "Habitat Setup",
-    "affiliate_product": "Reptile Bioactive Substrate Soil"
+    "affiliate": {
+      "affiliate_product_id": "bioactive-substrate",
+      "affiliate_title": "Reptile Bioactive Substrate Mix",
+      "affiliate_url": "https://www.amazon.com/s?k=reptile+bioactive+substrate+soil+mix&tag=exoticpethub-20",
+      "affiliate_image": "",
+      "affiliate_price": "$18–28",
+      "affiliate_category": "habitat"
+    }
   },
   {
     "id": "pet-003",
     "topic": "Isopod Culture Care",
     "target_keyword": "how to fix high humidity and mold issues in isopod cultures",
     "category": "Troubleshooting",
-    "affiliate_product": "Digital Hygrometer Thermometer for Terrarium"
+    "affiliate": {
+      "affiliate_product_id": "hygrometer",
+      "affiliate_title": "Digital Hygrometer & Thermometer, 2-pack",
+      "affiliate_url": "https://www.amazon.com/s?k=digital+hygrometer+thermometer+terrarium+2+pack&tag=exoticpethub-20",
+      "affiliate_image": "",
+      "affiliate_price": "$16–28",
+      "affiliate_category": "habitat"
+    }
   },
   {
     "id": "pet-004",
     "topic": "Ball Python Feeding",
     "target_keyword": "why is my ball python refusing to eat frozen thawed rats",
     "category": "Feeding Guide",
-    "affiliate_product": "Reptile Digital Kitchen Scale for Weighing Food"
+    "affiliate": {
+      "affiliate_product_id": "kitchen-scale",
+      "affiliate_title": "Digital Kitchen Scale, 0.1 g",
+      "affiliate_url": "https://www.amazon.com/s?k=digital+kitchen+scale+0.1g+reptile&tag=exoticpethub-20",
+      "affiliate_image": "",
+      "affiliate_price": "$18–30",
+      "affiliate_category": "feeding"
+    }
   },
   {
     "id": "pet-005",
     "topic": "Leopard Gecko Lighting",
     "target_keyword": "do leopard geckos need UVB light or just heat mats",
     "category": "Habitat Setup",
-    "affiliate_product": "Reptile UVB and Heat Lamp Fixture Combo"
+    "affiliate": {
+      "affiliate_product_id": "uvb-fixture",
+      "affiliate_title": "UVB + Heat Lamp Fixture Combo",
+      "affiliate_url": "https://www.amazon.com/s?k=reptile+uvb+heat+lamp+fixture+combo&tag=exoticpethub-20",
+      "affiliate_image": "",
+      "affiliate_price": "$45–75",
+      "affiliate_category": "habitat"
+    }
   },
   {
     "id": "pet-006",
     "topic": "Hermit Crab Care",
     "target_keyword": "how to maintain proper humidity and salt water pools for land hermit crabs",
     "category": "Troubleshooting",
-    "affiliate_product": "Instant Ocean Sea Salt and Hydrometer Set"
+    "affiliate": {
+      "affiliate_product_id": "salt-set",
+      "affiliate_title": "Instant Ocean Sea Salt + Hydrometer Set",
+      "affiliate_url": "https://www.amazon.com/s?k=instant+ocean+sea+salt+hydrometer+set&tag=exoticpethub-20",
+      "affiliate_image": "",
+      "affiliate_price": "$22–34",
+      "affiliate_category": "habitat"
+    }
   }
 ]

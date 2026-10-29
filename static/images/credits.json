@@ -1,0 +1,44 @@
+{
+  "jumping-spider.jpg": {
+    "title": "Immature male Phidippus regius 111564747.jpg",
+    "artist": "Zygy",
+    "license": "CC0",
+    "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "page": "https://commons.wikimedia.org/wiki/File:Immature_male_Phidippus_regius_111564747.jpg"
+  },
+  "crested-gecko.jpg": {
+    "title": "Correlophus ciliatus 33484989.jpg",
+    "artist": "Lennart Hudel",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Correlophus_ciliatus_33484989.jpg"
+  },
+  "isopods.jpg": {
+    "title": "Porcellio scaber 174410346.jpg",
+    "artist": "Michel Langeveld",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Porcellio_scaber_174410346.jpg"
+  },
+  "ball-python.jpg": {
+    "title": "Python-regius-kopf-königspython.jpg",
+    "artist": "Holger Krisp",
+    "license": "CC BY 3.0",
+    "license_url": "https://creativecommons.org/licenses/by/3.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Python-regius-kopf-k%C3%B6nigspython.jpg"
+  },
+  "leopard-gecko.jpg": {
+    "title": "Eublepharis macularius1.jpg",
+    "artist": "Matt Reinbold",
+    "license": "CC BY-SA 2.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/2.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Eublepharis_macularius1.jpg"
+  },
+  "hermit-crab.jpg": {
+    "title": "Caribbean hermit crab.JPG",
+    "artist": "ZooFari",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Caribbean_hermit_crab.JPG"
+  }
+}
