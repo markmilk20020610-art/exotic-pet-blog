@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://exotic-pet-blog.pages.dev/sitemap.xml
+Sitemap: https://exotic-pet-blog.markmilk20020610.workers.dev/sitemap.xml

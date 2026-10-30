@@ -60,7 +60,7 @@ KEYWORDS = ROOT / "keywords.json"
 # Same trap as AMAZON_TAG: a var that exists but is empty (`SITE_URL=` in a
 # shell, or an unset GitHub/Cloudflare secret) would otherwise yield "//pet-001"
 # canonical URLs and an unusable sitemap. Empty means "use the default".
-DEFAULT_SITE_URL = "https://exotic-pet-blog.pages.dev"
+DEFAULT_SITE_URL = "https://exotic-pet-blog.markmilk20020610.workers.dev"
 SITE_URL = ((os.environ.get("SITE_URL") or "").strip() or DEFAULT_SITE_URL).rstrip("/")
 SITE_NAME = "Exotic Pet Care Hub"
 AMAZON_TAG = aff.AMAZON_TAG

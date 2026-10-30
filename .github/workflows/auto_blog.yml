@@ -37,7 +37,7 @@ jobs:
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           AMAZON_TAG: ${{ secrets.AMAZON_TAG }}
-          SITE_URL: "https://exotic-pet-blog.pages.dev"
+          SITE_URL: "https://exotic-pet-blog.markmilk20020610.workers.dev"
         run: |
           python generate.py --refresh --batch "${{ github.event.inputs.batch || 4 }}"
 
