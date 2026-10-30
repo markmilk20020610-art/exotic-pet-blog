@@ -72,6 +72,15 @@ LIBRARY = ROOT / "library.json"
 # actually read, with date breaking every tie.
 ANALYTICS = ROOT / "analytics.json"
 
+# Every field grow() copies out of a TOPIC_POOL entry. `alt` and `caption` were
+# the ones that bit: they were added to the first eight topics and forgotten on
+# the next four, and the KeyError stopped the build before a single page was
+# written. Checked up front so one incomplete topic skips itself, not the run.
+REQUIRED_TOPIC_FIELDS = (
+    "slug", "title", "target_keyword", "topic", "category", "group",
+    "species", "sci", "image", "alt", "caption", "facts", "kit", "tags",
+)
+
 # Same trap as AMAZON_TAG: a var that exists but is empty (`SITE_URL=` in a
 # shell, or an unset GitHub/Cloudflare secret) would otherwise yield "//pet-001"
 # canonical URLs and an unusable sitemap. Empty means "use the default".
@@ -657,6 +666,14 @@ def grow(count: int, posts: list[dict]) -> list[dict]:
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     added = []
     for t in picked:
+        # A pool entry with a missing field used to raise KeyError and take the
+        # whole build down — a typo in one topic cancelled every other article
+        # in the run. Validate first and skip just that topic instead.
+        missing = [k for k in REQUIRED_TOPIC_FIELDS if not t.get(k)]
+        if missing:
+            print(f"  ! topic {t.get('slug', '?')} skipped — missing "
+                  f"{', '.join(missing)} in topics.py")
+            continue
         pid = next_post_id(ids)
         ids.add(pid)
         entry = {

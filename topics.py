@@ -547,6 +547,8 @@ TOPIC_POOL = [
         "sci": "Petaurus breviceps",
         "author": "idris",
         "image": "sugar-glider.jpg",
+        "alt": "A sugar glider gripping a cork bark ledge, holding a piece of food in both forepaws",
+        "caption": "Petaurus breviceps. A captive diet that reads as generous — fruit, honey, a little minced meat — can still be calcium-negative, which is how hind-limb paralysis starts in an animal that looks well fed.",
         "facts": [
             ("Species", "Petaurus breviceps"),
             ("Adult weight", "90–160 g"),
@@ -573,6 +575,8 @@ TOPIC_POOL = [
         "sci": "Pogona vitticeps",
         "author": "nell",
         "image": "bearded-dragon.jpg",
+        "alt": "A bearded dragon flattened on red sand, dorsal spines and full tail in frame",
+        "caption": "Pogona vitticeps. A dragon that stops eating and settles into a cool corner in October is brumating; the same behaviour at 32 °C in July is not brumation and needs a vet.",
         "facts": [
             ("Species", "Pogona vitticeps"),
             ("Adult length", "45–60 cm"),
