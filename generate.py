@@ -204,8 +204,15 @@ def credit_html(filename: str, prefix: str = "Photograph") -> str:
 # content resolution
 # --------------------------------------------------------------------------- #
 
-PROMPT = Template("""You are the senior keeper writing for Exotic Pet Care Hub, an independent
-exotic-animal magazine. Write the body of a field guide in English.
+# Bump this whenever PROMPT or the structural contract changes. It is part of
+# the cache fingerprint, so a prompt edit invalidates every cached body instead
+# of leaving old, off-brief articles in place for months.
+PROMPT_VERSION = "2026-10-30.1"
+
+PROMPT = Template("""You are the senior keeper at Exotic Pet Care Hub, an independent magazine
+written by people who keep the animals, for people who keep them. You have a
+zoology background and ten years of husbandry notes. Write the body of one field
+guide in English.
 
 Target keyword: "$keyword"
 Topic: $topic
@@ -216,24 +223,72 @@ Gear this article is allowed to recommend — refer to it by token, never by nam
 or price:
 $products
 
-Rules:
-- Return an HTML fragment only. No <html>, no <head>, no markdown fences.
-- Do NOT include an <h1>; the page template renders the title.
-- Do NOT write any <a> tag, price, star rating or button. The template renders
-  the product card for you.
-- CARD PLACEMENT. Insert the token on its own line at the moment the reader
-  first meets the problem the product solves:
-    {{affiliate:feeding}}   first time you say what to feed, or how to measure a portion
-    {{affiliate:habitat}}   first time you specify enclosure, substrate, heating, lighting or decor
-    {{affiliate:health}}    only if the piece covers illness, quarantine, mites, shedding or a refusal to eat
-  Use each token at most once. Never invent a token. Never explain the token.
-  The sentence before it must lead in naturally — "The cheapest fix here is a
-  second hygrometer:" not "Buy this:".
-- Structure: 4-6 <h2> sections, <h3> sub-points where useful, one <table> summary,
-  and a closing "Frequently asked questions" section with 3 <h3> questions each
-  followed by a single <p> answer.
-- 700-950 words. Practical, specific, E-E-A-T compliant. No invented statistics.
-- Never mention other animal species as the subject of the article.
+## The four beats, in this order
+
+1. THE SCIENCE HOOK — no heading, 2-4 sentences, opens the article.
+   Lead with something true and specific: a measurement, a physiological
+   constraint, a piece of wild ecology, a Latin name doing real work. The reader
+   must learn a fact in the first sentence. No throat-clearing, no "exotic pets
+   are increasingly popular", no definition of the animal.
+
+2. THE KEEPER'S DIARY — one <h2> section, 120-180 words, first person singular.
+   One animal, one evening, concrete detail: what it did, what you got wrong,
+   what it cost. Sound, weight, the time on the clock. Physical before
+   sentimental. This is the only section where "I" leads; do not perform emotion
+   you have not earned with a specific.
+
+3. THE ACTIONABLE CARE GUIDE — two or three <h2> sections, the bulk of the
+   piece. Turn the science into something a household can actually run: numbers
+   with units, thresholds, the decision the reader has to make, and the failure
+   mode when they get it wrong. Use <ol> for sequences, <ul> for options, and
+   exactly one <table> summary. Every recommendation must be checkable against
+   something the reader can see or measure.
+
+4. THE QUIET RECOMMENDATION — not a section. Where the guide first reaches a
+   real pain point, place the matching affiliate token on its own line:
+     {{affiliate:feeding}}   the first time you say what to feed or how to portion it
+     {{affiliate:habitat}}   the first time you specify enclosure, substrate, heating, light or decor
+     {{affiliate:health}}    only if the piece covers illness, quarantine, mites, shedding or a refusal to eat
+   At most one token per category, at most two in total. Never invent a token.
+   Never explain or justify the token. The sentence before it must lead in
+   naturally — "The cheapest fix here is a second hygrometer:" not "Buy this:".
+   If the article never reaches that pain point, use no token at all.
+
+Close with a "Frequently asked questions" <h2> holding exactly three <h3>
+questions, each answered by a single <p> of 40-70 words.
+
+## Voice
+
+- Write like a keeper who has been bitten, surprised and occasionally wrong.
+  Confidence about what you have measured; plain uncertainty about the rest.
+- Explain a technical term the first time it appears, in the same sentence, in
+  plain words. Never stack jargon.
+- Warmth is earned by specificity, not by adjectives. "The abdomen was still
+  plump" beats "it was such a worrying time".
+- No AI voice. Never write "as an AI", "as a language model", "I cannot browse",
+  or apologise for being an assistant. You are a person with animals.
+- No content-mill filler: "in today's fast-paced world", "delve into", "unlock
+  the secrets", "navigate the complexities", "game-changer", "elevate your",
+  "it's important to note that", "in conclusion". Cut them on sight.
+- Do not address the reader as "pet parents" or sell them a lifestyle.
+
+## Accuracy
+
+- Never invent a statistic, a study, a citation, an institution, a vet's name or
+  a review count. If a number is contested in the hobby, say so in one clause
+  and give the range you actually use.
+- Use the Latin binomial once, in <em>, at first mention.
+- Where the evidence is thin, say what is unknown. That is the E-E-A-T signal,
+  not a weakness.
+
+## Output contract
+
+- Return an HTML fragment only: no <html>, <head>, <body>, no markdown fences.
+- No <h1> — the page template renders the title.
+- No <a>, no <img>, no price, no star rating, no button, no inline style. The
+  template renders every product card.
+- 750-950 words. Four to seven <h2> sections in total.
+- Never write about a different species as the subject of the article.
 """)
 
 
@@ -252,10 +307,134 @@ def prompt_products(kit: list[dict]) -> str:
     return "\n".join(lines)
 
 
+SYSTEM_VOICE = (
+    "You are a senior keeper and science writer for an independent exotic-animal "
+    "magazine. You write as a person with animals in the room, never as an "
+    "assistant, and you never invent a number you could not defend."
+)
+
+
+def _chat(client, messages: list[dict]) -> str:
+    """One completion, stripped of fences, rejected if it is too short to be real."""
+    resp = client.chat.completions.create(
+        model="deepseek-chat", messages=messages, stream=False)
+    body = resp.choices[0].message.content or ""
+    body = re.sub(r"^```(?:html)?|```$", "", body.strip(), flags=re.M).strip()
+    if len(strip_tags(body)) < 300:
+        raise ValueError("model returned an empty body")
+    return body
+
+
 def body_fingerprint(item: dict, post: dict) -> str:
-    """Stable hash of the inputs that make this article this article."""
-    raw = "|".join([item["id"], item["target_keyword"], item["topic"], post["species"]])
+    """Stable hash of the inputs that make this article this article.
+
+    `PROMPT_VERSION` is part of it on purpose: editing the brief must invalidate
+    every cached body, otherwise the site keeps serving articles written to an
+    older contract for as long as their cache files survive.
+    """
+    raw = "|".join([PROMPT_VERSION, item["id"], item["target_keyword"],
+                    item["topic"], post["species"]])
     return hashlib.sha1(raw.encode("utf-8")).hexdigest()[:16]
+
+
+# --------------------------------------------------------------------------- #
+# editorial contract
+# --------------------------------------------------------------------------- #
+
+# A body that contains these has slipped into assistant register, and the page
+# reads like a chatbot wrote it. Checked at generation time and at build time.
+BANNED_VOICE = (
+    "as an ai", "as a language model", "as an artificial intelligence",
+    "i cannot browse", "in today's fast-paced world", "delve into",
+    "unlock the secrets", "navigate the complexities", "game-changer",
+    "game changer", "elevate your", "it's important to note that",
+    "in conclusion", "testament to the",
+)
+
+_MEASURE_RE = re.compile(
+    r"\d+(?:\.\d+)?\s*(?:°\s?[CF]|%|cm|mm|kg|ml|minutes?|hours?|days?|weeks?|months?|years?)",
+    re.I,
+)
+_FIRST_PERSON_RE = re.compile(r"\b(I|my|me|we|our)\b")
+_BINOMIAL_RE = re.compile(r"<em>\s*[A-Z][a-z]{2,}\s+[a-z]{2,}\s*</em>")
+
+
+def section_texts(body: str) -> list[tuple[str, str]]:
+    """(heading, section text) for every <h2> block, tags stripped."""
+    heads = list(re.finditer(r"<h2[^>]*>(.*?)</h2>", body, re.S))
+    out = []
+    for i, m in enumerate(heads):
+        end = heads[i + 1].start() if i + 1 < len(heads) else len(body)
+        out.append((prose_text(m.group(1)), prose_text(body[m.end():end])))
+    return out
+
+
+def check_structure(body: str) -> list[str]:
+    """Score a body against the four-beat brief. Empty list means it passes.
+
+    This is the machine-readable half of the prompt. The prompt asks for the
+    beats; this proves they arrived, so a draft that drifted into a generic care
+    sheet cannot be published just because it is long enough.
+    """
+    problems: list[str] = []
+    text = prose_text(body)
+    words = len(text.split())
+    if words < 600:
+        problems.append(f"only {words} words (brief asks 750-950)")
+    elif words > 1150:
+        problems.append(f"{words} words, well over the 750-950 brief")
+
+    first_p = re.search(r"<p[^>]*>(.*?)</p>", body, re.S)
+    hook = prose_text(first_p.group(1)) if first_p else ""
+    if len(hook.split()) < 25:
+        problems.append("the opening paragraph is too short to carry a science hook")
+    elif not _MEASURE_RE.search(hook):
+        problems.append("the opening paragraph has no concrete measurement")
+
+    if not _BINOMIAL_RE.search(body):
+        problems.append("no Latin binomial in <em> at first mention")
+
+    secs = section_texts(body)
+    if not 4 <= len(secs) <= 8:
+        problems.append(f"{len(secs)} <h2> sections (brief asks 4-7)")
+
+    if not any(len(_FIRST_PERSON_RE.findall(t)) >= 3 and len(t.split()) >= 60
+               for _, t in secs):
+        problems.append("no first-person keeper's diary section")
+
+    # Scannable structure: a step sequence, a table, or a real option list.
+    lists = [len(re.findall(r"<li\b", m.group(0)))
+             for m in re.finditer(r"<ul\b.*?</ul>", body, re.S)]
+    if not (re.search(r"<ol\b", body) or re.search(r"<table\b", body)
+            or any(n >= 3 for n in lists)):
+        problems.append("no step sequence, option list or summary table")
+
+    faq_at = text.lower().find("frequently asked")
+    if faq_at < 0:
+        problems.append('no "Frequently asked questions" section')
+    else:
+        qs = len(re.findall(r"<h3\b", body[body.lower().find("frequently asked"):]))
+        if qs < 3:
+            problems.append(f"FAQ has {qs} questions (brief asks 3)")
+
+    low = text.lower()
+    hits = [p for p in BANNED_VOICE if p in low]
+    if hits:
+        problems.append("banned voice: " + ", ".join(hits))
+
+    return problems
+
+
+def repair_prompt(problems: list[str]) -> str:
+    """The follow-up turn: name what failed, ask for a full rewrite."""
+    listed = "\n".join(f"- {p}" for p in problems)
+    return (
+        "Your draft does not meet the editorial brief. Problems:\n"
+        f"{listed}\n\n"
+        "Rewrite the complete fragment so it passes every point. Keep the parts "
+        "that already work. Same output contract: HTML fragment only, no <h1>, "
+        "no <a>, no <img>, no price, no inline style."
+    )
 
 
 def resolve_body(item: dict, post: dict, refresh: bool) -> tuple[str, str]:
@@ -300,35 +479,60 @@ def resolve_body(item: dict, post: dict, refresh: bool) -> tuple[str, str]:
                 category=item.get("category", post["category"]),
                 products=prompt_products(post.get("_kit") or []),
             )
+            messages = [
+                {"role": "system", "content": SYSTEM_VOICE},
+                {"role": "user", "content": prompt},
+            ]
+
+            body: str | None = None
             for attempt in range(3):
                 try:
-                    resp = client.chat.completions.create(
-                        model="deepseek-chat",
-                        messages=[
-                            {"role": "system", "content": "You are a professional exotic pet husbandry writer and SEO editor."},
-                            {"role": "user", "content": prompt},
-                        ],
-                        stream=False,
-                    )
-                    body = resp.choices[0].message.content
-                    body = re.sub(r"^```(?:html)?|```$", "", body.strip(), flags=re.M).strip()
-                    if len(strip_tags(body)) < 300:
-                        raise ValueError("model returned an empty body")
-                    cache_file.write_text(body, encoding="utf-8")
-                    meta_file.write_text(
-                        json.dumps(
-                            {"id": item["id"], "fingerprint": stamp,
-                             "keyword": item["target_keyword"]},
-                            ensure_ascii=False,
-                        ),
-                        encoding="utf-8",
-                    )
-                    return body, "deepseek"
+                    body = _chat(client, messages)
+                    break
                 except Exception as exc:  # noqa: BLE001
                     print(f"    retry {attempt + 1}/3: {exc}")
                     if attempt == 2:
-                        raise
+                        break
                     time.sleep(5)
+
+            if body is None:
+                print("    ! API unavailable; using editorial fallback")
+                return post["body_html"], "fallback"
+
+            # The prompt asks for the four beats; this is where we find out
+            # whether they arrived. One targeted rewrite, then reject: an
+            # off-brief body is worse than the previous one, because it would
+            # ship a generic care sheet under this article's title.
+            problems = check_structure(body)
+            if problems:
+                print(f"    ! {item['id']}: draft missed {len(problems)} brief item(s)")
+                for p in problems:
+                    print(f"      · {p}")
+                try:
+                    body = _chat(client, messages + [
+                        {"role": "assistant", "content": body},
+                        {"role": "user", "content": repair_prompt(problems)},
+                    ])
+                    problems = check_structure(body)
+                except Exception as exc:  # noqa: BLE001
+                    print(f"    ! repair call failed ({exc})")
+
+                if problems:
+                    print(f"    ! {item['id']} is still off-brief; keeping the "
+                          f"previous body rather than publishing it")
+                    return post["body_html"], "fallback (off-brief)"
+
+            cache_file.write_text(body, encoding="utf-8")
+            meta_file.write_text(
+                json.dumps(
+                    {"id": item["id"], "fingerprint": stamp,
+                     "prompt": PROMPT_VERSION,
+                     "keyword": item["target_keyword"]},
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            return body, "deepseek"
         except Exception as exc:  # noqa: BLE001
             print(f"    ! API unavailable ({exc}); using editorial fallback")
 
@@ -1412,6 +1616,11 @@ def collect() -> list[dict]:
         })
         posts.append(post)
 
+    ids = [p["id"] for p in posts]
+    if len(set(ids)) != len(ids):
+        dupes = sorted({i for i in ids if ids.count(i) > 1})
+        raise SystemExit(f"  ! duplicate post id(s): {', '.join(dupes)}")
+
     posts.sort(key=lambda p: p["date"], reverse=True)
     return posts
 
@@ -1474,14 +1683,45 @@ def audit(posts: list[dict], tax: dict) -> list[str]:
     return problems
 
 
+def prose_region(doc: str) -> str | None:
+    """Inner HTML of the article's `.prose` block, found by div nesting.
+
+    The old version looked for `</div>` followed by `<section class="gear"`.
+    That silently depended on the gear block existing, and it broke the moment
+    the prose block was renamed to `prose prose--magazine`.
+    """
+    m = re.search(r'<div class="prose[^"]*">', doc)
+    if not m:
+        return None
+    start = m.end()
+    depth = 1
+    for tag in re.finditer(r"<(/?)div\b[^>]*>", doc[start:]):
+        depth += -1 if tag.group(1) else 1
+        if depth == 0:
+            return doc[start:start + tag.start()]
+    return None
+
+
+def prose_text(fragment: str) -> str:
+    """Readable text of an HTML fragment: entities resolved, whitespace folded."""
+    return re.sub(r"\s+", " ", html.unescape(strip_tags(fragment))).strip()
+
+
 def audit_content(posts: list[dict]) -> list[str]:
     """Prove that every article is its own article.
 
     Catches the two failure modes that make a library read as one page repeated:
     two posts sharing a title, and two posts sharing a body (a stale cache file
     or a template that rendered the wrong record). It also re-reads each written
-    page and checks that its <h1> and prose belong to that post, so a mismatch
-    between the data and the output cannot ship silently.
+    page and compares its prose against the body that was passed to the
+    renderer, so a mismatch between the data and the output cannot ship.
+
+    The comparison is text-to-text, not text-to-markup. An earlier version
+    searched for the stripped text of the first `<h2>` inside the raw HTML of
+    the prose block; any inline markup in a heading (`<em>`, `<strong>`, a link)
+    or an entity such as `&nbsp;` made the stripped needle impossible to find
+    and failed the build on a perfectly correct page — the `pet-003` false
+    positive. Comparing normalised text on both sides is immune to that.
     """
     problems: list[str] = []
     seen_titles: dict[str, str] = {}
@@ -1493,8 +1733,8 @@ def audit_content(posts: list[dict]) -> list[str]:
             problems.append(f"{p['id']} reuses the title of {seen_titles[key]}")
         seen_titles[key] = p["id"]
 
-        text = re.sub(r"\s+", " ", strip_tags(p["_body"])).strip()
-        digest = hashlib.sha1(text.encode("utf-8")).hexdigest()
+        want = prose_text(p["_body"])
+        digest = hashlib.sha1(want.encode("utf-8")).hexdigest()
         if digest in seen_bodies:
             problems.append(f"{p['id']} shares its body with {seen_bodies[digest]}")
         seen_bodies[digest] = p["id"]
@@ -1509,13 +1749,39 @@ def audit_content(posts: list[dict]) -> list[str]:
         if not h1 or html.unescape(strip_tags(h1.group(1))) != p["title"]:
             problems.append(f"{p['id']}.html <h1> does not match its title")
 
-        h2 = re.search(r"<h2[^>]*>(.*?)</h2>", p["_body"], re.S)
-        prose = re.search(r'<div class="prose[^"]*">(.*?)</div>\s*<section class="gear"', doc, re.S)
-        if h2 and prose:
-            needle = html.unescape(strip_tags(h2.group(1))).strip()
-            if needle and needle not in html.unescape(prose.group(1)):
-                problems.append(f"{p['id']}.html prose is not this article's body")
+        # Identity, independent of the prose: the canonical URL is the only
+        # tag on the page that names the record it was rendered for.
+        canon = re.search(r'<link rel="canonical" href="([^"]+)"', doc)
+        if not canon or canon.group(1) != absolute(p["id"] + ".html"):
+            got = canon.group(1) if canon else "nothing"
+            problems.append(f"{p['id']}.html canonical points at {got}")
 
+        region = prose_region(doc)
+        if region is None:
+            problems.append(f"{p['id']}.html has no .prose block")
+            continue
+        got = prose_text(region)
+        if got != want:
+            problems.append(
+                f"{p['id']}.html prose is not this article's body "
+                f"({len(got)} chars on the page, {len(want)} in the record)"
+            )
+
+    return problems
+
+
+def audit_voice(posts: list[dict]) -> list[str]:
+    """Every published body must clear the four-beat brief, fallback included.
+
+    The generation gate already refuses an off-brief draft, but a hand-written
+    `content.py` body bypasses that gate entirely — and those are the bodies
+    that ship when the API is down. This is the same check, applied to whatever
+    actually got rendered.
+    """
+    problems: list[str] = []
+    for p in posts:
+        for issue in check_structure(p["_body"]):
+            problems.append(f"{p['id']}: {issue}")
     return problems
 
 
@@ -1681,21 +1947,32 @@ def build(refresh: bool = False, batch: int = 0) -> None:
         cursor_file.write_text(str((start + take) % len(order)), encoding="utf-8")
         print(f"  batch mode: regenerating {len(forced)} of {len(posts)} guides")
 
+    # Bodies are filed by id in their own map and only ever read back by that
+    # same id, so a page cannot be handed a body that belongs to another
+    # record — not through a stale loop variable, not through a shared dict.
+    bodies: dict[str, str] = {}
     for post in posts:
         force = refresh and (not batch or post["id"] in forced)
         body, source = resolve_body(post["_item"], post, force)
         # The editorial layer runs on the sanitised body only: badges and the
         # lede must never be able to reach inside a commerce card, and the card
         # markup is injected afterwards, so `highlight_params` cannot see it.
-        post["_body"] = aff.inject_cards(magazine_body(sanitize_body(body, post)), post)
-        post["_read"] = read_time(post["_body"])
+        bodies[post["id"]] = aff.inject_cards(
+            magazine_body(sanitize_body(body, post)), post)
         print(f"  {post['id']}  {post['species']:<22} body: {source}")
+
+    if len(bodies) != len(posts):
+        raise SystemExit("  ! body map is not one-to-one — duplicate post id")
+
+    for post in posts:
+        post["_body"] = bodies[post["id"]]
+        post["_read"] = read_time(post["_body"])
 
     for post in posts:
         related = [p for p in posts if p["id"] != post["id"]]
         related.sort(key=lambda p: (p["group"] != post["group"], p["date"] < post["date"]))
         (ROOT / f"{post['id']}.html").write_text(
-            render_article(post, post["_body"], related[:3], tax), encoding="utf-8"
+            render_article(post, bodies[post["id"]], related[:3], tax), encoding="utf-8"
         )
 
     (ROOT / "index.html").write_text(render_index(posts), encoding="utf-8")
@@ -1713,12 +1990,13 @@ def build(refresh: bool = False, batch: int = 0) -> None:
     print("  wrote sitemap.xml, robots.txt, feed.xml")
     print(f"  base url: {SITE_URL}")
 
-    problems = (audit(posts, tax) + audit_content(posts)
+    problems = (audit(posts, tax) + audit_content(posts) + audit_voice(posts)
                 + audit_collections(posts, tax) + audit_pinned(posts, tax))
     if problems:
         for p in problems:
             print(f"  ✗ {p}")
         raise SystemExit(f"audit failed: {len(problems)} problem(s)")
+    print(f"  editorial: {len(posts)} bodies clear the four-beat brief")
     print(f"  link audit: clean ({len(tax['cats']) + len(tax['groups'])} sections, "
           f"{len(posts)} cards, {len(posts)} unique bodies)")
 

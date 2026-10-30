@@ -44,7 +44,7 @@ POSTS = {
         ],
         "tags": ["jumping spider", "feeding", "Phidippus regius", "invertebrate"],
         "body_html": """
-<p>You brought home a spider the size of a fingernail, and it has been watching you ever since. Now the question that every new keeper asks: <em>is it hungry?</em> The answer matters more than most care sheets admit, because adult jumping spiders are far more likely to be overfed than underfed — and overfeeding is the quieter, slower problem.</p>
+<p>You brought home a spider the size of a fingernail, and it has been watching you ever since. Now the question that every new keeper asks: <em>is it hungry?</em> The answer matters more than most care sheets admit, because adult jumping spiders are far more likely to be overfed than underfed — and overfeeding is the quieter, slower problem. An adult female <em>Phidippus regius</em> spans 12–18 mm across the legs, and her abdomen is the only honest feeding gauge you get: it should sit slightly narrower than the carapace, never wider.</p>
 
 <h2>What adult jumping spiders actually eat</h2>
 
@@ -61,6 +61,12 @@ POSTS = {
 </ul>
 
 <p>Size is the rule that matters most: prey should be <strong>no longer than the spider's body</strong>, legs excluded. Oversized crickets are not a challenge, they are an injury risk.</p>
+
+<h2>The evening I stopped feeding on a calendar</h2>
+
+<p>I kept my first regal on a Tuesday-and-Friday routine for four months, because that is what the care sheet said. She ate every time. Then she stopped, tucked her front legs under herself in the corner of the cork bark, and I spent three evenings convinced she was dying. She was not. She was full: the abdomen was tight and shiny, wider than the carapace, and I had been feeding a spider that was already done.</p>
+
+<p>The tell was never the refusal, it was the shape. A hungry <em>Phidippus regius</em> is narrow through the middle and leans forward, and she tracks your finger across the glass. A full one looks like a grape with legs and could not care less what you do. I bought a cheap set of digital calipers and started writing the numbers down once a week — abdomen width against carapace width. It is not a scientific method. It is a better calendar than a calendar.</p>
 
 <h2>How often to feed an adult</h2>
 
@@ -135,7 +141,7 @@ POSTS = {
         ],
         "tags": ["crested gecko", "bioactive", "substrate", "Correlophus ciliatus"],
         "body_html": """
-<p>Almost every "bioactive" crested gecko setup online is a layer of coco coir with a fake plant pushed into it. It looks the part, it holds water, and it is not bioactive in any meaningful sense — there is nothing living in it to process waste, and no drainage to stop it going anaerobic.</p>
+<p>Almost every "bioactive" crested gecko setup online is a layer of coco coir with a fake plant pushed into it. It looks the part, it holds water, and it is not bioactive in any meaningful sense — there is nothing living in it to process waste, and no drainage to stop it going anaerobic. A crested gecko also needs 70–80 % relative humidity with a genuine dry window overnight, and a coir brick holds water so tightly that the vivarium never gets one.</p>
 
 <p>A working substrate does three jobs at once: it drains, it hosts a cleanup crew, and it grows roots. That requires a layered mix, not a single bag of fibre.</p>
 
@@ -150,6 +156,12 @@ POSTS = {
   <li><strong>A handful of leaf litter</strong> on the surface — food and cover for the crew, and it slows evaporation.</li>
   <li><strong>Crushed cuttlebone</strong> — calcium for isopod moults. Without it, a colony quietly fails.</li>
 </ul>
+
+<h2>The build I had to take apart</h2>
+
+<p>My first bioactive build for a crested gecko had no drainage layer at all — soil straight onto the glass, because a forum post said the springtails would handle it. They did not. By week six the bottom two centimetres smelled like a pond that had given up, and the gecko had stopped coming down to the floor. I only found it when I lifted the cork tube and the whole base shifted under it.</p>
+
+<p>What I learned was physical rather than theoretical: water goes down and stays down. Two centimetres of clay pebbles, a mesh barrier, then the mix — that is the whole fix, and it took an afternoon. I keep a length of clear tubing in the vivarium now and siphon the sump every few weeks. What comes out is tea-coloured the first time and clear by the third. If the tube still smells sour, the drainage layer is working and something above it is not.</p>
 
 <h2>The drainage layer nobody builds</h2>
 
@@ -218,7 +230,7 @@ POSTS = {
         ],
         "tags": ["isopods", "mould", "humidity", "culture"],
         "body_html": """
-<p>You open the tub and there it is: a white fur of mould spreading across the leaf litter, a sour smell, and isopods clustered on the walls trying to get away from the substrate. The instinct is to dry everything out. That instinct is wrong, and it usually kills the colony faster than the mould would have.</p>
+<p>You open the tub and there it is: a white fur of mould spreading across the leaf litter, a sour smell, and isopods clustered on the walls trying to get away from the substrate. The instinct is to dry everything out. That instinct is wrong, and it usually kills the colony faster than the mould would have. A <em>Porcellio scaber</em> colony wants 70–85 % humidity with air moving across it; seal the air off and the moisture that was keeping them alive becomes the thing drowning them.</p>
 
 <p>Mould is a symptom of still, saturated air. Isopods need high humidity <em>and</em> airflow, and almost every failing culture has one without the other.</p>
 
@@ -227,6 +239,12 @@ POSTS = {
 <p>Isopods breathe through pleopods that must stay moist. Drop the humidity sharply and you get a wave of deaths, failed moults, and a colony that never recovers its numbers. The mould goes away; so does everything else.</p>
 
 <p>The correct move is to keep the moisture and <strong>move the air</strong>.</p>
+
+<h2>The tub that went sour in a week</h2>
+
+<p>I sealed a <em>Porcellio scaber</em> culture with cling film because the room was dry and I was worried about the substrate drying out. Seven days later the tub smelled like a drain and half the colony was standing on the lid. I had built a swamp with no exit. The isopods were not sick, they were trying to leave.</p>
+
+<p>What I do now is boring and it works. Two vent holes covered with fine mesh, a lid that sits loose rather than clipped, and a moisture gradient I can see: wet end, dry end, leaf litter over both. I test the dry end with the back of my hand instead of a hygrometer — if it is cool and faintly damp, the colony has somewhere to retreat to. When I forget, the smell tells me before the isopods do.</p>
 
 <h2>The five-minute fix: ventilation</h2>
 
@@ -307,7 +325,7 @@ POSTS = {
         ],
         "tags": ["ball python", "feeding strike", "frozen thawed", "Python regius"],
         "body_html": """
-<p>Your ball python has eaten frozen-thawed reliably for eight months. Then it stops. It ignores the rat, balls up, and looks at you with the flat indifference that only a <em>Python regius</em> can manage. Two weeks pass. Three.</p>
+<p>Your ball python has eaten frozen-thawed reliably for eight months. Then it stops. It ignores the rat, balls up, and looks at you with the flat indifference that only a <em>Python regius</em> can manage. Two weeks pass. Three. A ball python can go from a reliable 10–14 day feeder to a two-month fast with nothing wrong except a warm-end temperature that slipped four degrees, and no amount of scenting will fix a cold hide.</p>
 
 <p>This is the most common question in the species, and the honest answer is that a feeding strike is usually not about food at all. Work through these in order, and do not skip ahead.</p>
 
@@ -349,6 +367,12 @@ POSTS = {
 <p>Healthy adult ball pythons fast. Two to four months, typically over winter, is normal and requires no intervention if the animal is not losing weight quickly, is drinking, and is behaving normally.</p>
 
 <p>What <em>is</em> a crisis: rapid weight loss, regurgitation, wheezing, mucus in the mouth, or a snake that is suddenly lethargic. Those are veterinary appointments, not husbandry puzzles.</p>
+
+<h2>The 2 a.m. thaw</h2>
+
+<p>The first winter my ball python refused food, I did everything the internet said except the one thing that mattered. I thawed the rat on the counter for four hours, warmed it with a hairdryer, dangled it by the tail, and got a slow turn away. At two in the morning I put a temperature gun on the rat's skull. It read 21 °C. His hot hide read 31 °C. I had been offering him a cold object in a warm room and calling it dinner.</p>
+
+<p>Now I thaw in the fridge overnight, stand the bag in water at about 38 °C for fifteen minutes, and check the skull with the gun before the lid comes off. He has taken nine of the last ten. The refusal was never him being difficult. It was me being in a hurry and trusting a routine over a thermometer.</p>
 
 <h2>Quick diagnostic table</h2>
 
@@ -403,7 +427,7 @@ POSTS = {
         ],
         "tags": ["leopard gecko", "UVB", "lighting", "Eublepharis macularius"],
         "body_html": """
-<p>Ask ten keepers whether leopard geckos need UVB and you will get two confident, opposite answers. Both camps are arguing from the same wrong premise: that this is a nocturnal animal living in total darkness.</p>
+<p>Ask ten keepers whether leopard geckos need UVB and you will get two confident, opposite answers. Both camps are arguing from the same wrong premise: that this is a nocturnal animal living in total darkness. <em>Eublepharis macularius</em> is crepuscular, not nocturnal — it comes out within 30–60 minutes of lights-off, while the sky still carries UVB, and that narrow window is exactly what a lamp is trying to reproduce.</p>
 
 <p>Leopard geckos are <strong>crepuscular</strong>. They are active at dawn and dusk, they bask briefly at burrow mouths, and field data shows them exposed to low-level sunlight. That reframes the question: not "UVB or no UVB", but "how much, and what changes if I provide it".</p>
 
@@ -412,6 +436,12 @@ POSTS = {
 <p>UVB drives endogenous vitamin D3 synthesis, which is what allows calcium to be absorbed. Without it, you must supply D3 in powder form — and that works, but it is a narrow window. Too little causes metabolic bone disease; too much is toxic to the kidneys.</p>
 
 <p>Providing a low-level UVB zone gives the animal a choice, and lets you reduce dietary D3. That is the entire argument in favour, and it is a good one.</p>
+
+<h2>The gecko that slept through winter</h2>
+
+<p>For six years my <em>Eublepharis macularius</em> lived without UVB, because that is what I was told in 2016 and I never revisited it. She ate, she shed, she looked fine — until one January she stopped coming out at dusk, and her appetite went with it. The vet asked two questions: what is your calcium schedule, and does she have UVB. I had a confident answer to the first and a sheepish one to the second.</p>
+
+<p>What changed was undramatic. A 6 % forest lamp on a twelve-hour timer, a calcium dish she actually uses, and a proper hide under the beam instead of a bare cave. She basks for twenty minutes after feeding now, belly flat, eyes half shut, and she has not missed a shed since. I do not think she was unhappy for six years. I think she was running on savings, and the savings ran out.</p>
 
 <h2>The practical setup</h2>
 
@@ -484,7 +514,7 @@ POSTS = {
         ],
         "tags": ["hermit crab", "humidity", "salt water", "Coenobita clypeatus"],
         "body_html": """
-<p>Land hermit crabs are sold in wire cages with a sponge and a shallow dish, which is roughly like keeping a cat in a shoebox with a saucer of milk. They are not desert animals. They are tropical coastal animals that live in humid air, drink fresh water, and require marine water to regulate their salt balance.</p>
+<p>Land hermit crabs are sold in wire cages with a sponge and a shallow dish, which is roughly like keeping a cat in a shoebox with a saucer of milk. They are not desert animals. They are tropical coastal animals that live in humid air, drink fresh water, and require marine water to regulate their salt balance. A <em>Coenobita clypeatus</em> needs 70–80 % relative humidity, a substrate deep enough to bury itself completely, and both kinds of water within reach — a sponge in a dish provides none of the three.</p>
 
 <p>Get the air and the water wrong and the animal does not die immediately. It slowly fails to moult, loses limbs, and dies weeks later in a way that looks like bad luck.</p>
 
@@ -493,6 +523,12 @@ POSTS = {
 <p>Hermit crabs breathe through modified gills that must stay moist. In air below roughly 70% relative humidity, those gills dry and the animal suffocates slowly. This is why "misting occasionally" is not a strategy — you need a sealed, humid microclimate that holds its number overnight.</p>
 
 <p>Target 70–80% RH, measured at substrate level with a digital gauge, not a dial stuck to the glass. Cover most of the lid with glass or foil to hold humidity, and leave a gap for airflow. A tank that fogs completely and smells stagnant needs more ventilation, not less misting.</p>
+
+<h2>The crab I found on the surface</h2>
+
+<p>A hermit crab moulting in the open is not a crab being friendly. It is a crab that could not dig. I learned that with a <em>Coenobita clypeatus</em> who went still on the sand one February and was half out of his shell by morning. The substrate was four centimetres deep and bone dry below the top inch, which is not a moulting chamber, it is a trap.</p>
+
+<p>I moved him into a bare tub with damp paper towel, no light, and left him alone for eleven days. He pulled through; plenty do not. The tank now holds fifteen centimetres of sand and coco mixed to the texture of a sandcastle that holds its shape, and I test that with a finger before I test anything else in the enclosure.</p>
 
 <h2>Two pools, not one</h2>
 

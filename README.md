@@ -59,6 +59,37 @@ The GitHub Action runs **every two days** with `--refresh --batch 4`, so four
 guides are rewritten per run rather than the whole library, then commits the
 regenerated pages and cache.
 
+### The editorial contract
+
+`PROMPT` is a brief, not a request. Every body — generated or hand-written —
+has to clear `check_structure()`, which is the machine-readable half of the
+same document:
+
+| Beat | What the checker looks for |
+| ---- | -------------------------- |
+| ① Science hook | the opening `<p>` carries a number with a unit, and a Latin binomial appears in `<em>` at first mention |
+| ② Keeper's diary | one `<h2>` section with ≥3 first-person markers and ≥60 words |
+| ③ Care guide | 4–7 `<h2>` sections, plus a step sequence, an option list or a summary table |
+| ④ Quiet recommendation | affiliate tokens only, never hand-written commerce markup |
+| — | a "Frequently asked questions" `<h2>` with three `<h3>` |
+
+`BANNED_VOICE` catches the assistant register: "as an AI", "in today's
+fast-paced world", "delve into", "in conclusion" and friends. A body that
+contains any of them cannot ship.
+
+Two gates run the same check:
+
+- **At generation time.** `resolve_body()` scores the draft; if it falls short,
+  the problems are sent back as one targeted rewrite turn. A draft that still
+  fails is **rejected** — the previous body is kept rather than publishing a
+  generic care sheet under this article's title.
+- **At build time.** `audit_voice()` scores whatever actually got rendered,
+  fallback included, and fails the build. `content.py` is not exempt: it is
+  what ships when the API is down.
+
+`PROMPT_VERSION` is part of the cache fingerprint, so editing the brief
+invalidates every cached body instead of leaving old-contract articles in place.
+
 ## The hero vivarium widget
 
 The homepage hero carries a small interactive enclosure. It is deliberately
@@ -313,8 +344,23 @@ ranking fails the build instead of shipping a homepage whose lead story drifts.
 
 Two articles must never share a title or a body. `audit_content()` hashes the
 sanitised prose of every post and fails the build on a collision; it also
-re-reads each written page and checks that the `<h1>` and prose belong to that
-post, so a data/template mix-up cannot ship silently.
+re-reads each written page and checks that the `<h1>`, the canonical URL and the
+prose all belong to that post, so a data/template mix-up cannot ship silently.
+
+The prose check compares **normalised text to normalised text**: `prose_region()`
+finds the `.prose` block by counting `<div>` nesting, `prose_text()` strips tags,
+resolves entities and folds whitespace, and the two strings must be equal. An
+earlier version searched for the stripped text of the first `<h2>` inside the
+*raw HTML* of the prose block — so any inline markup in a heading (`<em>`,
+`<strong>`, a link) or an entity like `&nbsp;` made the needle impossible to find
+and failed the build on a correct page. That was the `pet-003` false positive.
+Exact comparison also catches a swapped or truncated body, which the old
+"does this phrase appear anywhere" test could not.
+
+`build()` keeps bodies in a `bodies[id]` map and renders each page from
+`bodies[post["id"]]`, never from a loop variable — a page cannot be handed
+another record's body. `collect()` refuses duplicate ids, so the map is
+one-to-one by construction.
 
 `resolve_body()` writes a `cache/<id>.json` sidecar with a fingerprint of the
 prompt inputs (id, keyword, topic, species). A cache file is only reused when
