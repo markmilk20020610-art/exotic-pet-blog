@@ -780,12 +780,18 @@ def section_texts(body: str) -> list[tuple[str, str]]:
     return out
 
 
-def check_structure(body: str) -> list[str]:
+def check_structure(body: str, rendered: bool = False) -> list[str]:
     """Score a body against the four-beat brief. Empty list means it passes.
 
     This is the machine-readable half of the prompt. The prompt asks for the
     beats; this proves they arrived, so a draft that drifted into a generic care
     sheet cannot be published just because it is long enough.
+
+    `rendered=True` is for the post-build audit, which sees the body *after*
+    `magazine_body()` has added the lede and the parameter badges and
+    `inject_cards()` has added up to two product cards. That injected markup is
+    three to four hundred words the writer never wrote, so holding a rendered
+    page to the raw-draft ceiling flagged correct articles as too long.
     """
     problems: list[str] = []
     text = prose_text(body)
@@ -795,9 +801,10 @@ def check_structure(body: str) -> list[str]:
     # cannot honestly fit in 750 words; the ceiling moved up because rejecting
     # at 1150 rejected every draft the new brief produced, and the fallback
     # (the editorial body) is worse than a slightly long one.
+    ceiling = 1750 if rendered else 1450
     if words < 700:
         problems.append(f"only {words} words (brief asks 950-1350)")
-    elif words > 1450:
+    elif words > ceiling:
         problems.append(f"{words} words, well over the 950-1350 brief")
 
     first_p = re.search(r"<p[^>]*>(.*?)</p>", body, re.S)
@@ -2303,7 +2310,7 @@ def audit_voice(posts: list[dict]) -> list[str]:
     """
     problems: list[str] = []
     for p in posts:
-        for issue in check_structure(p["_body"]):
+        for issue in check_structure(p["_body"], rendered=True):
             problems.append(f"{p['id']}: {issue}")
     return problems
 
