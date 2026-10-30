@@ -1,0 +1,278 @@
+[
+  {
+    "id": "pet-007",
+    "slug": "corn-snake-winter-refusal",
+    "title": "Why Your Corn Snake Refuses Food in Winter — and When It Is Not Brumation",
+    "dek": "A four-month winter fast is normal biology. Losing a tenth of the body weight is not — here is how to tell them apart before you intervene.",
+    "target_keyword": "corn snake not eating in winter",
+    "topic": "Corn Snake winter feeding and brumation",
+    "category": "Troubleshooting",
+    "group": "Reptiles",
+    "species": "Corn Snake",
+    "sci": "Pantherophis guttatus",
+    "author": "nell",
+    "date": "2026-10-30",
+    "is_pinned": false,
+    "image": "corn-snake.jpg",
+    "alt": "Adult corn snake (Pantherophis guttatus) with red-orange saddles edged in black, coiled on moss and leaf litter with its head raised clear of the body.",
+    "caption": "An adult Pantherophis guttatus. A four-month winter fast is normal; losing more than a tenth of the body weight is not.",
+    "facts": [
+      [
+        "Species",
+        "Pantherophis guttatus"
+      ],
+      [
+        "Adult length",
+        "120–150 cm"
+      ],
+      [
+        "Warm spot",
+        "30–32 °C / 86–90 °F"
+      ],
+      [
+        "Cool end",
+        "24–26 °C / 75–79 °F"
+      ],
+      [
+        "Brumation",
+        "12–15 °C, 8–12 weeks"
+      ],
+      [
+        "Humidity",
+        "40–60 %"
+      ]
+    ],
+    "kit": [
+      [
+        "heat-mat",
+        "A thermostat-controlled mat is the only reliable way to hold a 30–32 °C hot spot without dragging the cool end up with it.",
+        "warm spot"
+      ],
+      [
+        "ir-thermometer",
+        "Measure the surface the snake actually sits on, not the air above it — a 6 °C error is normal between the two.",
+        "measure"
+      ],
+      [
+        "kitchen-scale",
+        "The 10 % weight rule is the single most useful number in this article, and it needs a scale that reads to 1 g.",
+        "weight"
+      ]
+    ],
+    "tags": [
+      "corn snake",
+      "brumation",
+      "refusal",
+      "Pantherophis guttatus",
+      "reptile"
+    ],
+    "body_html": "\n<p>A corn snake (<em>Pantherophis guttatus</em>) that refuses food in November is usually not ill — it is answering a photoperiod and thermal cue, and the whole diagnosis turns on two numbers: a warm spot of 30–32 °C (86–90 °F) and a body weight you have actually written down. Lose more than 10 % of that weight and the fast has stopped being brumation and started being a problem. Everything below is about telling those two states apart before you intervene, because intervening in the first one is how keepers cause the second.</p>\n\n<h2>The winter I force-fed a snake that was not sick</h2>\n\n<p>She was a nine-year-old female, 480 g in October, and by the first week of December she had refused three feeds in a row. I did what a worried keeper does: I raised the hot spot to 34 °C, left a warmed weaner in overnight, and covered the glass with a towel so she would feel private. She took it at 2 a.m. and regurgitated by morning. The smell in that room is something I can still call up. What it cost her was eleven days of an empty gut, a course of electrolytes, and a shed that came off in three pieces. What it cost me was the lesson that a refusal is information, not an emergency. She was 471 g — nine grams down, about 2 % — and she went on to brumate for ten weeks and eat in March like nothing had happened.</p>\n\n<h2>What a drop in temperature does to a digestive tract</h2>\n\n<p>Snakes do not chew and they do not grind. Digestion is a chemical process run by stomach acid and a gut flora that only work inside a narrow thermal window — broadly 26–30 °C for this species. Below roughly 18 °C that machinery stops, but the prey in the stomach does not. It sits there, it putrefies, and the animal's only defence is to reverse the peristalsis and eject it. Regurgitation is therefore not a sign of illness; it is a sign that food and temperature were mismatched. The danger is what follows: each regurgitation costs water, electrolytes and the gut lining's recovery time, and a snake that regurgitates three times in a season can develop oesophagitis and a permanent aversion to prey.</p>\n\n<p>The same logic runs the other way in spring. A snake brought out of brumation is not ready to eat on the day you raise the thermostat — the gut needs seven to ten days back at full operating temperature before it can handle a meal, and the first meal should be smaller than usual.</p>\n\n<h2>The parameters that decide which state you are in</h2>\n\n<table>\n  <thead>\n    <tr><th>Signal</th><th>Normal winter fast</th><th>Worth a vet</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Weight change over 8 weeks</td><td>0–8 % loss</td><td>Over 10 % loss</td></tr>\n    <tr><td>Body condition</td><td>Round, spine not visible</td><td>Spine sharp, skin tents</td></tr>\n    <tr><td>Behaviour when handled</td><td>Alert, tongue-flicks</td><td>Lethargic, no tongue-flick</td></tr>\n    <tr><td>Hot spot</td><td>30–32 °C maintained</td><td>Below 28 °C, or unmeasured</td></tr>\n    <tr><td>Droppings</td><td>None, or one urate</td><td>Mucus, blood, foul discharge</td></tr>\n  </tbody>\n</table>\n\n<p>Note what is missing from that table: appetite. A snake that is brumating will often still strike at a warmed prey item, and a snake with a gut infection will sometimes take one too. Appetite is the least diagnostic signal available, which is why the weight column does the work.</p>\n\n<h2>Reading the refusal, in order</h2>\n\n<ol>\n  <li><strong>Weigh the snake.</strong> Grams, same day of the week, before feeding. Two readings two weeks apart tell you more than any behaviour.</li>\n  <li><strong>Measure the surface, not the air.</strong> An infrared thermometer on the hot-spot hide; 30–32 °C is the target, and a 3 °C drift downward is enough to stop digestion.</li>\n  <li><strong>Check the cool end is actually cool.</strong> A single mat in a small vivarium can raise the whole gradient to 28 °C, which removes the thermal choice the snake needs to regulate itself.</li>\n  <li><strong>Check the prey temperature.</strong> A thawed rodent at room temperature reads as carrion. Warm it to 35–37 °C in a bag in hot water and offer it at dusk.</li>\n  <li><strong>Leave it alone for a week.</strong> No handling, no re-offering, no covering the glass. Repeated disturbance is the most common cause of a refusal that outlasts the season.</li>\n</ol>\n\n<p>If the weight holds and the parameters are right, the correct intervention is no intervention. If the weight is falling, stop treating it as brumation and get a faecal check — the two most common findings in a winter refusal that is not seasonal are flagellates and a low-grade respiratory infection, and neither is visible from outside the glass.</p>\n\n<h2>Frequently asked questions</h2>\n\n<h3>Should I brumate my corn snake every year?</h3>\n<p>No. Brumation is a breeding tool, not a health requirement. A healthy adult can be kept at normal temperatures all winter and simply fed less often — every 14 to 21 days rather than every 7. Only brumate if you intend to breed, and only after a veterinary check and a full gut clearance of at least two weeks.</p>\n\n<h3>How long can a corn snake go without food before it is dangerous?</h3>\n<p>An adult in good body condition can go eight to twelve weeks without meaningful risk, provided fresh water is available and the weight loss stays under 10 %. Hatchlings are a different animal entirely: two weeks of refusal in a 15 g hatchling is an emergency, because they have no fat reserve to draw on.</p>\n\n<h3>My snake ate, then regurgitated two days later. What now?</h3>\n<p>Wait ten to fourteen days before offering anything — the gut lining needs that long to recover — then offer a prey item half the usual size with the hot spot verified at 30–32 °C. If a second regurgitation follows, stop feeding entirely and get a vet involved; repeated regurgitation in corn snakes is more often infectious or obstructive than husbandry-related.</p>\n"
+  },
+  {
+    "id": "pet-008",
+    "slug": "pacman-frog-substrate-toxicity",
+    "title": "Pacman Frog Setup: Why the Substrate Is a Chemical Filter, Not Decoration",
+    "dek": "An amphibian drinks through its skin, so the substrate is not decoration. It is the water supply, the filter and the infection risk in one layer.",
+    "target_keyword": "pacman frog substrate setup humidity",
+    "topic": "Pacman Frog habitat and substrate chemistry",
+    "category": "Habitat Setup",
+    "group": "Amphibians",
+    "species": "Pacman Frog",
+    "sci": "Ceratophrys cranwelli",
+    "author": "idris",
+    "date": "2026-10-30",
+    "is_pinned": false,
+    "image": "pacman-frog.jpg",
+    "alt": "Pale yellow morph of Cranwell's horned frog (Ceratophrys cranwelli) sitting on damp moss against the wall of a clear plastic tub, its wide mouth closed and its eyes level with the substrate.",
+    "caption": "Ceratophrys cranwelli spends most of its life buried to the eyes. The substrate is in contact with its skin twenty-four hours a day.",
+    "facts": [
+      [
+        "Species",
+        "Ceratophrys cranwelli"
+      ],
+      [
+        "Adult size",
+        "10–15 cm SVL"
+      ],
+      [
+        "Day temperature",
+        "24–28 °C / 75–82 °F"
+      ],
+      [
+        "Night drop",
+        "21–23 °C / 70–73 °F"
+      ],
+      [
+        "Humidity",
+        "70–85 %"
+      ],
+      [
+        "Substrate depth",
+        "8–10 cm"
+      ]
+    ],
+    "kit": [
+      [
+        "coco-fibre",
+        "The only substrate that holds 70–85 % humidity without waterlogging, and it can be changed weekly without costing a fortune.",
+        "substrate"
+      ],
+      [
+        "hygrometer",
+        "Amphibian skin does not negotiate. A digital hygrometer at substrate level is the difference between 60 % and 80 %.",
+        "humidity"
+      ],
+      [
+        "heat-mat",
+        "A mat on a thermostat, mounted to one side — never under the whole tub, or the frog has no cool retreat.",
+        "temperature"
+      ]
+    ],
+    "tags": [
+      "pacman frog",
+      "Ceratophrys cranwelli",
+      "substrate",
+      "amphibian",
+      "humidity"
+    ],
+    "body_html": "\n<p>A Pacman frog (<em>Ceratophrys cranwelli</em>) has no diaphragm, no chest cavity worth the name, and skin that absorbs water and dissolved ions directly from whatever it is sitting on. That single fact turns the substrate question from a matter of taste into a matter of chemistry: at 70–85 % relative humidity and 24–28 °C, a waterlogged 8–10 cm layer of coconut fibre is a functioning biological filter, and a sour, compacted one is a bath of ammonia in direct contact with an animal that drinks through its belly. Most of the \"mystery\" deaths in this species happen in the second kind of tub.</p>\n\n<h2>The tub that smelled like a pond</h2>\n\n<p>I kept a juvenile in a 45 × 45 × 30 cm tub on 10 cm of coco-fibre, misting twice a day because every care sheet said twice a day. By week three the frog had stopped burrowing, sat in the corner with its hind legs splayed, and had a faintly sweet smell I could not place. I changed the substrate and it came back within four days — then went off again a week later. What I had built was not a humid enclosure, it was a swamp: the bottom four centimetres were anaerobic, the drainage was nonexistent, and the ammonia reading at substrate level was somewhere north of 4 ppm. The fix was unglamorous. A 2 cm leca drainage layer, a mesh divider, 8 cm of fresh fibre, and misting measured with a hygrometer instead of a schedule. He has burrowed every night since.</p>\n\n<h2>How amphibian skin turns a dirty substrate into a systemic problem</h2>\n\n<p>Amphibian skin is not a barrier; it is an exchange surface, densely supplied with capillaries and used for respiration, osmoregulation and ion uptake. Nitrogenous waste — ammonia from the frog's own urine and from uneaten prey rotting in the fibre — dissolves in the film of water on the skin and crosses it. Ammonia at low concentrations burns the epidermis; at higher ones it drives the systemic load that presents as lethargy, splayed posture and the reddening of the hind limbs that keepers call red-leg, which is usually a <em>Aeromonas</em> or <em>Pseudomonas</em> septicaemia riding on top of a husbandry failure. This is why a Pacman frog can look perfectly healthy and be sitting in the cause of its own decline for a fortnight.</p>\n\n<p>The same absorptive surface is why the water bowl matters more than its size suggests. Dechlorinated water, changed daily, deep enough to cover the vent but shallow enough to stand in — 2–3 cm for an adult. Chlorinated tap water left to stand overnight is not dechlorinated; chloramine does not off-gas, and a dechlorinator is a two-pound bottle that removes the whole question.</p>\n\n<h2>The parameters, and where to measure them</h2>\n\n<table>\n  <thead>\n    <tr><th>Parameter</th><th>Target</th><th>Measured where</th><th>Failure mode</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Humidity</td><td>70–85 %</td><td>At substrate surface, under the lid</td><td>Drying → dysecdysis, lethargy</td></tr>\n    <tr><td>Day temperature</td><td>24–28 °C</td><td>Warm third of the tub, 2 cm above substrate</td><td>Below 22 °C → refusal, slow digestion</td></tr>\n    <tr><td>Night drop</td><td>21–23 °C</td><td>Same point</td><td>No drop → chronic stress, poor feeding response</td></tr>\n    <tr><td>Substrate depth</td><td>8–10 cm</td><td>Vertical, uncompressed</td><td>Too shallow → cannot bury, feels exposed</td></tr>\n    <tr><td>Ammonia (substrate water)</td><td>Under 0.25 ppm</td><td>Squeezed sample from the bottom layer</td><td>Rising → skin lesions, red-leg</td></tr>\n  </tbody>\n</table>\n\n<p>The ammonia row is the one nobody tests and the one that explains most of the failures. A cheap aquarium ammonia test on water squeezed from the bottom of the substrate, once a week, tells you when to change it far more reliably than a calendar.</p>\n\n<h2>Building the tub so it stays clean</h2>\n\n<ol>\n  <li><strong>Drainage first.</strong> 2 cm of leca or gravel, then a mesh divider. Without it the fibre sits in its own runoff and goes anaerobic within a fortnight.</li>\n  <li><strong>Eight to ten centimetres of coco-fibre</strong>, damp enough to clump in the fist without a drop coming out. That is roughly 60 % water by weight and it is the whole humidity trick.</li>\n  <li><strong>One side warm, one side cool.</strong> A thermostat-controlled mat under a third of the base, never the whole thing, so the frog can choose 24 °C or 27 °C.</li>\n  <li><strong>Full substrate change every four to six weeks</strong>, spot-clean daily. A bioactive setup with springtails can stretch that, but only if the drainage layer is real.</li>\n  <li><strong>Feed out of the substrate.</strong> Tong-feed or use a smooth feeding dish. A cricket that dies buried in damp fibre is an ammonia source you will never see.</li>\n</ol>\n\n<p>Do those five things and the species becomes almost boringly hardy, which is the reputation it deserves and rarely gets.</p>\n\n<h2>Frequently asked questions</h2>\n\n<h3>Can I use potting soil instead of coco-fibre?</h3>\n<p>Only if it is guaranteed free of fertiliser, perlite and wetting agents, which most retail compost is not. The risk is not worth the saving: a single bag with slow-release fertiliser beads will kill an amphibian through its skin within days. Coco-fibre is cheap, consistent and inert, and there is no strong reason to look further.</p>\n\n<h3>My frog has not burrowed for a week. Is that normal?</h3>\n<p>Sometimes — a frog that is about to shed or that has just eaten heavily will sit out. But if it is sitting exposed, splayed and dull, check the substrate temperature first and the ammonia second. Both push a Ceratophrys out of the substrate, and both are fixable within an hour.</p>\n\n<h3>How often should I mist?</h3>\n<p>When the hygrometer says so, not on a schedule. In a sealed tub with a mesh vent, 70–85 % typically holds for two to three days after a heavy misting. Mist the substrate, not the frog, and never to the point where water pools at the bottom.</p>\n"
+  },
+  {
+    "id": "pet-009",
+    "slug": "emperor-scorpion-molt-failure",
+    "title": "Emperor Scorpion Molt Failure: The Humidity Window You Have About Six Hours to Hit",
+    "dek": "A scorpion has roughly six hours to finish moulting before its new shell hardens. Humidity is the only variable you actually control.",
+    "target_keyword": "emperor scorpion molt problems humidity",
+    "topic": "Emperor Scorpion ecdysis and moult failure",
+    "category": "Troubleshooting",
+    "group": "Invertebrates",
+    "species": "Emperor Scorpion",
+    "sci": "Pandinus imperator",
+    "author": "mara",
+    "date": "2026-10-30",
+    "is_pinned": false,
+    "image": "emperor-scorpion.jpg",
+    "alt": "Emperor scorpion (Pandinus imperator) with a glossy black carapace and heavy granular claws, walking across pale sand with its tail curled up over its back.",
+    "caption": "Pandinus imperator. A mismoult is almost always a humidity event, not a genetic one.",
+    "facts": [
+      [
+        "Species",
+        "Pandinus imperator"
+      ],
+      [
+        "Adult size",
+        "15–20 cm"
+      ],
+      [
+        "Temperature",
+        "24–28 °C / 75–82 °F"
+      ],
+      [
+        "Humidity",
+        "70–80 %"
+      ],
+      [
+        "Premoult fast",
+        "2–4 weeks"
+      ],
+      [
+        "Post-moult hardening",
+        "10–14 days"
+      ]
+    ],
+    "kit": [
+      [
+        "coco-fibre",
+        "Deep, damp fibre is what holds 70–80 % through a moult; a dry substrate is the single most common cause of a stuck exoskeleton.",
+        "humidity"
+      ],
+      [
+        "hygrometer",
+        "A mismoult happens in a six-hour window. Without a hygrometer you cannot know you are inside it.",
+        "measure"
+      ],
+      [
+        "snug-hides",
+        "A sealed, dark retreat is where the animal moults. Without one it moults in the open and aborts.",
+        "hide"
+      ]
+    ],
+    "tags": [
+      "emperor scorpion",
+      "Pandinus imperator",
+      "moult",
+      "ecdysis",
+      "invertebrate"
+    ],
+    "body_html": "\n<p>An emperor scorpion (<em>Pandinus imperator</em>) moults by splitting its old cuticle along the carapace and drawing an entirely soft body out of it, and that body has roughly six hours before the new cuticle starts to harden whether or not the animal has finished emerging. The parameter that decides the outcome is humidity, held at 70–80 % at 24–28 °C, and it has to be right before the process starts — misting a scorpion that is already half out of its old skin does nothing. This is the one husbandry number in the hobby where being late is indistinguishable from being wrong.</p>\n\n<h2>The night I misted too late</h2>\n\n<p>A subadult female, seven centimetres, had been fasting for nineteen days and had gone the dull, dusty grey that means premoult. I knew the schedule. What I did not do was check the hygrometer, because the substrate looked damp and I had misted on Sunday. She started at some point in the small hours; by the time I looked in at eight she had her carapace and four legs out and the two rear legs were still inside the old exoskeleton, which had dried and clamped. She lived. She also lost the tarsus on one rear leg and dragged it for the next two moults. The reading that night, when I finally looked, was 54 %. The surface was damp; the air two centimetres up, where she had chosen to moult, was not. I have kept a hygrometer taped at substrate level ever since, and I mist the evening before the expected date rather than on the day.</p>\n\n<h2>What ecdysis actually requires</h2>\n\n<p>The old cuticle is digested from underneath by an moulting fluid that the epidermis secretes, and the new cuticle laid down beneath it is soft, wrinkled and highly permeable until it sclerotises. Two things have to happen in sequence: the old shell must be soft enough at the seams to split, and the new one must stay hydrated long enough for the animal to complete its exit and expand to the new size. Low humidity attacks both ends of that. The seams dry and resist splitting; the emerged cuticle loses water faster than the animal can replace it, and the limbs that are still inside get stuck as the surrounding shell hardens around them.</p>\n\n<p>This is why the damage is always distal. The animal gets its body out, then its legs, then fails at the last segment — a claw, a tarsus, the tip of the metasoma. A stuck claw is not cosmetic: it constricts, the tissue necroses, and the scorpion often self-amputates at the next joint. And because the exoskeleton is also the respiratory surface's housing and the main water barrier, a botched moult leaves the animal more vulnerable to the next one.</p>\n\n<h2>The moult timeline, and what to do at each point</h2>\n\n<table>\n  <thead>\n    <tr><th>Stage</th><th>Duration</th><th>What you see</th><th>Action</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Premoult</td><td>2–4 weeks</td><td>Refuses food, dull colour, hides sealed</td><td>Raise humidity to 75–80 %, stop feeding</td></tr>\n    <tr><td>Ecdysis</td><td>15–60 minutes</td><td>Carapace splits, body draws out</td><td>Do nothing. No misting, no handling</td></tr>\n    <tr><td>Expansion</td><td>6–24 hours</td><td>New cuticle pale, soft, stretched</td><td>Keep humidity high, leave the exuvia in place</td></tr>\n    <tr><td>Sclerotisation</td><td>10–14 days</td><td>Colour darkens, shell hardens</td><td>No food until fully dark</td></tr>\n  </tbody>\n</table>\n\n<p>The \"leave the exuvia in place\" instruction is not sentiment. A freshly moulted scorpion will often return to its own shed skin and eat part of it, recovering water and minerals it cannot get any other way. Remove it after a week if it is untouched.</p>\n\n<h2>Preventing the next one</h2>\n\n<ol>\n  <li><strong>Measure at substrate level, not at the lid.</strong> Humidity stratifies hard in a shallow tub; the difference between the surface and 3 cm up is routinely 20 points.</li>\n  <li><strong>Deepen the substrate to 10–12 cm.</strong> A scorpion that can seal itself into a chamber dug in damp fibre creates its own microclimate and stops depending on yours.</li>\n  <li><strong>Provide one hide that holds moisture</strong> — cork bark over damp fibre, or a moss-filled cavity. That is where ecdysis will happen.</li>\n  <li><strong>Stop feeding at the first sign of premoult.</strong> A live cricket in the enclosure during a moult will chew on a soft scorpion, and the resulting injury is usually fatal.</li>\n  <li><strong>Do not disturb.</strong> Opening the lid to check progress drops humidity at exactly the wrong moment and is the second most common cause of a stuck moult after dry substrate.</li>\n</ol>\n\n<h2>Frequently asked questions</h2>\n\n<h3>My scorpion lost a claw during its moult. Will it grow back?</h3>\n<p>Partially, over two or three subsequent moults, and only if it is still eating and the humidity is corrected. Regeneration is never complete — a regrown claw is usually smaller and less robust — but a captive emperor with one reduced claw lives a normal lifespan. The immediate risk is infection at the stump, so keep the substrate clean and do not handle it.</p>\n\n<h3>How do I know a moult is imminent?</h3>\n<p>Three signs together: a fast that has run past two weeks, a colour that has gone from glossy black to dull grey-brown, and a sealed hide. The dullness is the reliable one, because it is the old cuticle separating from the new one underneath. When you see all three, raise humidity and stop feeding.</p>\n\n<h3>Can I handle my scorpion while it is moulting?</h3>\n<p>No, and not for two weeks afterwards either. A newly moulted emperor is soft enough that a fingernail leaves a permanent dent, and the stress of being lifted frequently aborts the expansion phase. Leave it entirely alone until the colour has returned to full black.</p>\n"
+  },
+  {
+    "id": "pet-010",
+    "slug": "hedgehog-torpor-obesity-calcium",
+    "title": "Hedgehog Torpor, Obesity and the Calcium-to-Phosphorus Ratio That Causes Both",
+    "dek": "Torpor, obesity and a lopsided calcium-to-phosphorus ratio are the same welfare problem caught at three different stages.",
+    "target_keyword": "african pygmy hedgehog diet calcium phosphorus",
+    "topic": "African Pygmy Hedgehog nutrition and torpor risk",
+    "category": "Feeding Guide",
+    "group": "Exotic Mammals",
+    "species": "African Pygmy Hedgehog",
+    "sci": "Atelerix albiventris",
+    "author": "idris",
+    "date": "2026-10-30",
+    "is_pinned": false,
+    "image": "hedgehog.jpg",
+    "alt": "African pygmy hedgehog (Atelerix albiventris) with banded spines and a cream face, walking on red-brown earth with its snout lowered.",
+    "caption": "Atelerix albiventris. Below about 20 °C it will attempt torpor, and a hedgehog that torpors repeatedly does not do so without cost.",
+    "facts": [
+      [
+        "Species",
+        "Atelerix albiventris"
+      ],
+      [
+        "Adult weight",
+        "300–600 g"
+      ],
+      [
+        "Ambient temperature",
+        "24–27 °C / 75–81 °F"
+      ],
+      [
+        "Dietary protein",
+        "30–35 %"
+      ],
+      [
+        "Dietary fat",
+        "Under 15 %"
+      ],
+      [
+        "Ca:P target",
+        "1.5–2 : 1"
+      ]
+    ],
+    "kit": [
+      [
+        "kitchen-scale",
+        "A hedgehog's whole health picture is a weight curve. Weigh weekly to 1 g and write it down.",
+        "weight"
+      ],
+      [
+        "heat-mat",
+        "A thermostat-controlled mat under part of the cage holds 24–27 °C without turning the whole vivarium into an oven.",
+        "temperature"
+      ],
+      [
+        "calcium-d3",
+        "The supplement that fixes a diet built on mealworms — but only when it is dusted by weight, not by eye.",
+        "calcium"
+      ]
+    ],
+    "tags": [
+      "hedgehog",
+      "Atelerix albiventris",
+      "torpor",
+      "obesity",
+      "calcium phosphorus"
+    ],
+    "body_html": "\n<p>An African pygmy hedgehog (<em>Atelerix albiventris</em>) has a body temperature it cannot defend below roughly 20 °C, and its answer to a cold night is not to shiver but to shut down — a torpor state that drops metabolism by up to 80 %. That is a wild survival trick, and in a centrally heated flat it is almost always a husbandry accident. The numbers that keep it from happening are a cage held at 24–27 °C, an adult weight between 300 and 600 g, and a diet with a calcium-to-phosphorus ratio of 1.5–2 : 1. Miss the third and you get the obesity and the wobbly gait that get misdiagnosed as wobbly hedgehog syndrome for months.</p>\n\n<h2>The hedgehog that went cold in a warm room</h2>\n\n<p>She came in at 240 g, small for an adult but not alarming, and the owner's complaint was that she had \"gone quiet\". I asked the one question that mattered — what temperature is that room at night — and got a shrug. The overnight reading in the spare bedroom was 17 °C. She had torpored four nights running, and every time she came out of it she ate less. By the time I weighed her she was 198 g, the spines along her flank were sparse, and she swayed when she walked. The owner had already read about wobbly hedgehog syndrome and had convinced herself of the worst. I told her it was not WHS; it was four cold nights, a bowl of mealworms and a scale nobody owned. We moved the cage into a 25 °C room, I cut the mealworms down to a garnish, and she was 372 g five months later. The sway went with the weight.</p>\n\n<h2>Why repeated torpor is not free</h2>\n\n<p>Torpor is a controlled metabolic depression: heart rate falls from around 250 beats per minute to under 20, core temperature tracks ambient, and the immune system largely stops. Coming out of it costs a large burst of thermogenesis, which is paid for in brown adipose tissue and, in a captive animal with limited reserves, in muscle. Repeated arousal cycles — which is what happens when a hedgehog torpors every night and is woken every morning by a warm room — deplete glycogen, suppress immune function and are associated with fatty liver change. The animal does not die of cold. It dies of the metabolic debt of going in and out of it.</p>\n\n<p>The dietary half is separate and additive. Mealworms and waxworms are the two things every new keeper feeds and the two worst things to feed freely: their calcium-to-phosphorus ratio is around 0.1 : 1, which means they actively pull calcium out of the body to be metabolised. A diet anchored on them produces a growing animal with soft bones, tremors and a swaying gait — nutritional secondary hyperparathyroidism, the same mechanism as metabolic bone disease in reptiles. It looks like a neurological disease because it is one, downstream.</p>\n\n<h2>What a correct diet actually looks like</h2>\n\n<table>\n  <thead>\n    <tr><th>Component</th><th>Share of diet</th><th>Ca:P</th><th>Notes</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Complete hedgehog kibble</td><td>60–70 %</td><td>1.2–1.5 : 1</td><td>Protein 30–35 %, fat under 15 %</td></tr>\n    <tr><td>Cooked lean meat or egg</td><td>20–25 %</td><td>0.1–0.2 : 1</td><td>Always dusted, never the base</td></tr>\n    <tr><td>Insects (mealworm, cricket)</td><td>Under 10 %</td><td>0.1 : 1</td><td>Treat only, dusted with calcium</td></tr>\n    <tr><td>Vegetable matter</td><td>5 %</td><td>—</td><td>Mostly ignored; do not rely on it</td></tr>\n  </tbody>\n</table>\n\n<p>The dusting instruction is where most keepers go wrong in the other direction. Calcium with D3 should be applied so the insect looks lightly frosted, roughly 0.1 g per mealworm, and the supplement should be a reptile-grade powder with a known calcium content rather than a crushed human tablet. Over-supplementation causes its own problems — soft tissue calcification, constipation — which is why the ratio matters more than the absolute amount.</p>\n\n<h2>The weekly routine that catches problems early</h2>\n\n<ol>\n  <li><strong>Weigh every Sunday, same time, before food.</strong> A 5 % change in a month is noise; 10 % is a veterinary appointment.</li>\n  <li><strong>Hold the room at 24–27 °C overnight.</strong> A thermostat on a heat mat under a third of the cage, plus a thermometer at hedgehog height, not at the top of the vivarium.</li>\n  <li><strong>Feed once, at dusk.</strong> Hedgehogs are crepuscular; a bowl left all day is a bowl the animal grazes on and a weight you cannot interpret.</li>\n  <li><strong>Track the wheel.</strong> A hedgehog that stops running is a hedgehog that is either cold, ill or obese, and the wheel is the earliest signal you will get.</li>\n  <li><strong>Dust, do not drench.</strong> Every insect meal gets calcium powder, and no meal is insects alone.</li>\n</ol>\n\n<h2>Frequently asked questions</h2>\n\n<h3>Is torpor the same as hibernation?</h3>\n<p>No. Hibernation is a planned, seasonal, multi-week state; torpor is an emergency short-term shutdown that an African pygmy hedgehog should never need in captivity. This species does not hibernate in the wild, and a captive one that goes cold is a husbandry failure, not a natural cycle.</p>\n\n<h3>My hedgehog is 780 g. Is that obese?</h3>\n<p>Almost certainly, unless it is a very large male at the top of the range. Above 700 g the risks are fatty liver, arthritis and difficulty self-anointing. Cut the insect component out entirely, reduce the kibble by a fifth, and increase out-of-cage time before changing anything else.</p>\n\n<h3>Can I use a reptile calcium supplement?</h3>\n<p>Yes, and it is usually the better choice, because reptile powders are formulated for an animal that also needs D3 and are dosed by weight. Avoid anything with added phosphorus — the point of the supplement is to correct a ratio, and a calcium-plus-phosphorus product does not move it.</p>\n"
+  }
+]

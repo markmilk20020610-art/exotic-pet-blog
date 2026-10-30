@@ -48,6 +48,7 @@ from string import Template
 
 import affiliate as aff
 from content import AUTHORS, POSTS
+from topics import GROUP_ROTATION, TOPIC_POOL
 from vivarium import VIVARIUM_ASSETS, vivarium_html
 
 ROOT = Path(__file__).resolve().parent
@@ -56,6 +57,13 @@ IMAGES = STATIC / "images"
 CACHE = ROOT / "cache"
 DRAFTS = ROOT / "drafts"
 KEYWORDS = ROOT / "keywords.json"
+
+# Every article the factory has ever published beyond the six hand-written ones
+# in content.py. It is the anti-duplication ledger: `grow()` reads it to work out
+# which pool topics are already taken, and `collect()` merges it back into the
+# build. Keeping it out of content.py means a generated article can be reverted
+# by deleting one entry instead of editing the hand-authored source.
+LIBRARY = ROOT / "library.json"
 
 # Same trap as AMAZON_TAG: a var that exists but is empty (`SITE_URL=` in a
 # shell, or an unset GitHub/Cloudflare secret) would otherwise yield "//pet-001"
@@ -212,7 +220,7 @@ def credit_html(filename: str, prefix: str = "Photograph") -> str:
 # Bump this whenever PROMPT or the structural contract changes. It is part of
 # the cache fingerprint, so a prompt edit invalidates every cached body instead
 # of leaving old, off-brief articles in place for months.
-PROMPT_VERSION = "2026-10-30.2"
+PROMPT_VERSION = "2026-10-30.3"
 
 PROMPT = Template("""You are the senior keeper at Exotic Pet Care Hub, an independent magazine
 written by people who keep the animals, for people who keep them. You have a
@@ -223,6 +231,57 @@ Target keyword: "$keyword"
 Topic: $topic
 Species: $species ($sci)
 Editorial category: $category
+
+$history
+
+## The four degrees
+
+Every guide has to clear all four. A draft that is deep but narrow is a forum
+post; one that is broad but shallow is a content mill; one with neither is a
+press release.
+
+DEPTH — hard numbers and mechanism, never a conversation of generalities.
+  · Named parameters with units, at the level a keeper can set an instrument to:
+    basking-spot and cool-end temperatures, a thermal gradient across the
+    enclosure, a humidity band, a UV index with its distance, a calcium-to-
+    phosphorus ratio, a photoperiod in hours.
+  · At least one physiological or pathological mechanism explained end to end:
+    why ecdysis fails when the cuticle dries, how the nitrogen cycle converts
+    ammonia to nitrite to nitrate, what nutritional secondary
+    hyperparathyroidism does to bone, why a gut stops at a given temperature.
+    Name the process, then trace the causal chain in plain sentences.
+
+BREADTH — the whole animal and the whole life, not one life stage.
+  · Where the species has them, cover juvenile / subadult / adult differences in
+    feeding, enclosure and handling, and say what changes between them.
+  · Include the ecological half: bioactive substrate, clean-up crew, drainage,
+    the enclosure as a small system rather than a box.
+  · Behaviour belongs here — stress postures, feeding response, seasonal
+    cycles — and so do morphs or bloodlines when they change husbandry rather
+    than just colour.
+
+HEIGHT — authority, honestly earned.
+  · Where a practice genuinely traces to recognised clinical or academic
+    consensus, say so plainly: exotic-animal veterinary teaching hospitals,
+    herpetological and amphibian-medicine bodies, welfare standards. Name the
+    institution only when you are stating something it actually teaches or
+    publishes.
+  · NEVER invent a study, a paper title, an author, a year, a DOI, a journal or
+    a specific finding attributed to a named institution. If you cannot state
+    the claim without a fabricated citation, state the claim as clinical
+    consensus and leave the citation out. A vague true sentence beats a precise
+    fake one, and a fake citation is the fastest way to lose the reader's trust.
+  · Where the evidence is thin, say it is thin and say what experienced keepers
+    do instead. That is the E-E-A-T signal, not a weakness.
+
+FREEDOM — a keeper's voice, not a care-sheet template.
+  · Write from the mess: the escape, the failed shed, the animal that only eats
+    if you warm the prey to a specific temperature, the £200 vet bill for
+    something that turned out to be a thermostat. Concrete, dated, physical.
+  · Allow opinion. "I no longer use loose substrate for this species, and here
+    is the year I stopped" is worth more than a neutral list of options.
+  · Break the rhythm. A one-line paragraph after a long one. A number standing
+    alone. Never the same section shape twice in one article.
 
 Gear this article is allowed to recommend — refer to it by token, never by name
 or price:
@@ -312,9 +371,19 @@ questions, each answered by a single <p> of 40-70 words.
 - No <a>, no <img>, no price, no star rating, no button, no inline style. The
   template renders every product card.
 - 750-950 words. Four to seven <h2> sections in total.
+- EXACTLY ONE <table> is mandatory, and it must be a real comparison the reader
+  can act on: life stages against parameters, a symptom against its likely
+  cause, a food against its calcium-to-phosphorus ratio. A table of two columns
+  restating the prose is not acceptable.
+- At least five distinct measurements carrying physical units across the piece,
+  not counting the same number repeated.
 - Before returning, re-read your first paragraph. If it has no number with
   a unit in it, rewrite that paragraph. This is the one rule that is
   checked automatically and rejected automatically.
+- Before returning, re-read the ALREADY PUBLISHED list above. If your angle,
+  your opening measurement, your diary anecdote or your FAQ set overlaps any
+  article on it, change it. Different species is not enough — the framing has to
+  be different too.
 - Never write about a different species as the subject of the article.
 """)
 
@@ -362,6 +431,222 @@ def body_fingerprint(item: dict, post: dict) -> str:
     raw = "|".join([PROMPT_VERSION, item["id"], item["target_keyword"],
                     item["topic"], post["species"]])
     return hashlib.sha1(raw.encode("utf-8")).hexdigest()[:16]
+
+
+# --------------------------------------------------------------------------- #
+# the anti-duplication ledger
+# --------------------------------------------------------------------------- #
+
+def load_library() -> list[dict]:
+    """Articles the factory has published beyond content.py's six."""
+    if not LIBRARY.exists():
+        return []
+    try:
+        data = json.loads(LIBRARY.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        print(f"  ⚠ library.json unreadable ({exc}) — treating it as empty")
+        return []
+    return data if isinstance(data, list) else []
+
+
+def save_library(entries: list[dict]) -> None:
+    LIBRARY.write_text(
+        json.dumps(entries, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def disk_titles() -> list[dict]:
+    """Titles already rendered to disk, read back from the pages themselves.
+
+    The build knows what *should* be published; the filesystem knows what
+    actually is. Reading both is what catches the case the ledger misses — a
+    page committed by hand, or a library.json that was reverted while its HTML
+    stayed. sitemap.xml is parsed as a third opinion because it is the list
+    search engines have already been given.
+    """
+    found: list[dict] = []
+    for f in sorted(ROOT.glob("pet-*.html")):
+        try:
+            s = f.read_text(encoding="utf-8")
+        except OSError:
+            continue
+        m = re.search(r"<h1[^>]*>(.*?)</h1>", s, re.S)
+        if not m:
+            continue
+        chip = re.search(r'article-head__cat[^>]*>\s*([^<]+?)\s*<', s)
+        found.append({
+            "id": f.stem,
+            "title": strip_tags(m.group(1)).strip(),
+            "category": chip.group(1).strip() if chip else "",
+            "species": "",
+        })
+
+    sm = ROOT / "sitemap.xml"
+    if sm.exists():
+        try:
+            locs = re.findall(r"<loc>\s*([^<]+?)\s*</loc>", sm.read_text(encoding="utf-8"))
+        except OSError:
+            locs = []
+        known = {d["id"] for d in found}
+        for loc in locs:
+            stem = loc.rstrip("/").rsplit("/", 1)[-1].replace(".html", "")
+            if stem.startswith("pet-") and stem not in known:
+                known.add(stem)
+                found.append({"id": stem, "title": "", "category": "", "species": ""})
+    return found
+
+
+def history_block(posts: list[dict], limit: int = 40) -> str:
+    """The ALREADY PUBLISHED list injected into every generation call.
+
+    Built from three sources that can disagree — the in-memory posts, the HTML
+    on disk, and sitemap.xml — because the point is to constrain the model with
+    everything the site has *ever* published, not only what this build happens
+    to be rendering. Without this the writer happily re-opens with the same
+    crested-gecko humidity sentence every two days.
+    """
+    rows: dict[str, dict] = {}
+
+    for p in posts:
+        rows[p["title"].strip().lower()] = {
+            "title": p["title"].strip(),
+            "species": p.get("species", ""),
+            "category": p.get("category", ""),
+            "keyword": p.get("keyword", ""),
+        }
+
+    for d in disk_titles():
+        key = (d["title"] or d["id"]).strip().lower()
+        if key and key not in rows:
+            rows[key] = {
+                "title": d["title"] or d["id"],
+                "species": d["species"],
+                "category": d["category"],
+                "keyword": "",
+            }
+
+    if not rows:
+        return ("## Already published\n\nNothing yet — this is the first article "
+                "on the site.")
+
+    lines = [
+        "## ALREADY PUBLISHED — hard constraint",
+        "",
+        "These articles are live. Do not write them again, and do not reuse their",
+        "angle, their opening measurement, their diary anecdote or their FAQ set.",
+        "A different species with the same framing still counts as a duplicate.",
+        "",
+    ]
+    for i, r in enumerate(list(rows.values())[:limit], 1):
+        bits = [f'"{r["title"]}"']
+        if r["species"]:
+            bits.append(r["species"])
+        if r["category"]:
+            bits.append(r["category"])
+        lines.append(f"{i}. " + " — ".join(bits))
+    if len(rows) > limit:
+        lines.append(f"…and {len(rows) - limit} more in the same archive.")
+    return "\n".join(lines)
+
+
+# The history block is identical for every article in one build, so it is
+# computed once and read from here rather than re-scanning the filesystem for
+# each of the N generation calls.
+_HISTORY: str = ""
+
+
+def set_history(posts: list[dict]) -> None:
+    global _HISTORY
+    _HISTORY = history_block(posts)
+
+
+# --------------------------------------------------------------------------- #
+# growing the library
+# --------------------------------------------------------------------------- #
+
+def next_post_id(existing: set[str]) -> str:
+    """pet-00N, one past the highest id in use — never a gap-filler."""
+    nums = [int(m.group(1)) for i in existing
+            if (m := re.fullmatch(r"pet-(\d+)", i))]
+    return f"pet-{(max(nums) + 1) if nums else 1:03d}"
+
+
+def grow(count: int, posts: list[dict]) -> list[dict]:
+    """Move `count` unpublished topics from TOPIC_POOL into library.json.
+
+    Selection is breadth-first: the pool is walked in GROUP_ROTATION order so a
+    batch of four cannot come back as four reptiles. A topic is skipped when
+    its slug is already in the library, when its title already exists anywhere
+    on disk, or when its photograph is not on disk yet — an article whose image
+    is missing renders a card with no animal on it.
+    """
+    library = load_library()
+    taken_slugs = {e.get("slug") for e in library if e.get("slug")}
+    taken_titles = {p["title"].strip().lower() for p in posts}
+    taken_titles |= {d["title"].strip().lower() for d in disk_titles() if d["title"]}
+    ids = {p["id"] for p in posts} | {e["id"] for e in library if e.get("id")}
+
+    ready, waiting_art, seen_title = [], [], []
+    for group in GROUP_ROTATION:
+        for t in TOPIC_POOL:
+            if t["group"] != group:
+                continue
+            if t["slug"] in taken_slugs:
+                continue
+            if t["title"].strip().lower() in taken_titles:
+                seen_title.append(t["slug"])
+                continue
+            if not (IMAGES / t["image"]).exists():
+                waiting_art.append(t["slug"])
+                continue
+            ready.append(t)
+
+    print(f"  pool: {len(TOPIC_POOL)} topics, {len(library)} already published, "
+          f"{len(ready)} eligible")
+    if waiting_art:
+        print(f"  awaiting artwork (add the JPEG to static/images/): "
+              f"{', '.join(waiting_art)}")
+    if seen_title:
+        print(f"  already in the archive, skipped: {', '.join(seen_title)}")
+
+    picked = ready[:max(0, count)]
+    if not picked:
+        print("  nothing to grow — the pool has no eligible topic left")
+        return []
+
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    added = []
+    for t in picked:
+        pid = next_post_id(ids)
+        ids.add(pid)
+        entry = {
+            "id": pid,
+            "slug": t["slug"],
+            "title": t["title"],
+            "dek": t.get("dek", ""),
+            "target_keyword": t["target_keyword"],
+            "topic": t["topic"],
+            "category": t["category"],
+            "group": t["group"],
+            "species": t["species"],
+            "sci": t["sci"],
+            "author": t.get("author", "nell"),
+            "date": today,
+            "is_pinned": False,
+            "image": t["image"],
+            "alt": t["alt"],
+            "caption": t["caption"],
+            "facts": [list(f) for f in t["facts"]],
+            "kit": [list(k) for k in t["kit"]],
+            "tags": list(t["tags"]),
+            "body_html": t.get("body_html", ""),
+        }
+        library.append(entry)
+        added.append(entry)
+        print(f"  + {pid}  {t['group']:<14} {t['title'][:58]}")
+
+    save_library(library)
+    print(f"  library.json now holds {len(library)} generated article(s)")
+    return added
 
 
 # --------------------------------------------------------------------------- #
@@ -535,6 +820,17 @@ def check_structure(body: str) -> list[str]:
             or any(n >= 3 for n in lists)):
         problems.append("no step sequence, option list or summary table")
 
+    # The machine-checkable half of the four-degree contract. Both of these are
+    # blocking, because a body that fails them is exactly the shallow,
+    # table-free draft the brief was written to stop: depth is not a tone of
+    # voice, it is the presence of numbers an instrument could read.
+    if not re.search(r"<table\b", body):
+        problems.append("no <table> — the brief requires exactly one comparison table")
+    distinct = {m.lower() for m in _MEASURE_RE.findall(text)}
+    if len(distinct) < 4:
+        problems.append(f"only {len(distinct)} distinct measurement(s) with units "
+                        f"(depth asks for at least 5, 4 is the floor)")
+
     faq_at = text.lower().find("frequently asked")
     if faq_at < 0:
         problems.append('no "Frequently asked questions" section')
@@ -616,6 +912,7 @@ def resolve_body(item: dict, post: dict, refresh: bool) -> tuple[str, str]:
                 sci=post["sci"],
                 category=item.get("category", post["category"]),
                 products=prompt_products(post.get("_kit") or []),
+                history=_HISTORY or history_block([]),
             )
             messages = [
                 {"role": "system", "content": SYSTEM_VOICE},
@@ -1736,13 +2033,40 @@ def collect() -> list[dict]:
     with KEYWORDS.open(encoding="utf-8") as fh:
         keywords = json.load(fh)
 
-    posts = []
+    # Two sources, one shape. `keywords.json` drives the hand-authored six in
+    # content.py; `library.json` carries everything the factory has grown since,
+    # metadata and all, so a generated article never needs an entry in the
+    # hand-written source file — and can be removed by deleting one record.
+    records: list[tuple[dict, dict]] = []
     for item in keywords:
         post = POSTS.get(item["id"])
         if not post:
             print(f"  ! {item['id']}: no editorial metadata in content.py — skipped")
             continue
-        image, group = SPECIES_IMAGE[item["id"]]
+        records.append((item, post))
+
+    for entry in load_library():
+        pid = entry.get("id")
+        if not pid:
+            continue
+        item = {
+            "id": pid,
+            "target_keyword": entry.get("target_keyword", ""),
+            "topic": entry.get("topic", ""),
+            "category": entry.get("category", ""),
+            "affiliate": entry.get("affiliate") or {},
+        }
+        post = {k: v for k, v in entry.items()
+                if k not in {"target_keyword", "topic", "affiliate"}}
+        records.append((item, post))
+
+    posts = []
+    for item, post in records:
+        # Generated articles declare their own image and group; the hand-authored
+        # six are cross-checked against SPECIES_IMAGE, which is the table that
+        # exists so a jumping-spider guide can never be illustrated with a dog.
+        image, group = SPECIES_IMAGE.get(
+            item["id"], (post.get("image"), post.get("group")))
         # Data defects are reported, not fatal: a mismatch between the image
         # table and content.py used to abort the whole build, which meant one
         # bad row could freeze the entire site. The page keeps its own image
@@ -2156,10 +2480,25 @@ def clean_drafts() -> int:
     return removed
 
 
-def build(refresh: bool = False, batch: int = 0, strict: bool = False) -> None:
+def build(refresh: bool = False, batch: int = 0, strict: bool = False,
+          grow_count: int = 0) -> None:
+    # Growth happens before the corpus is read, so the rest of the build sees
+    # the new articles exactly like the six hand-written ones: same collect(),
+    # same taxonomy, same audits, same sitemap. Growing is an edit to the data,
+    # not a second pipeline.
+    if grow_count:
+        print(f"Growing the library by up to {grow_count} article(s)")
+        grow(grow_count, collect())
+
     posts = collect()
     tax = taxonomy(posts)
     CACHE.mkdir(exist_ok=True)
+
+    # The writer is told what the site has already published before it writes a
+    # word. Computed once per build — every generation call in this run gets the
+    # same list, and it includes pages found on disk that the corpus does not
+    # know about.
+    set_history(posts)
 
     for warning in aff.validate(posts):
         print(f"  ! affiliate: {warning}")
@@ -2303,13 +2642,17 @@ if __name__ == "__main__":
                         help="delete every cached draft before building, so all bodies are rewritten")
     parser.add_argument("--strict", action="store_true",
                         help="fail the build on any audit warning (the old behaviour; off by default)")
+    parser.add_argument("--grow", type=int, default=0, metavar="N",
+                        help="publish up to N unpublished topics from topics.py, "
+                             "then build (breadth-first across species groups)")
     parser.add_argument("--serve", action="store_true", help="serve the site on :8000 after building")
     parser.add_argument("--port", type=int, default=8000)
     args = parser.parse_args()
 
     if args.clean:
         clean_drafts()
-    build(refresh=args.refresh or args.clean, batch=args.batch, strict=args.strict)
+    build(refresh=args.refresh or args.clean, batch=args.batch,
+          strict=args.strict, grow_count=args.grow)
     if args.serve:
         try:
             serve(args.port)

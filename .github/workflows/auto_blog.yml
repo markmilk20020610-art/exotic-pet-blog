@@ -10,9 +10,13 @@ on:
   workflow_dispatch:
     inputs:
       batch:
-        description: 'How many guides to regenerate (blank = 4)'
+        description: 'How many existing guides to regenerate (blank = 4)'
         required: false
         default: '4'
+      grow:
+        description: 'How many NEW topics to publish from topics.py (blank = 2)'
+        required: false
+        default: '2'
 
 permissions:
   contents: write
@@ -39,7 +43,9 @@ jobs:
           AMAZON_TAG: ${{ secrets.AMAZON_TAG }}
           SITE_URL: "https://exotic-pet-blog.markmilk20020610.workers.dev"
         run: |
-          python generate.py --refresh --batch "${{ github.event.inputs.batch || 4 }}"
+          python generate.py --refresh \
+            --batch "${{ github.event.inputs.batch || 4 }}" \
+            --grow "${{ github.event.inputs.grow || 2 }}"
 
       - name: Commit and push changes
         run: |

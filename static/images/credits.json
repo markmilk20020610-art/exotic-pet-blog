@@ -40,5 +40,33 @@
     "license": "CC BY-SA 3.0",
     "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
     "page": "https://commons.wikimedia.org/wiki/File:Caribbean_hermit_crab.JPG"
+  },
+  "corn-snake.jpg": {
+    "title": "Kornnatter (Pantherophis guttatus), Seitenansicht.jpg",
+    "artist": "Peter Paplanus",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0",
+    "page": "https://commons.wikimedia.org/wiki/File%3AKornnatter_%28Pantherophis_guttatus%29%2C_Seitenansicht.jpg"
+  },
+  "pacman-frog.jpg": {
+    "title": "Cranwell's horned frog (Ceratophrys cranwelli), Entomica.jpg",
+    "artist": "Fungus Guy",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+    "page": "https://commons.wikimedia.org/wiki/File%3ACranwell%27s_horned_frog_%28Ceratophrys_cranwelli%29%2C_Entomica.jpg"
+  },
+  "emperor-scorpion.jpg": {
+    "title": "Emperor scorpion or Imperial scorpion (Pandinus imperator).jpg",
+    "artist": "Mike Baird",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0",
+    "page": "https://commons.wikimedia.org/wiki/File%3AEmperor_scorpion_or_Imperial_scorpion_%28Pandinus_imperator%29.jpg"
+  },
+  "hedgehog.jpg": {
+    "title": "Atelerix albiventris 56779917.jpg",
+    "artist": "B. P. White",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+    "page": "https://commons.wikimedia.org/wiki/File%3AAtelerix_albiventris_56779917.jpg"
   }
 }
