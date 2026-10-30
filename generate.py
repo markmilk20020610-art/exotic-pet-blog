@@ -65,6 +65,13 @@ KEYWORDS = ROOT / "keywords.json"
 # by deleting one entry instead of editing the hand-authored source.
 LIBRARY = ROOT / "library.json"
 
+# Optional per-page view counts: {"pet-001.html": 1240, ...}. This repo has no
+# analytics pipeline of its own, so the file is absent by default and the
+# archive falls back to pure date order. Drop in an export from Cloudflare Web
+# Analytics (or any log summary) and rank_posts() orders the site by what people
+# actually read, with date breaking every tie.
+ANALYTICS = ROOT / "analytics.json"
+
 # Same trap as AMAZON_TAG: a var that exists but is empty (`SITE_URL=` in a
 # shell, or an unset GitHub/Cloudflare secret) would otherwise yield "//pet-001"
 # canonical URLs and an unusable sitemap. Empty means "use the default".
@@ -176,14 +183,45 @@ def taxonomy(posts: list[dict]) -> dict:
 
 
 def rank_posts(posts: list[dict]) -> list[dict]:
-    """Pinned guides first, then newest first.
+    """Pinned first, then most-read, then newest.
 
-    Two stable passes: sort by date, then float the pinned ones up. That keeps
-    the date order intact inside both groups, so a pinned guide leads the page
-    without scrambling the chronology behind it.
+    Three stable passes, in that order of precedence: sort by date, then by
+    view count, then float the pinned ones up. Each pass preserves the ordering
+    the previous one established, so a pinned guide leads the page, the rest of
+    the archive follows what readers actually open, and anything without a view
+    count keeps its chronology instead of collapsing into one arbitrary block.
+
+    With no analytics.json every `_views` is 0, so this reduces exactly to the
+    old newest-first behaviour.
     """
     by_date = sorted(posts, key=lambda p: p["date"], reverse=True)
-    return sorted(by_date, key=lambda p: not p.get("is_pinned"))
+    by_hits = sorted(by_date, key=lambda p: p.get("_views", 0), reverse=True)
+    return sorted(by_hits, key=lambda p: not p.get("is_pinned"))
+
+
+def load_analytics() -> dict[str, int]:
+    """Per-page view counts, or an empty map when there is no data yet.
+
+    Keyed by page filename rather than by id so an export can be pasted in
+    without editing it. Anything unparseable is ignored rather than fatal —
+    a malformed number should not take the whole site down.
+    """
+    if not ANALYTICS.exists():
+        return {}
+    try:
+        raw = json.loads(ANALYTICS.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        print(f"  ⚠ analytics.json unreadable ({exc}) — ordering by date only")
+        return {}
+    if not isinstance(raw, dict):
+        return {}
+    out: dict[str, int] = {}
+    for key, value in raw.items():
+        try:
+            out[str(key).lstrip("/")] = int(value)
+        except (TypeError, ValueError):
+            continue
+    return out
 
 
 def initials(name: str) -> str:
@@ -1330,6 +1368,11 @@ def card_html(post: dict, wide: bool = False, pin: bool = False) -> str:
     if pin:
         cls += " card--pinned"
     ribbon = '<span class="card__pin">Pinned</span>' if pin else ""
+    # Only rendered when analytics.json actually carries a count for this page.
+    # Inventing a number here would be the one lie a reader could check.
+    views = post.get("_views", 0)
+    hits = (f'<span class="dot"></span><span>{views:,} reads</span>'
+            if views else "")
     return f"""
 <article class="{cls}">
   <a class="card__media" href="{post['id']}.html" tabindex="-1" aria-hidden="true">
@@ -1345,7 +1388,7 @@ def card_html(post: dict, wide: bool = False, pin: bool = False) -> str:
     <div class="card__foot">
       <span>{e(author['name'])}</span>
       <span class="dot"></span>
-      <span>{post['_read']} min read</span>
+      <span>{post['_read']} min read</span>{hits}
       <span class="card__arrow" aria-hidden="true">→</span>
     </div>
   </div>
@@ -2508,6 +2551,13 @@ def build(refresh: bool = False, batch: int = 0, strict: bool = False,
     tax = taxonomy(posts)
     CACHE.mkdir(exist_ok=True)
 
+    # Read counts, when they exist, are attached before anything is rendered:
+    # rank_posts() is called by the homepage, the guides index and every
+    # collection page, and all of them must agree on the order.
+    views = load_analytics()
+    for post in posts:
+        post["_views"] = views.get(f"{post['id']}.html", 0)
+
     # The writer is told what the site has already published before it writes a
     # word. Computed once per build — every generation call in this run gets the
     # same list, and it includes pages found on disk that the corpus does not
@@ -2551,6 +2601,14 @@ def build(refresh: bool = False, batch: int = 0, strict: bool = False,
         force = refresh and (not batch or post["id"] in forced)
         body, source = resolve_body(post["_item"], post, force)
         clean = sanitize_body(body, post)
+        # A pool topic has no hand-written fallback, so an API outage would
+        # otherwise publish a page with an empty prose block. Drop the article
+        # for this run instead: it stays in library.json and is retried on the
+        # next build, which is far better than shipping a headline over nothing.
+        if len(strip_tags(clean).split()) < 300:
+            print(f"  ! {post['id']}: no usable body (source: {source}) — "
+                  f"skipped this run, retried on the next")
+            continue
         # A body that opens without a measurement gets a factual standfirst
         # built from its own species panel. This is the difference between a
         # warning and a dead build: the article still ships, and the number in

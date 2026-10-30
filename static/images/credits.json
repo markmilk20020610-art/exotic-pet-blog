@@ -68,5 +68,47 @@
     "license": "CC BY-SA 4.0",
     "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
     "page": "https://commons.wikimedia.org/wiki/File%3AAtelerix_albiventris_56779917.jpg"
+  },
+  "gargoyle-gecko.jpg": {
+    "title": "Rhacodactylus auriculatus 14.11.2013.JPG",
+    "artist": "Eveha",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+    "page": "https://commons.wikimedia.org/wiki/File%3ARhacodactylus_auriculatus_14.11.2013.JPG"
+  },
+  "leachianus-gecko.jpg": {
+    "title": "Rhacodactylus leachianus 33610464.jpg",
+    "artist": "Lennart Hudel",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0",
+    "page": "https://commons.wikimedia.org/wiki/File%3ARhacodactylus_leachianus_33610464.jpg"
+  },
+  "axolotl.jpg": {
+    "title": "Ambystoma mexicanum (6337857516).jpg",
+    "artist": "Ruben Undheim from Trondheim, Norway",
+    "license": "CC BY-SA 2.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/2.0",
+    "page": "https://commons.wikimedia.org/wiki/File%3AAmbystoma_mexicanum_%286337857516%29.jpg"
+  },
+  "chinchilla.jpg": {
+    "title": "Chinchilla lanigera1.jpg",
+    "artist": "Trurl66",
+    "license": "Public domain",
+    "license_url": "",
+    "page": "https://commons.wikimedia.org/wiki/File%3AChinchilla_lanigera1.jpg"
+  },
+  "mexican-redknee-tarantula.jpg": {
+    "title": "Brachypelma smithi 2009 G09.jpg",
+    "artist": "George Chernilevsky",
+    "license": "Public domain",
+    "license_url": "",
+    "page": "https://commons.wikimedia.org/wiki/File%3ABrachypelma_smithi_2009_G09.jpg"
+  },
+  "giant-african-millipede.jpg": {
+    "title": "Archispirostreptus-Gigas-Amphitheatre.jpg",
+    "artist": "Bjørn Christian Tørrissen",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+    "page": "https://commons.wikimedia.org/wiki/File%3AArchispirostreptus-Gigas-Amphitheatre.jpg"
   }
 }

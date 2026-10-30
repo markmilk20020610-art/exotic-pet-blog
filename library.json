@@ -274,5 +274,363 @@
       "calcium phosphorus"
     ],
     "body_html": "\n<p>An African pygmy hedgehog (<em>Atelerix albiventris</em>) has a body temperature it cannot defend below roughly 20 °C, and its answer to a cold night is not to shiver but to shut down — a torpor state that drops metabolism by up to 80 %. That is a wild survival trick, and in a centrally heated flat it is almost always a husbandry accident. The numbers that keep it from happening are a cage held at 24–27 °C, an adult weight between 300 and 600 g, and a diet with a calcium-to-phosphorus ratio of 1.5–2 : 1. Miss the third and you get the obesity and the wobbly gait that get misdiagnosed as wobbly hedgehog syndrome for months.</p>\n\n<h2>The hedgehog that went cold in a warm room</h2>\n\n<p>She came in at 240 g, small for an adult but not alarming, and the owner's complaint was that she had \"gone quiet\". I asked the one question that mattered — what temperature is that room at night — and got a shrug. The overnight reading in the spare bedroom was 17 °C. She had torpored four nights running, and every time she came out of it she ate less. By the time I weighed her she was 198 g, the spines along her flank were sparse, and she swayed when she walked. The owner had already read about wobbly hedgehog syndrome and had convinced herself of the worst. I told her it was not WHS; it was four cold nights, a bowl of mealworms and a scale nobody owned. We moved the cage into a 25 °C room, I cut the mealworms down to a garnish, and she was 372 g five months later. The sway went with the weight.</p>\n\n<h2>Why repeated torpor is not free</h2>\n\n<p>Torpor is a controlled metabolic depression: heart rate falls from around 250 beats per minute to under 20, core temperature tracks ambient, and the immune system largely stops. Coming out of it costs a large burst of thermogenesis, which is paid for in brown adipose tissue and, in a captive animal with limited reserves, in muscle. Repeated arousal cycles — which is what happens when a hedgehog torpors every night and is woken every morning by a warm room — deplete glycogen, suppress immune function and are associated with fatty liver change. The animal does not die of cold. It dies of the metabolic debt of going in and out of it.</p>\n\n<p>The dietary half is separate and additive. Mealworms and waxworms are the two things every new keeper feeds and the two worst things to feed freely: their calcium-to-phosphorus ratio is around 0.1 : 1, which means they actively pull calcium out of the body to be metabolised. A diet anchored on them produces a growing animal with soft bones, tremors and a swaying gait — nutritional secondary hyperparathyroidism, the same mechanism as metabolic bone disease in reptiles. It looks like a neurological disease because it is one, downstream.</p>\n\n<h2>What a correct diet actually looks like</h2>\n\n<table>\n  <thead>\n    <tr><th>Component</th><th>Share of diet</th><th>Ca:P</th><th>Notes</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Complete hedgehog kibble</td><td>60–70 %</td><td>1.2–1.5 : 1</td><td>Protein 30–35 %, fat under 15 %</td></tr>\n    <tr><td>Cooked lean meat or egg</td><td>20–25 %</td><td>0.1–0.2 : 1</td><td>Always dusted, never the base</td></tr>\n    <tr><td>Insects (mealworm, cricket)</td><td>Under 10 %</td><td>0.1 : 1</td><td>Treat only, dusted with calcium</td></tr>\n    <tr><td>Vegetable matter</td><td>5 %</td><td>—</td><td>Mostly ignored; do not rely on it</td></tr>\n  </tbody>\n</table>\n\n<p>The dusting instruction is where most keepers go wrong in the other direction. Calcium with D3 should be applied so the insect looks lightly frosted, roughly 0.1 g per mealworm, and the supplement should be a reptile-grade powder with a known calcium content rather than a crushed human tablet. Over-supplementation causes its own problems — soft tissue calcification, constipation — which is why the ratio matters more than the absolute amount.</p>\n\n<h2>The weekly routine that catches problems early</h2>\n\n<ol>\n  <li><strong>Weigh every Sunday, same time, before food.</strong> A 5 % change in a month is noise; 10 % is a veterinary appointment.</li>\n  <li><strong>Hold the room at 24–27 °C overnight.</strong> A thermostat on a heat mat under a third of the cage, plus a thermometer at hedgehog height, not at the top of the vivarium.</li>\n  <li><strong>Feed once, at dusk.</strong> Hedgehogs are crepuscular; a bowl left all day is a bowl the animal grazes on and a weight you cannot interpret.</li>\n  <li><strong>Track the wheel.</strong> A hedgehog that stops running is a hedgehog that is either cold, ill or obese, and the wheel is the earliest signal you will get.</li>\n  <li><strong>Dust, do not drench.</strong> Every insect meal gets calcium powder, and no meal is insects alone.</li>\n</ol>\n\n<h2>Frequently asked questions</h2>\n\n<h3>Is torpor the same as hibernation?</h3>\n<p>No. Hibernation is a planned, seasonal, multi-week state; torpor is an emergency short-term shutdown that an African pygmy hedgehog should never need in captivity. This species does not hibernate in the wild, and a captive one that goes cold is a husbandry failure, not a natural cycle.</p>\n\n<h3>My hedgehog is 780 g. Is that obese?</h3>\n<p>Almost certainly, unless it is a very large male at the top of the range. Above 700 g the risks are fatty liver, arthritis and difficulty self-anointing. Cut the insect component out entirely, reduce the kibble by a fifth, and increase out-of-cage time before changing anything else.</p>\n\n<h3>Can I use a reptile calcium supplement?</h3>\n<p>Yes, and it is usually the better choice, because reptile powders are formulated for an animal that also needs D3 and are dosed by weight. Avoid anything with added phosphorus — the point of the supplement is to correct a ratio, and a calcium-plus-phosphorus product does not move it.</p>\n"
+  },
+  {
+    "id": "pet-011",
+    "slug": "gargoyle-gecko-handling-stress",
+    "title": "Gargoyle Gecko Handling: Reading Stress Before It Becomes a Tail Drop",
+    "dek": "A dropped tail never grows back. Here is what a gargoyle gecko tells you before it gets that far.",
+    "target_keyword": "gargoyle gecko handling stress tail drop",
+    "topic": "Gargoyle Gecko handling and stress behaviour",
+    "category": "Troubleshooting",
+    "group": "Reptiles",
+    "species": "Gargoyle Gecko",
+    "sci": "Rhacodactylus auriculatus",
+    "author": "nell",
+    "date": "2026-10-30",
+    "is_pinned": false,
+    "image": "gargoyle-gecko.jpg",
+    "alt": "Gargoyle gecko (Rhacodactylus auriculatus) gripping a branch, its grey-brown skin banded with dark chevrons and one large lidless eye catching the light.",
+    "caption": "Rhacodactylus auriculatus. The tail regrows, but never as the original — a dropped tail comes back short and smooth.",
+    "facts": [
+      [
+        "Species",
+        "Rhacodactylus auriculatus"
+      ],
+      [
+        "Adult size",
+        "20–25 cm total"
+      ],
+      [
+        "Temperature",
+        "22–26 °C / 72–79 °F"
+      ],
+      [
+        "Humidity",
+        "60–80 %"
+      ],
+      [
+        "Tail regeneration",
+        "None — dropped tails do not regrow"
+      ]
+    ],
+    "kit": [
+      [
+        "coco-fibre",
+        "A deep, damp substrate is the difference between a gecko that feels covered and one that stays braced.",
+        "substrate"
+      ]
+    ],
+    "tags": [
+      "gargoyle gecko",
+      "Rhacodactylus auriculatus",
+      "handling",
+      "stress"
+    ],
+    "body_html": ""
+  },
+  {
+    "id": "pet-012",
+    "slug": "leachianus-gecko-enclosure-size",
+    "title": "Leachianus Gecko Enclosure Size: Why the Minimum Is Bigger Than You Think",
+    "dek": "The largest gecko in the world does not fit in the smallest vivarium on the shelf. Here is the floor space it actually uses.",
+    "target_keyword": "leachianus gecko enclosure size minimum",
+    "topic": "Rhacodactylus leachianus housing",
+    "category": "Habitat Setup",
+    "group": "Reptiles",
+    "species": "Leachianus Gecko",
+    "sci": "Rhacodactylus leachianus",
+    "author": "nell",
+    "date": "2026-10-30",
+    "is_pinned": false,
+    "image": "leachianus-gecko.jpg",
+    "alt": "Leachianus gecko (Rhacodactylus leachianus) on a cork branch, olive-brown loose skin folded at the neck and a pale gold eye ringed with dark pigment.",
+    "caption": "Rhacodactylus leachianus, the largest gecko alive. Loose skin and a short tail are the build of a species that lives on vertical bark.",
+    "facts": [
+      [
+        "Species",
+        "Rhacodactylus leachianus"
+      ],
+      [
+        "Adult size",
+        "30–40 cm total"
+      ],
+      [
+        "Minimum enclosure",
+        "90 × 45 × 90 cm"
+      ],
+      [
+        "Temperature",
+        "22–26 °C / 72–79 °F"
+      ],
+      [
+        "Humidity",
+        "60–80 %"
+      ]
+    ],
+    "kit": [
+      [
+        "coco-fibre",
+        "Deep substrate holds the humidity this species needs without daily misting.",
+        "substrate"
+      ]
+    ],
+    "tags": [
+      "leachianus gecko",
+      "Rhacodactylus leachianus",
+      "enclosure",
+      "housing"
+    ],
+    "body_html": ""
+  },
+  {
+    "id": "pet-013",
+    "slug": "axolotl-nitrogen-cycle",
+    "title": "Axolotl Water Chemistry: The Nitrogen Cycle That Kills Them Quietly",
+    "dek": "Ammonia, then nitrite, then nitrate — the three numbers that decide whether an axolotl thrives or quietly burns.",
+    "target_keyword": "axolotl water parameters ammonia nitrite",
+    "topic": "Axolotl water chemistry and cycling",
+    "category": "Habitat Setup",
+    "group": "Amphibians",
+    "species": "Axolotl",
+    "sci": "Ambystoma mexicanum",
+    "author": "idris",
+    "date": "2026-10-30",
+    "is_pinned": false,
+    "image": "axolotl.jpg",
+    "alt": "Leucistic axolotl (Ambystoma mexicanum) resting on gravel, its pale pink body ending in a long finned tail and three pairs of red feathery external gills.",
+    "caption": "Ambystoma mexicanum. The gills are the readout: filaments that shrink and lose colour are the first sign of bad water.",
+    "facts": [
+      [
+        "Species",
+        "Ambystoma mexicanum"
+      ],
+      [
+        "Water temperature",
+        "16–18 °C / 61–64 °F"
+      ],
+      [
+        "pH",
+        "6.5–7.5"
+      ],
+      [
+        "Ammonia",
+        "0 ppm"
+      ],
+      [
+        "Nitrite",
+        "0 ppm"
+      ],
+      [
+        "Nitrate",
+        "Under 20 ppm"
+      ]
+    ],
+    "kit": [
+      [
+        "hygrometer",
+        "Not for humidity here — the same digital unit's temperature probe is the cheapest way to watch a tank climb past 20 °C.",
+        "temperature"
+      ]
+    ],
+    "tags": [
+      "axolotl",
+      "Ambystoma mexicanum",
+      "nitrogen cycle",
+      "water quality"
+    ],
+    "body_html": ""
+  },
+  {
+    "id": "pet-014",
+    "slug": "mexican-redknee-tarantula-molt",
+    "title": "Mexican Redknee Tarantula: Reading Pre-Moult Before She Seals Herself In",
+    "dek": "A tarantula that stops eating for six weeks is not starving. She is rebuilding an exoskeleton, and the humidity in those weeks decides whether she comes out of it intact.",
+    "target_keyword": "mexican red knee tarantula premolt not eating",
+    "topic": "Brachypelma hamorii pre-moult and ecdysis",
+    "category": "Troubleshooting",
+    "group": "Invertebrates",
+    "species": "Mexican Redknee Tarantula",
+    "sci": "Brachypelma hamorii",
+    "author": "mara",
+    "date": "2026-10-30",
+    "is_pinned": false,
+    "image": "mexican-redknee-tarantula.jpg",
+    "alt": "Mexican redknee tarantula (Brachypelma hamorii) on pale sand, its black legs banded with bright orange-red patches at the joints and a tan carapace edged in black.",
+    "caption": "Brachypelma hamorii. The orange knee bands give the species its name, but the abdomen is what tells you a moult is coming.",
+    "facts": [
+      [
+        "Species",
+        "Brachypelma hamorii"
+      ],
+      [
+        "Adult leg span",
+        "14–16 cm"
+      ],
+      [
+        "Temperature",
+        "24–28 °C / 75–82 °F"
+      ],
+      [
+        "Humidity",
+        "60–70 %"
+      ],
+      [
+        "Pre-moult fast",
+        "2–6 weeks"
+      ],
+      [
+        "Post-moult hardening",
+        "7–10 days"
+      ]
+    ],
+    "kit": [
+      [
+        "coco-fibre",
+        "Deep, slightly damp fibre holds 60–70 % through a moult; bone-dry substrate is the usual cause of a stuck leg.",
+        "humidity"
+      ],
+      [
+        "hygrometer",
+        "A tarantula moults inside a chamber you cannot see into. The hygrometer is your only reading.",
+        "measure"
+      ],
+      [
+        "snug-hides",
+        "A dark, closed retreat is where ecdysis happens. Without one she moults in the open and aborts.",
+        "hide"
+      ]
+    ],
+    "tags": [
+      "tarantula",
+      "Brachypelma hamorii",
+      "moult",
+      "ecdysis",
+      "invertebrate"
+    ],
+    "body_html": ""
+  },
+  {
+    "id": "pet-015",
+    "slug": "giant-african-millipede-substrate",
+    "title": "Giant African Millipede Substrate: Depth, Calcium and the Chamber They Moult In",
+    "dek": "A millipede burrows, eats the soil and hardens its shell with calcium from it. A shallow, calcium-poor substrate is a slow starvation of the exoskeleton.",
+    "target_keyword": "giant african millipede substrate depth calcium",
+    "topic": "Archispirostreptus gigas substrate and moulting",
+    "category": "Habitat Setup",
+    "group": "Invertebrates",
+    "species": "Giant African Millipede",
+    "sci": "Archispirostreptus gigas",
+    "author": "mara",
+    "date": "2026-10-30",
+    "is_pinned": false,
+    "image": "giant-african-millipede.jpg",
+    "alt": "Giant African millipede (Archispirostreptus gigas) on sand, its glossy black cylindrical body made of many ringed segments with reddish-brown edges and pale legs beneath.",
+    "caption": "Archispirostreptus gigas. Every segment carries two pairs of legs, and every moult needs calcium the animal cannot get from fruit.",
+    "facts": [
+      [
+        "Species",
+        "Archispirostreptus gigas"
+      ],
+      [
+        "Adult length",
+        "15–30 cm"
+      ],
+      [
+        "Temperature",
+        "24–28 °C / 75–82 °F"
+      ],
+      [
+        "Humidity",
+        "70–80 %"
+      ],
+      [
+        "Substrate depth",
+        "10–15 cm"
+      ],
+      [
+        "Lifespan",
+        "5–7 years"
+      ]
+    ],
+    "kit": [
+      [
+        "coco-fibre",
+        "The base of the substrate: 10–15 cm of it, damp enough to hold a burrow without collapsing.",
+        "substrate"
+      ],
+      [
+        "hygrometer",
+        "Below 70 % the moulting chamber dries and the new cuticle hardens before the animal is out of the old one.",
+        "humidity"
+      ],
+      [
+        "snug-hides",
+        "Cork bark on the surface gives a humid retreat above ground while the deep layer does the rest.",
+        "hide"
+      ]
+    ],
+    "tags": [
+      "millipede",
+      "Archispirostreptus gigas",
+      "substrate",
+      "calcium",
+      "invertebrate"
+    ],
+    "body_html": ""
+  },
+  {
+    "id": "pet-016",
+    "slug": "chinchilla-dust-bath-humidity",
+    "title": "Chinchilla Dust Baths: Frequency, Humidity and the Skin Problems Overbathing Causes",
+    "dek": "Dust baths are coat care until the room passes 60 % humidity, at which point they start feeding a fungal problem instead of solving one.",
+    "target_keyword": "chinchilla dust bath how often humidity",
+    "topic": "Chinchilla coat care and ambient humidity",
+    "category": "Habitat Setup",
+    "group": "Exotic Mammals",
+    "species": "Chinchilla",
+    "sci": "Chinchilla lanigera",
+    "author": "idris",
+    "date": "2026-10-30",
+    "is_pinned": false,
+    "image": "chinchilla.jpg",
+    "alt": "Chinchilla (Chinchilla lanigera) sitting upright on a textured surface, dense blue-grey fur standing in soft tufts and large round ears held erect.",
+    "caption": "Chinchilla lanigera. Up to eighty hairs grow from a single follicle, which is why a damp coat cannot dry and why dust — not water — is the cleaning method.",
+    "facts": [
+      [
+        "Species",
+        "Chinchilla lanigera"
+      ],
+      [
+        "Ambient humidity",
+        "40–60 %"
+      ],
+      [
+        "Dust bath frequency",
+        "2–3 times weekly, 10–15 min"
+      ],
+      [
+        "Temperature",
+        "18–22 °C / 64–72 °F"
+      ],
+      [
+        "Coat density",
+        "Up to 80 hairs per follicle"
+      ]
+    ],
+    "kit": [
+      [
+        "hygrometer",
+        "Ambient humidity above 60 % is what turns a dust bath from coat care into a fungal risk.",
+        "humidity"
+      ]
+    ],
+    "tags": [
+      "chinchilla",
+      "Chinchilla lanigera",
+      "dust bath",
+      "humidity"
+    ],
+    "body_html": ""
   }
 ]
