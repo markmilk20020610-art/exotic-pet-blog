@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://exoticpethub.com/sitemap.xml
+Sitemap: https://exotic-pet-blog.pages.dev/sitemap.xml
