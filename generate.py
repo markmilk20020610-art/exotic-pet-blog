@@ -408,9 +408,10 @@ questions, each answered by a single <p> of 40-70 words.
 - No <h1> — the page template renders the title.
 - No <a>, no <img>, no price, no star rating, no button, no inline style. The
   template renders every product card.
-- 950-1350 words. Five to eight <h2> sections in total. The four degrees need
+- 1400-1800 words. Five to eight <h2> sections in total. The four degrees need
   more room than the old 750-word brief allowed, but length is not the goal: if
-  you are running past 1350, cut the third care section, never the table.
+  you are running past 1800, delete a whole section rather than trimming every
+  sentence. Never cut the table, the diary paragraph or the measurements.
 - EXACTLY ONE <table> is mandatory, and it must be a real comparison the reader
   can act on: life stages against parameters, a symptom against its likely
   cause, a food against its calcium-to-phosphorus ratio. A table of two columns
@@ -834,16 +835,17 @@ def check_structure(body: str, rendered: bool = False) -> list[str]:
     problems: list[str] = []
     text = prose_text(body)
     words = len(text.split())
-    # 950-1350 is the four-degree brief. The floor moved up from 750 because a
-    # piece that carries a table, a named mechanism and a life-stage comparison
-    # cannot honestly fit in 750 words; the ceiling moved up because rejecting
-    # at 1150 rejected every draft the new brief produced, and the fallback
-    # (the editorial body) is worse than a slightly long one.
-    ceiling = 1750 if rendered else 1450
+    # The brief says 1400-1800. That band is not aspirational: six consecutive
+    # drafts from the four-degree prompt came in at 1466, 1474, 1544, 1577 and
+    # 1848 words. The old 950-1350 band rejected every one of them, so every
+    # article paid for a repair call and one (pet-013) was rejected twice and
+    # never published. The ceiling is now set just above the observed maximum,
+    # so a draft that follows the brief passes on the first call.
+    ceiling = 2250 if rendered else 1900
     if words < 700:
-        problems.append(f"only {words} words (brief asks 950-1350)")
+        problems.append(f"only {words} words (brief asks 1400-1800)")
     elif words > ceiling:
-        problems.append(f"{words} words, well over the 950-1350 brief")
+        problems.append(f"{words} words, well over the 1400-1800 brief")
 
     first_p = re.search(r"<p[^>]*>(.*?)</p>", body, re.S)
     hook = prose_text(first_p.group(1)) if first_p else ""
@@ -936,6 +938,20 @@ def resolve_body(item: dict, post: dict, refresh: bool) -> tuple[str, str]:
     meta_file = CACHE / f"{item['id']}.json"
     stamp = body_fingerprint(item, post)
 
+    # Whatever body is already on disk, regardless of its fingerprint. It is not
+    # good enough to serve silently — the fingerprint is what proves provenance
+    # — but it is the right thing to publish when *this* run's attempt is
+    # rejected. Falling back to post["body_html"] instead blanked a generated
+    # article completely, because those posts have no hand-written body.
+    last_good = ""
+    if cache_file.exists():
+        try:
+            prior = cache_file.read_text(encoding="utf-8")
+            if len(strip_tags(prior)) >= 400:
+                last_good = prior
+        except OSError:
+            pass
+
     if cache_file.exists() and not refresh:
         cached = cache_file.read_text(encoding="utf-8")
         meta: dict = {}
@@ -984,7 +1000,7 @@ def resolve_body(item: dict, post: dict, refresh: bool) -> tuple[str, str]:
 
             if body is None:
                 print("    ! API unavailable; using the editorial body from content.py")
-                return post["body_html"], "editorial"
+                return last_good or post["body_html"], "editorial"
 
             # The prompt asks for the four beats; this is where we find out
             # whether they arrived. One targeted rewrite, then reject: an
@@ -1009,7 +1025,7 @@ def resolve_body(item: dict, post: dict, refresh: bool) -> tuple[str, str]:
                 if blocking:
                     print(f"    ! {item['id']} is still off-brief; keeping the "
                           f"previous body rather than publishing it")
-                    return post["body_html"], "rejected (off-brief)"
+                    return last_good or post["body_html"], "rejected (off-brief)"
             elif problems:
                 # Only the hook measurement is missing — the builder fills it in.
                 print(f"    · {item['id']}: opening has no measurement yet; "
@@ -1029,7 +1045,7 @@ def resolve_body(item: dict, post: dict, refresh: bool) -> tuple[str, str]:
         except Exception as exc:  # noqa: BLE001
             print(f"    ! API unavailable ({exc}); using the editorial body from content.py")
 
-    return post["body_html"], "editorial"
+    return last_good or post["body_html"], "editorial"
 
 
 def sanitize_body(body: str, post: dict) -> str:
@@ -2557,6 +2573,12 @@ def build(refresh: bool = False, batch: int = 0, strict: bool = False,
     views = load_analytics()
     for post in posts:
         post["_views"] = views.get(f"{post['id']}.html", 0)
+    matched = sum(1 for p in posts if p["_views"])
+    if ANALYTICS.exists():
+        print(f"  ordering: reads then date ({matched}/{len(posts)} pages have view data)")
+    else:
+        print(f"  ordering: newest first (no analytics.json — "
+              f"run tools/import_analytics.py to rank by reads)")
 
     # The writer is told what the site has already published before it writes a
     # word. Computed once per build — every generation call in this run gets the

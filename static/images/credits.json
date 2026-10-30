@@ -1,114 +1,128 @@
 {
-  "jumping-spider.jpg": {
-    "title": "Immature male Phidippus regius 111564747.jpg",
-    "artist": "Zygy",
-    "license": "CC0",
-    "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
-    "page": "https://commons.wikimedia.org/wiki/File:Immature_male_Phidippus_regius_111564747.jpg"
-  },
-  "crested-gecko.jpg": {
-    "title": "Correlophus ciliatus 33484989.jpg",
-    "artist": "Lennart Hudel",
-    "license": "CC BY 4.0",
-    "license_url": "https://creativecommons.org/licenses/by/4.0",
-    "page": "https://commons.wikimedia.org/wiki/File:Correlophus_ciliatus_33484989.jpg"
-  },
-  "isopods.jpg": {
-    "title": "Porcellio scaber 174410346.jpg",
-    "artist": "Michel Langeveld",
-    "license": "CC BY-SA 4.0",
-    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
-    "page": "https://commons.wikimedia.org/wiki/File:Porcellio_scaber_174410346.jpg"
-  },
-  "ball-python.jpg": {
-    "title": "Python-regius-kopf-königspython.jpg",
-    "artist": "Holger Krisp",
-    "license": "CC BY 3.0",
-    "license_url": "https://creativecommons.org/licenses/by/3.0",
-    "page": "https://commons.wikimedia.org/wiki/File:Python-regius-kopf-k%C3%B6nigspython.jpg"
-  },
-  "leopard-gecko.jpg": {
-    "title": "Eublepharis macularius1.jpg",
-    "artist": "Matt Reinbold",
-    "license": "CC BY-SA 2.0",
-    "license_url": "https://creativecommons.org/licenses/by-sa/2.0",
-    "page": "https://commons.wikimedia.org/wiki/File:Eublepharis_macularius1.jpg"
-  },
-  "hermit-crab.jpg": {
-    "title": "Caribbean hermit crab.JPG",
-    "artist": "ZooFari",
-    "license": "CC BY-SA 3.0",
-    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
-    "page": "https://commons.wikimedia.org/wiki/File:Caribbean_hermit_crab.JPG"
-  },
-  "corn-snake.jpg": {
-    "title": "Kornnatter (Pantherophis guttatus), Seitenansicht.jpg",
-    "artist": "Peter Paplanus",
-    "license": "CC BY 2.0",
-    "license_url": "https://creativecommons.org/licenses/by/2.0",
-    "page": "https://commons.wikimedia.org/wiki/File%3AKornnatter_%28Pantherophis_guttatus%29%2C_Seitenansicht.jpg"
-  },
-  "pacman-frog.jpg": {
-    "title": "Cranwell's horned frog (Ceratophrys cranwelli), Entomica.jpg",
-    "artist": "Fungus Guy",
-    "license": "CC BY-SA 4.0",
-    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
-    "page": "https://commons.wikimedia.org/wiki/File%3ACranwell%27s_horned_frog_%28Ceratophrys_cranwelli%29%2C_Entomica.jpg"
-  },
-  "emperor-scorpion.jpg": {
-    "title": "Emperor scorpion or Imperial scorpion (Pandinus imperator).jpg",
-    "artist": "Mike Baird",
-    "license": "CC BY 2.0",
-    "license_url": "https://creativecommons.org/licenses/by/2.0",
-    "page": "https://commons.wikimedia.org/wiki/File%3AEmperor_scorpion_or_Imperial_scorpion_%28Pandinus_imperator%29.jpg"
-  },
-  "hedgehog.jpg": {
-    "title": "Atelerix albiventris 56779917.jpg",
-    "artist": "B. P. White",
-    "license": "CC BY-SA 4.0",
-    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
-    "page": "https://commons.wikimedia.org/wiki/File%3AAtelerix_albiventris_56779917.jpg"
-  },
-  "gargoyle-gecko.jpg": {
-    "title": "Rhacodactylus auriculatus 14.11.2013.JPG",
-    "artist": "Eveha",
-    "license": "CC BY-SA 3.0",
-    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
-    "page": "https://commons.wikimedia.org/wiki/File%3ARhacodactylus_auriculatus_14.11.2013.JPG"
-  },
-  "leachianus-gecko.jpg": {
-    "title": "Rhacodactylus leachianus 33610464.jpg",
-    "artist": "Lennart Hudel",
-    "license": "CC BY 4.0",
-    "license_url": "https://creativecommons.org/licenses/by/4.0",
-    "page": "https://commons.wikimedia.org/wiki/File%3ARhacodactylus_leachianus_33610464.jpg"
-  },
-  "axolotl.jpg": {
-    "title": "Ambystoma mexicanum (6337857516).jpg",
-    "artist": "Ruben Undheim from Trondheim, Norway",
-    "license": "CC BY-SA 2.0",
-    "license_url": "https://creativecommons.org/licenses/by-sa/2.0",
-    "page": "https://commons.wikimedia.org/wiki/File%3AAmbystoma_mexicanum_%286337857516%29.jpg"
-  },
-  "chinchilla.jpg": {
-    "title": "Chinchilla lanigera1.jpg",
-    "artist": "Trurl66",
-    "license": "Public domain",
-    "license_url": "",
-    "page": "https://commons.wikimedia.org/wiki/File%3AChinchilla_lanigera1.jpg"
-  },
-  "mexican-redknee-tarantula.jpg": {
-    "title": "Brachypelma smithi 2009 G09.jpg",
-    "artist": "George Chernilevsky",
-    "license": "Public domain",
-    "license_url": "",
-    "page": "https://commons.wikimedia.org/wiki/File%3ABrachypelma_smithi_2009_G09.jpg"
-  },
-  "giant-african-millipede.jpg": {
-    "title": "Archispirostreptus-Gigas-Amphitheatre.jpg",
-    "artist": "Bjørn Christian Tørrissen",
-    "license": "CC BY-SA 3.0",
-    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
-    "page": "https://commons.wikimedia.org/wiki/File%3AArchispirostreptus-Gigas-Amphitheatre.jpg"
-  }
+ "jumping-spider.jpg": {
+  "title": "Immature male Phidippus regius 111564747.jpg",
+  "artist": "Zygy",
+  "license": "CC0",
+  "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Immature_male_Phidippus_regius_111564747.jpg"
+ },
+ "crested-gecko.jpg": {
+  "title": "Correlophus ciliatus 33484989.jpg",
+  "artist": "Lennart Hudel",
+  "license": "CC BY 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Correlophus_ciliatus_33484989.jpg"
+ },
+ "isopods.jpg": {
+  "title": "Porcellio scaber 174410346.jpg",
+  "artist": "Michel Langeveld",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Porcellio_scaber_174410346.jpg"
+ },
+ "ball-python.jpg": {
+  "title": "Python-regius-kopf-königspython.jpg",
+  "artist": "Holger Krisp",
+  "license": "CC BY 3.0",
+  "license_url": "https://creativecommons.org/licenses/by/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Python-regius-kopf-k%C3%B6nigspython.jpg"
+ },
+ "leopard-gecko.jpg": {
+  "title": "Eublepharis macularius1.jpg",
+  "artist": "Matt Reinbold",
+  "license": "CC BY-SA 2.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Eublepharis_macularius1.jpg"
+ },
+ "hermit-crab.jpg": {
+  "title": "Caribbean hermit crab.JPG",
+  "artist": "ZooFari",
+  "license": "CC BY-SA 3.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Caribbean_hermit_crab.JPG"
+ },
+ "corn-snake.jpg": {
+  "title": "Kornnatter (Pantherophis guttatus), Seitenansicht.jpg",
+  "artist": "Peter Paplanus",
+  "license": "CC BY 2.0",
+  "license_url": "https://creativecommons.org/licenses/by/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File%3AKornnatter_%28Pantherophis_guttatus%29%2C_Seitenansicht.jpg"
+ },
+ "pacman-frog.jpg": {
+  "title": "Cranwell's horned frog (Ceratophrys cranwelli), Entomica.jpg",
+  "artist": "Fungus Guy",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File%3ACranwell%27s_horned_frog_%28Ceratophrys_cranwelli%29%2C_Entomica.jpg"
+ },
+ "emperor-scorpion.jpg": {
+  "title": "Emperor scorpion or Imperial scorpion (Pandinus imperator).jpg",
+  "artist": "Mike Baird",
+  "license": "CC BY 2.0",
+  "license_url": "https://creativecommons.org/licenses/by/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File%3AEmperor_scorpion_or_Imperial_scorpion_%28Pandinus_imperator%29.jpg"
+ },
+ "hedgehog.jpg": {
+  "title": "Atelerix albiventris 56779917.jpg",
+  "artist": "B. P. White",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File%3AAtelerix_albiventris_56779917.jpg"
+ },
+ "gargoyle-gecko.jpg": {
+  "title": "Rhacodactylus auriculatus 14.11.2013.JPG",
+  "artist": "Eveha",
+  "license": "CC BY-SA 3.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File%3ARhacodactylus_auriculatus_14.11.2013.JPG"
+ },
+ "leachianus-gecko.jpg": {
+  "title": "Rhacodactylus leachianus 33610464.jpg",
+  "artist": "Lennart Hudel",
+  "license": "CC BY 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File%3ARhacodactylus_leachianus_33610464.jpg"
+ },
+ "axolotl.jpg": {
+  "title": "Ambystoma mexicanum (6337857516).jpg",
+  "artist": "Ruben Undheim from Trondheim, Norway",
+  "license": "CC BY-SA 2.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File%3AAmbystoma_mexicanum_%286337857516%29.jpg"
+ },
+ "chinchilla.jpg": {
+  "title": "Chinchilla lanigera1.jpg",
+  "artist": "Trurl66",
+  "license": "Public domain",
+  "license_url": "",
+  "page": "https://commons.wikimedia.org/wiki/File%3AChinchilla_lanigera1.jpg"
+ },
+ "mexican-redknee-tarantula.jpg": {
+  "title": "Brachypelma smithi 2009 G09.jpg",
+  "artist": "George Chernilevsky",
+  "license": "Public domain",
+  "license_url": "",
+  "page": "https://commons.wikimedia.org/wiki/File%3ABrachypelma_smithi_2009_G09.jpg"
+ },
+ "giant-african-millipede.jpg": {
+  "title": "Archispirostreptus-Gigas-Amphitheatre.jpg",
+  "artist": "Bjørn Christian Tørrissen",
+  "license": "CC BY-SA 3.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File%3AArchispirostreptus-Gigas-Amphitheatre.jpg"
+ },
+ "sugar-glider.jpg": {
+  "title": "Petaurus breviceps (sugar glider).jpg",
+  "artist": "Inconnu(e)",
+  "license": "CC0",
+  "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Petaurus_breviceps_(sugar_glider).jpg"
+ },
+ "bearded-dragon.jpg": {
+  "title": "Pogona vitticeps 2009 G1.jpg",
+  "artist": "George Chernilevsky",
+  "license": "Public domain",
+  "license_url": "",
+  "page": "https://commons.wikimedia.org/wiki/File:Pogona_vitticeps_2009_G1.jpg"
+ }
 }
