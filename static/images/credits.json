@@ -166,5 +166,47 @@
   "license": "CC BY-SA 3.0",
   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Degu_eating_a_piece_of_dried_banana.jpg"
+ },
+ "blue-tongue-skink.jpg": {
+  "title": "Immature eastern blue tongued lizard.jpg",
+  "artist": "Peripitus",
+  "license": "CC BY-SA 3.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Immature_eastern_blue_tongued_lizard.jpg"
+ },
+ "russian-tortoise.jpg": {
+  "title": "Testudo horsefieldii.jpg",
+  "artist": "Original uploader was user:Nicholasink at en.wikipedia",
+  "license": "Public domain",
+  "license_url": "",
+  "page": "https://commons.wikimedia.org/wiki/File:Testudo_horsefieldii.jpg"
+ },
+ "african-clawed-frog.jpg": {
+  "title": "Xenopus laevis 1.jpg",
+  "artist": "de:User:Michael Linnenbach",
+  "license": "CC BY-SA 3.0",
+  "license_url": "http://creativecommons.org/licenses/by-sa/3.0/",
+  "page": "https://commons.wikimedia.org/wiki/File:Xenopus_laevis_1.jpg"
+ },
+ "hissing-cockroach.jpg": {
+  "title": "Gromphadorhina portentosa 2.jpg",
+  "artist": "TimVickers",
+  "license": "Public domain",
+  "license_url": "",
+  "page": "https://commons.wikimedia.org/wiki/File:Gromphadorhina_portentosa_2.jpg"
+ },
+ "ferret.jpg": {
+  "title": "Mustela putorius furo profile.JPG",
+  "artist": "Aurélien Mora",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Mustela_putorius_furo_profile.JPG"
+ },
+ "cockatiel.jpg": {
+  "title": "Nymphicus hollandicus - Forst 01.jpg",
+  "artist": "H. Zell",
+  "license": "CC BY-SA 3.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Nymphicus_hollandicus_-_Forst_01.jpg"
  }
 }

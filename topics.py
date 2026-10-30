@@ -785,4 +785,196 @@ TOPIC_POOL = [
         ],
         "tags": ["degu", "Octodon degus", "diabetes", "fibre", "exotic mammal"],
     },
+
+    # ------------------------------------------------------------------ #
+    # 18. Reptiles — body condition is a shape, not a number on a scale
+    # ------------------------------------------------------------------ #
+    {
+        "slug": "blue-tongue-skink-obesity",
+        "title": "Blue-Tongue Skink Obesity: Reading Fat Reserves in the Tail Before the Liver",
+        "dek": "A skink is meant to be broad across the back. It is not meant to be broad at the base of the tail, and that is where the fat that overwhelms the liver is stored.",
+        "target_keyword": "blue tongue skink obesity overweight",
+        "topic": "Tiliqua scincoides body condition scoring and hepatic lipidosis",
+        "category": "Feeding Guide",
+        "group": "Reptiles",
+        "species": "Blue-Tongue Skink",
+        "sci": "Tiliqua scincoides",
+        "author": "mara",
+        "image": "blue-tongue-skink.jpg",
+        "alt": "A juvenile eastern blue-tongue skink in grass, banded grey-brown body with a broad blunt head resting on the ground.",
+        "caption": "Tiliqua scincoides. The tail base is the readable part: a skink carrying too much fat stores it there first, weeks before the liver shows it.",
+        "facts": [
+            ("Species", "Tiliqua scincoides"),
+            ("Adult length", "40–60 cm"),
+            ("Adult weight", "400–600 g"),
+            ("Basking spot", "30–35 °C / 86–95 °F"),
+            ("Cool end", "22–25 °C / 72–77 °F"),
+            ("Adult feeding", "every 2–3 days"),
+        ],
+        "kit": [
+            ("kitchen-scale", "Weigh weekly. A skink that gains 30 g in a month on the same ration is being fed a diet too dense in fat, not too large in volume.", "weight"),
+            ("calcium-d3", "A growing skink deposits bone faster than an adult; the ratio matters more than the total, and it is easy to over-supplement an obese one.", "calcium"),
+        ],
+        "tags": ["blue tongue skink", "Tiliqua scincoides", "obesity", "body condition", "reptile"],
+    },
+
+    # ------------------------------------------------------------------ #
+    # 19. Reptiles — the one preparation that kills more tortoises than it saves
+    # ------------------------------------------------------------------ #
+    {
+        "slug": "russian-tortoise-hibernation",
+        "title": "Russian Tortoise Hibernation: The Weight Threshold That Decides Whether to Brumate",
+        "dek": "Brumation is not a calendar event, it is a metabolic budget. Below one ratio the animal has nothing to spend, and a fridge in November becomes the cause of death rather than the method.",
+        "target_keyword": "russian tortoise hibernation weight jackson ratio",
+        "topic": "Testudo horsfieldii pre-brumation assessment and weight thresholds",
+        "category": "Habitat Setup",
+        "group": "Reptiles",
+        "species": "Russian Tortoise",
+        "sci": "Testudo horsfieldii",
+        "author": "nell",
+        "image": "russian-tortoise.jpg",
+        "alt": "A Russian tortoise on short grass, domed tan-and-black carapace with the head extended forward and one foreleg visible.",
+        "caption": "Testudo horsfieldii. The Jackson ratio compares weight to carapace length; a tortoise under about 0.19 has no reserve to spend through a winter.",
+        "facts": [
+            ("Species", "Testudo horsfieldii"),
+            ("Adult length", "13–20 cm"),
+            ("Adult weight", "300–500 g"),
+            ("Jackson ratio", "0.19–0.22"),
+            ("Brumation temp", "2–5 °C / 36–41 °F"),
+            ("Brumation length", "8–16 weeks"),
+        ],
+        "kit": [
+            ("kitchen-scale", "Grams against straight-line carapace length, not a feel for the animal — the ratio is the only part of this decision that is measurable.", "weight"),
+            ("ir-thermometer", "A fridge set to 4 °C and a fridge that reaches 4 °C at the probe are two different claims; measure where the tortoise actually sits.", "measure"),
+        ],
+        "tags": ["russian tortoise", "Testudo horsfieldii", "brumation", "hibernation", "reptile"],
+    },
+
+    # ------------------------------------------------------------------ #
+    # 20. Amphibians — a feeding response with no off switch
+    # ------------------------------------------------------------------ #
+    {
+        "slug": "african-clawed-frog-feeding",
+        "title": "African Clawed Frog Feeding: Why an Aquatic Frog Eats Past the Point of Floating",
+        "dek": "Xenopus will take food every time food appears, which is an asset in a laboratory and a hazard in a tank. The limit is nitrogen, not appetite.",
+        "target_keyword": "african clawed frog feeding amount",
+        "topic": "Xenopus laevis ration, ammonia loading and buoyancy",
+        "category": "Feeding Guide",
+        "group": "Amphibians",
+        "species": "African Clawed Frog",
+        "sci": "Xenopus laevis",
+        "author": "idris",
+        "image": "african-clawed-frog.jpg",
+        "alt": "An African clawed frog seen from above in shallow water, smooth olive-grey body with webbed hind feet and clawed toes spread.",
+        "caption": "Xenopus laevis. A frog that floats tail-down after feeding is not relaxed — it is carrying gas it cannot vent, and the ration is the first thing to check.",
+        "facts": [
+            ("Species", "Xenopus laevis"),
+            ("Adult length", "10–12 cm"),
+            ("Adult weight", "60–110 g"),
+            ("Temperature", "20–24 °C / 68–75 °F"),
+            ("pH", "6.5–8.0"),
+            ("Ammonia", "0 mg/L, always"),
+        ],
+        "kit": [
+            ("kitchen-scale", "Ration by body weight, not by how fast the frog takes it — the feeding response never stops, so it cannot be the signal.", "weight"),
+            ("critical-care", "A frog that has stopped eating is usually a water-quality problem; support feeding buys days while the tank is corrected.", "feeding"),
+        ],
+        "tags": ["african clawed frog", "Xenopus laevis", "feeding", "ammonia", "amphibian"],
+    },
+
+    # ------------------------------------------------------------------ #
+    # 21. Invertebrates — the moult is a humidity event
+    # ------------------------------------------------------------------ #
+    {
+        "slug": "hissing-cockroach-moult",
+        "title": "Madagascar Hissing Cockroach Moult Failure: The Humidity Window That Decides It",
+        "dek": "A nymph that cannot get out of its own exoskeleton is not unlucky. It dried out at the wrong moment, and the window is narrower than most care sheets admit.",
+        "target_keyword": "hissing cockroach moult stuck",
+        "topic": "Gromphadorhina portentosa ecdysis and humidity",
+        "category": "Troubleshooting",
+        "group": "Invertebrates",
+        "species": "Madagascar Hissing Cockroach",
+        "sci": "Gromphadorhina portentosa",
+        "author": "mara",
+        "image": "hissing-cockroach.jpg",
+        "alt": "Two Madagascar hissing cockroaches on a cork bark round, the nearer one glossy dark brown with segmented abdomen and visible antennae.",
+        "caption": "Gromphadorhina portentosa. A moulting nymph needs standing humidity at the moment it splits, and cannot move to find it.",
+        "facts": [
+            ("Species", "Gromphadorhina portentosa"),
+            ("Adult length", "5–8 cm"),
+            ("Nymph instars", "6–7"),
+            ("Temperature", "24–28 °C / 75–82 °F"),
+            ("Humidity", "60–80 %"),
+            ("Moult interval", "6–8 weeks"),
+        ],
+        "kit": [
+            ("hygrometer", "One probe at substrate level, where the nymph actually moults — a reading taken at the top of the tub is a reading of the room.", "measure"),
+            ("coco-fibre", "A substrate deep enough to hold moisture is the mechanism; spraying the glass is not.", "substrate"),
+        ],
+        "tags": ["hissing cockroach", "Gromphadorhina portentosa", "moult", "humidity", "invertebrate"],
+    },
+
+    # ------------------------------------------------------------------ #
+    # 22. Exotic Mammals — a season read out of sequence
+    # ------------------------------------------------------------------ #
+    {
+        "slug": "ferret-adrenal-disease",
+        "title": "Ferret Adrenal Disease: Reading the Season Out of Sequence",
+        "dek": "A ferret that goes bald from the tail forward in January is not moulting oddly. Its adrenal gland is telling the body it is spring, all year.",
+        "target_keyword": "ferret adrenal disease symptoms hair loss",
+        "topic": "Mustela putorius furo hyperadrenocorticism and photoperiod",
+        "category": "Troubleshooting",
+        "group": "Exotic Mammals",
+        "species": "Ferret",
+        "sci": "Mustela putorius furo",
+        "author": "nell",
+        "image": "ferret.jpg",
+        "alt": "Head and shoulders of a pale ferret emerging from a soft blanket, dark eye, pink nose and rounded ear in sharp focus.",
+        "caption": "Mustela putorius furo. Symmetrical alopecia starting at the tail base and moving forward is the pattern to look for, not a general scruffiness.",
+        "facts": [
+            ("Species", "Mustela putorius furo"),
+            ("Adult weight", "0.7–2.0 kg"),
+            ("Life span", "6–10 years"),
+            ("Typical onset", "3–5 years old"),
+            ("Photoperiod", "14–16 h in summer"),
+            ("Risk factor", "early neutering"),
+        ],
+        "kit": [
+            ("kitchen-scale", "Muscle loss around the hindquarters shows on a scale weeks before it shows in the shape of the animal.", "weight"),
+            ("critical-care", "A ferret with an adrenal tumour often eats less; support feeding is what keeps the weight on while the diagnosis is confirmed.", "feeding"),
+        ],
+        "tags": ["ferret", "Mustela putorius furo", "adrenal disease", "alopecia", "exotic mammal"],
+    },
+
+    # ------------------------------------------------------------------ #
+    # 23. Birds — the behaviour is driven by day length, not by the nest box
+    # ------------------------------------------------------------------ #
+    {
+        "slug": "cockatiel-chronic-egg-laying",
+        "title": "Cockatiel Chronic Egg Laying: The Light Schedule That Switches It Off",
+        "dek": "Removing the eggs does not stop the cycle, it restarts it. What ends a chronic layer's season is a shorter day and a depleted calcium reserve that has to be caught early.",
+        "target_keyword": "cockatiel chronic egg laying",
+        "topic": "Nymphicus hollandicus photoperiod, chronic oviposition and calcium",
+        "category": "Troubleshooting",
+        "group": "Birds",
+        "species": "Cockatiel",
+        "sci": "Nymphicus hollandicus",
+        "author": "idris",
+        "image": "cockatiel.jpg",
+        "alt": "Three cockatiels perched in a row on a bare branch, grey plumage with white wing bars and orange cheek patches, crests raised.",
+        "caption": "Nymphicus hollandicus. A hen that lays clutch after clutch is responding to day length and food supply, not to the absence of a mate.",
+        "facts": [
+            ("Species", "Nymphicus hollandicus"),
+            ("Adult weight", "80–120 g"),
+            ("Clutch size", "4–7 eggs"),
+            ("Incubation", "18–21 days"),
+            ("Target photoperiod", "10–12 h"),
+            ("Life span", "15–25 years"),
+        ],
+        "kit": [
+            ("kitchen-scale", "A laying hen loses calcium by the gram; weighing weekly catches the slide before the first soft-shelled egg does.", "weight"),
+            ("calcium-d3", "A hen mid-clutch is drawing on bone, so the supplement has to be in the food before the next egg, not after a fracture.", "calcium"),
+        ],
+        "tags": ["cockatiel", "Nymphicus hollandicus", "egg laying", "calcium", "bird"],
+    },
 ]
