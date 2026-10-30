@@ -124,5 +124,47 @@
   "license": "Public domain",
   "license_url": "",
   "page": "https://commons.wikimedia.org/wiki/File:Pogona_vitticeps_2009_G1.jpg"
+ },
+ "budgerigar.jpg": {
+  "title": "Melopsittacus undulatus - Vogelpark Steinen 03.jpg",
+  "artist": "H. Zell",
+  "license": "CC BY-SA 3.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Melopsittacus_undulatus_-_Vogelpark_Steinen_03.jpg"
+ },
+ "african-grey-parrot.jpg": {
+  "title": "Psittacus erithacus -upper body-8c.jpg",
+  "artist": "L.Miguel Bugallo Sánchez (http://commons.wikimedia.org/wiki/User:Lmbuga)",
+  "license": "CC BY-SA 3.0",
+  "license_url": "http://creativecommons.org/licenses/by-sa/3.0/",
+  "page": "https://commons.wikimedia.org/wiki/File:Psittacus_erithacus_-upper_body-8c.jpg"
+ },
+ "panther-chameleon.jpg": {
+  "title": "Panther chameleon (Furcifer pardalis) male Nosy Be.jpg",
+  "artist": "Charles J. Sharp",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Panther_chameleon_(Furcifer_pardalis)_male_Nosy_Be.jpg"
+ },
+ "whites-tree-frog.jpg": {
+  "title": "Australia green tree frog (Litoria caerulea) crop.jpg",
+  "artist": "LiquidGhoul",
+  "license": "Public domain",
+  "license_url": "",
+  "page": "https://commons.wikimedia.org/wiki/File:Australia_green_tree_frog_(Litoria_caerulea)_crop.jpg"
+ },
+ "giant-african-land-snail.jpg": {
+  "title": "Achatina fulica Thailand.jpg",
+  "artist": "Unknown",
+  "license": "CC BY-SA 3.0",
+  "license_url": "http://creativecommons.org/licenses/by-sa/3.0/",
+  "page": "https://commons.wikimedia.org/wiki/File:Achatina_fulica_Thailand.jpg"
+ },
+ "degu.jpg": {
+  "title": "Degu eating a piece of dried banana.jpg",
+  "artist": "Pierre Camateros",
+  "license": "CC BY-SA 3.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Degu_eating_a_piece_of_dried_banana.jpg"
  }
 }
