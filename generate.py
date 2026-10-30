@@ -370,7 +370,9 @@ questions, each answered by a single <p> of 40-70 words.
 - No <h1> — the page template renders the title.
 - No <a>, no <img>, no price, no star rating, no button, no inline style. The
   template renders every product card.
-- 750-950 words. Four to seven <h2> sections in total.
+- 950-1350 words. Five to eight <h2> sections in total. The four degrees need
+  more room than the old 750-word brief allowed, but length is not the goal: if
+  you are running past 1350, cut the third care section, never the table.
 - EXACTLY ONE <table> is mandatory, and it must be a real comparison the reader
   can act on: life stages against parameters, a symptom against its likely
   cause, a food against its calcium-to-phosphorus ratio. A table of two columns
@@ -788,10 +790,15 @@ def check_structure(body: str) -> list[str]:
     problems: list[str] = []
     text = prose_text(body)
     words = len(text.split())
-    if words < 600:
-        problems.append(f"only {words} words (brief asks 750-950)")
-    elif words > 1150:
-        problems.append(f"{words} words, well over the 750-950 brief")
+    # 950-1350 is the four-degree brief. The floor moved up from 750 because a
+    # piece that carries a table, a named mechanism and a life-stage comparison
+    # cannot honestly fit in 750 words; the ceiling moved up because rejecting
+    # at 1150 rejected every draft the new brief produced, and the fallback
+    # (the editorial body) is worse than a slightly long one.
+    if words < 700:
+        problems.append(f"only {words} words (brief asks 950-1350)")
+    elif words > 1450:
+        problems.append(f"{words} words, well over the 950-1350 brief")
 
     first_p = re.search(r"<p[^>]*>(.*?)</p>", body, re.S)
     hook = prose_text(first_p.group(1)) if first_p else ""
