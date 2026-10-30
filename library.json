@@ -632,5 +632,131 @@
       "humidity"
     ],
     "body_html": ""
+  },
+  {
+    "id": "pet-017",
+    "slug": "bearded-dragon-brumation",
+    "title": "Bearded Dragon Brumation: How to Tell a Normal Slowdown From a Sick Lizard",
+    "dek": "A bearded dragon that sleeps for ten weeks is following the season. One that sleeps at the wrong temperature is dying slowly, and from outside the glass the two look identical.",
+    "target_keyword": "bearded dragon brumation or sick",
+    "topic": "Pogona vitticeps brumation and its look-alikes",
+    "category": "Troubleshooting",
+    "group": "Reptiles",
+    "species": "Bearded Dragon",
+    "sci": "Pogona vitticeps",
+    "author": "nell",
+    "date": "2026-10-30",
+    "is_pinned": false,
+    "image": "bearded-dragon.jpg",
+    "alt": "A bearded dragon flattened on red sand, dorsal spines and full tail in frame",
+    "caption": "Pogona vitticeps. A dragon that stops eating and settles into a cool corner in October is brumating; the same behaviour at 32 °C in July is not brumation and needs a vet.",
+    "facts": [
+      [
+        "Species",
+        "Pogona vitticeps"
+      ],
+      [
+        "Adult length",
+        "45–60 cm"
+      ],
+      [
+        "Basking spot",
+        "38–42 °C / 100–108 °F"
+      ],
+      [
+        "Cool end",
+        "24–26 °C / 75–79 °F"
+      ],
+      [
+        "Brumation",
+        "10–16 weeks at 18–22 °C"
+      ],
+      [
+        "UVB",
+        "10–12 % tube, 30–40 cm"
+      ]
+    ],
+    "kit": [
+      [
+        "uvb-fixture",
+        "A brumating dragon still needs its UVB reviewed; a tube past its service life is a common winter mistake.",
+        "uvb"
+      ],
+      [
+        "ir-thermometer",
+        "Basking spot measured on the surface the lizard actually uses, not the air above it.",
+        "measure"
+      ]
+    ],
+    "tags": [
+      "bearded dragon",
+      "Pogona vitticeps",
+      "brumation",
+      "reptile"
+    ],
+    "body_html": ""
+  },
+  {
+    "id": "pet-018",
+    "slug": "sugar-glider-diet-ca-p",
+    "title": "Sugar Glider Diet: The Calcium-to-Phosphorus Ratio Behind Hind-Limb Paralysis",
+    "dek": "Hind-limb paralysis in sugar gliders is usually nutritional, not neurological. The number that predicts it is a calcium-to-phosphorus ratio, and fruit does not supply it.",
+    "target_keyword": "sugar glider diet calcium phosphorus HLP",
+    "topic": "Petaurus breviceps nutrition and hind-limb paralysis",
+    "category": "Feeding Guide",
+    "group": "Exotic Mammals",
+    "species": "Sugar Glider",
+    "sci": "Petaurus breviceps",
+    "author": "idris",
+    "date": "2026-10-30",
+    "is_pinned": false,
+    "image": "sugar-glider.jpg",
+    "alt": "A sugar glider gripping a cork bark ledge, holding a piece of food in both forepaws",
+    "caption": "Petaurus breviceps. A captive diet that reads as generous — fruit, honey, a little minced meat — can still be calcium-negative, which is how hind-limb paralysis starts in an animal that looks well fed.",
+    "facts": [
+      [
+        "Species",
+        "Petaurus breviceps"
+      ],
+      [
+        "Adult weight",
+        "90–160 g"
+      ],
+      [
+        "Dietary protein",
+        "25–30 %"
+      ],
+      [
+        "Ca:P target",
+        "1.5–2 : 1"
+      ],
+      [
+        "Temperature",
+        "24–27 °C / 75–81 °F"
+      ],
+      [
+        "Enclosure height",
+        "At least 1.8 m"
+      ]
+    ],
+    "kit": [
+      [
+        "kitchen-scale",
+        "A 90 g animal needs a scale that reads to 1 g to track a diet change.",
+        "weight"
+      ],
+      [
+        "calcium-d3",
+        "The supplement that corrects a fruit-heavy diet — dusted by weight, never by eye.",
+        "calcium"
+      ]
+    ],
+    "tags": [
+      "sugar glider",
+      "Petaurus breviceps",
+      "HLP",
+      "calcium phosphorus"
+    ],
+    "body_html": ""
   }
 ]
