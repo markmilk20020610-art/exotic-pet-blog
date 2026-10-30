@@ -758,5 +758,389 @@
       "calcium phosphorus"
     ],
     "body_html": ""
+  },
+  {
+    "id": "pet-019",
+    "slug": "panther-chameleon-hydration",
+    "title": "Panther Chameleon Hydration: Why Misting Twice a Day Still Leaves Them Dry",
+    "dek": "Chameleons do not drink standing water and they do not drink on demand. Hydration is a function of when the fog runs, not how wet the cage gets.",
+    "target_keyword": "panther chameleon dehydration misting schedule",
+    "topic": "Furcifer pardalis hydration, fogging and nighttime humidity",
+    "category": "Habitat Setup",
+    "group": "Reptiles",
+    "species": "Panther Chameleon",
+    "sci": "Furcifer pardalis",
+    "author": "mara",
+    "date": "2026-10-30",
+    "is_pinned": false,
+    "image": "panther-chameleon.jpg",
+    "alt": "A male panther chameleon in profile on a bare branch, turquoise-green flanks barred in black with a red-orange eye turret.",
+    "caption": "Furcifer pardalis. The animal drinks the droplets it can reach, which is why a fogger running before dawn matters more than a midday spray.",
+    "facts": [
+      [
+        "Species",
+        "Furcifer pardalis"
+      ],
+      [
+        "Basking spot",
+        "28–32 °C / 82–90 °F"
+      ],
+      [
+        "Ambient",
+        "22–26 °C / 72–79 °F"
+      ],
+      [
+        "Night drop",
+        "16–18 °C / 61–64 °F"
+      ],
+      [
+        "Humidity, day",
+        "50–70 %"
+      ],
+      [
+        "Humidity, night",
+        "80–100 %"
+      ]
+    ],
+    "kit": [
+      [
+        "hygrometer",
+        "Two of them — a single probe at the top of the cage reads the hot dry layer and tells you nothing about the plant canopy.",
+        "measure"
+      ],
+      [
+        "leca-drainage",
+        "A drainage layer under the substrate, so the fog that keeps humidity up does not become the standing water that grows bacteria.",
+        "substrate"
+      ]
+    ],
+    "tags": [
+      "panther chameleon",
+      "Furcifer pardalis",
+      "hydration",
+      "humidity",
+      "reptile"
+    ],
+    "body_html": ""
+  },
+  {
+    "id": "pet-020",
+    "slug": "whites-tree-frog-oedema",
+    "title": "White's Tree Frog Oedema: Reading Fluid Retention Before the Lymph Hearts Fail",
+    "dek": "A frog that looks pleasingly plump is often a frog that is not moving fluid. The difference between a good body condition score and oedema is where the swelling sits.",
+    "target_keyword": "whites tree frog oedema bloating",
+    "topic": "Ranoidea caerulea lymph hearts, oedema and water quality",
+    "category": "Troubleshooting",
+    "group": "Amphibians",
+    "species": "White's Tree Frog",
+    "sci": "Ranoidea caerulea",
+    "author": "idris",
+    "date": "2026-10-30",
+    "is_pinned": false,
+    "image": "whites-tree-frog.jpg",
+    "alt": "A White's tree frog resting on a weathered branch, glossy green skin with scattered white spots and a heavy fold above the eye.",
+    "caption": "Ranoidea caerulea. Amphibian skin absorbs water directly, so a chlorinated bowl bypasses the gut entirely and reaches the lymph system first.",
+    "facts": [
+      [
+        "Species",
+        "Ranoidea caerulea"
+      ],
+      [
+        "Adult length",
+        "7–10 cm"
+      ],
+      [
+        "Adult weight",
+        "40–80 g"
+      ],
+      [
+        "Humidity",
+        "50–60 %"
+      ],
+      [
+        "Temperature",
+        "24–28 °C / 75–82 °F"
+      ],
+      [
+        "Water",
+        "dechlorinated, never straight tap"
+      ]
+    ],
+    "kit": [
+      [
+        "hygrometer",
+        "Oedema and desiccation look identical from outside the glass; the humidity reading is what separates them.",
+        "measure"
+      ],
+      [
+        "leca-drainage",
+        "Drainage under a damp substrate keeps the frog out of the saturated layer where bacteria bloom.",
+        "substrate"
+      ]
+    ],
+    "tags": [
+      "whites tree frog",
+      "Ranoidea caerulea",
+      "oedema",
+      "amphibian",
+      "water quality"
+    ],
+    "body_html": ""
+  },
+  {
+    "id": "pet-021",
+    "slug": "giant-african-land-snail-shell",
+    "title": "Giant African Land Snail Shell Growth: Calcium, pH and the Rings That Record Both",
+    "dek": "A snail cannot repair a thin shell, only add to it. Every ridge on the whorl is a fortnight of whatever calcium the keeper happened to supply.",
+    "target_keyword": "giant african land snail shell calcium",
+    "topic": "Lissachatina fulica shell growth, calcium availability and substrate pH",
+    "category": "Feeding Guide",
+    "group": "Invertebrates",
+    "species": "Giant African Land Snail",
+    "sci": "Lissachatina fulica",
+    "author": "mara",
+    "date": "2026-10-30",
+    "is_pinned": false,
+    "image": "giant-african-land-snail.jpg",
+    "alt": "A giant African land snail in profile, brown-and-cream banded shell with the soft body extended and tentacles visible.",
+    "caption": "Lissachatina fulica. Shell is deposited at the aperture only, so the growth rings near the lip are a record of the last few weeks of husbandry.",
+    "facts": [
+      [
+        "Species",
+        "Lissachatina fulica"
+      ],
+      [
+        "Shell length",
+        "15–20 cm"
+      ],
+      [
+        "Substrate pH",
+        "6.5–7.5"
+      ],
+      [
+        "Temperature",
+        "22–26 °C / 72–79 °F"
+      ],
+      [
+        "Humidity",
+        "70–90 %"
+      ],
+      [
+        "Calcium",
+        "available continuously, not weekly"
+      ]
+    ],
+    "kit": [
+      [
+        "coco-fibre",
+        "Depth matters more than material — a snail that cannot bury to its shell lip will not lay, and will not retreat from dry air.",
+        "substrate"
+      ],
+      [
+        "hygrometer",
+        "Below about 70 % the mantle stops depositing and the new lip goes thin and translucent.",
+        "measure"
+      ]
+    ],
+    "tags": [
+      "giant african land snail",
+      "Lissachatina fulica",
+      "shell",
+      "calcium",
+      "invertebrate"
+    ],
+    "body_html": ""
+  },
+  {
+    "id": "pet-022",
+    "slug": "degu-sugar-sensitivity",
+    "title": "Degu Sugar Sensitivity: Why One Raisin Is a Different Risk Than One for a Rat",
+    "dek": "Degus are the only common pet rodent that cannot handle dietary sugar at all. The mechanism is a missing gene, and it makes fruit a species-inappropriate food rather than a treat.",
+    "target_keyword": "degu sugar diabetes diet",
+    "topic": "Octodon degus insulin response, dietary fibre and diabetes",
+    "category": "Feeding Guide",
+    "group": "Exotic Mammals",
+    "species": "Degu",
+    "sci": "Octodon degus",
+    "author": "nell",
+    "date": "2026-10-30",
+    "is_pinned": false,
+    "image": "degu.jpg",
+    "alt": "A degu standing on a flat surface holding a piece of food in both forepaws, brown agouti fur and a thin tufted tail behind.",
+    "caption": "Octodon degus. Unlike rats and mice, degus lack the enzyme to clear a sugar load quickly, so a fruit-based treat is a metabolic event rather than a snack.",
+    "facts": [
+      [
+        "Species",
+        "Octodon degus"
+      ],
+      [
+        "Adult weight",
+        "170–300 g"
+      ],
+      [
+        "Dietary fibre",
+        "15–20 % crude fibre"
+      ],
+      [
+        "Fruit",
+        "none — not as a treat either"
+      ],
+      [
+        "Body temperature",
+        "37–38 °C / 99–100 °F"
+      ],
+      [
+        "Life span",
+        "6–8 years"
+      ]
+    ],
+    "kit": [
+      [
+        "kitchen-scale",
+        "A 200 g degu that gains 15 g in a fortnight on a new pellet is the earliest sign the fibre fraction dropped.",
+        "weight"
+      ],
+      [
+        "critical-care",
+        "Support feeding for a degu that has stopped eating — they decompensate faster than a rat of the same size.",
+        "feeding"
+      ]
+    ],
+    "tags": [
+      "degu",
+      "Octodon degus",
+      "diabetes",
+      "fibre",
+      "exotic mammal"
+    ],
+    "body_html": ""
+  },
+  {
+    "id": "pet-023",
+    "slug": "budgerigar-goitre-iodine",
+    "title": "Budgerigar Goitre: Why a Seed-Only Diet Swells the Throat",
+    "dek": "A budgie that squeaks instead of chirps and puffs at the throat is not fat and is not egg-bound. Its thyroid is enlarging against a trachea the width of a pencil lead.",
+    "target_keyword": "budgerigar goitre iodine deficiency",
+    "topic": "Melopsittacus undulatus thyroid enlargement and dietary iodine",
+    "category": "Troubleshooting",
+    "group": "Birds",
+    "species": "Budgerigar",
+    "sci": "Melopsittacus undulatus",
+    "author": "nell",
+    "date": "2026-10-30",
+    "is_pinned": false,
+    "image": "budgerigar.jpg",
+    "alt": "Two budgerigars perched close together against a dark background, yellow faces and black-barred green wings in sharp detail.",
+    "caption": "Melopsittacus undulatus. A diet of nothing but millet and canary seed supplies almost no iodine, and the thyroid enlarges into a space that has no room for it.",
+    "facts": [
+      [
+        "Species",
+        "Melopsittacus undulatus"
+      ],
+      [
+        "Adult weight",
+        "30–40 g"
+      ],
+      [
+        "Dietary iodine",
+        "0.1–0.2 mg/kg"
+      ],
+      [
+        "Trachea diameter",
+        "2–3 mm"
+      ],
+      [
+        "Body temperature",
+        "40–41 °C / 104–106 °F"
+      ],
+      [
+        "Life span",
+        "7–10 years"
+      ]
+    ],
+    "kit": [
+      [
+        "kitchen-scale",
+        "A 35 g bird needs 1 g resolution — the weight loss that precedes a goitre is a few grams, not a few tens.",
+        "weight"
+      ],
+      [
+        "critical-care",
+        "A budgie that can no longer swallow seed needs support feeding the same day, not a wait-and-see.",
+        "feeding"
+      ]
+    ],
+    "tags": [
+      "budgerigar",
+      "Melopsittacus undulatus",
+      "goitre",
+      "iodine",
+      "bird"
+    ],
+    "body_html": ""
+  },
+  {
+    "id": "pet-024",
+    "slug": "african-grey-hypocalcaemia",
+    "title": "African Grey Parrot Hypocalcaemia: The Seizure That Starts in the Seed Bowl",
+    "dek": "The first sign is usually a bird that falls off its perch. By then the ionised calcium has been sliding for months, and the seed mix is the reason.",
+    "target_keyword": "african grey parrot hypocalcaemia seizures",
+    "topic": "Psittacus erithacus calcium metabolism and seed-only diets",
+    "category": "Feeding Guide",
+    "group": "Birds",
+    "species": "African Grey Parrot",
+    "sci": "Psittacus erithacus",
+    "author": "idris",
+    "date": "2026-10-30",
+    "is_pinned": false,
+    "image": "african-grey-parrot.jpg",
+    "alt": "Head and shoulders of an African grey parrot, pale grey feathers, black beak and a yellow eye ring, against a soft green background.",
+    "caption": "Psittacus erithacus. Seed mixes run near 0.1 % calcium against a phosphorus load several times higher, which is the wrong direction for a bird that lives fifty years.",
+    "facts": [
+      [
+        "Species",
+        "Psittacus erithacus"
+      ],
+      [
+        "Adult weight",
+        "400–550 g"
+      ],
+      [
+        "Calcium in seed mix",
+        "about 0.1 %"
+      ],
+      [
+        "Target Ca:P",
+        "1.5–2 : 1"
+      ],
+      [
+        "Ionised Ca, normal",
+        "1.0–1.3 mmol/L"
+      ],
+      [
+        "Life span",
+        "50–60 years"
+      ]
+    ],
+    "kit": [
+      [
+        "calcium-d3",
+        "The correction itself — dosed by weight into a food the bird actually eats, not sprinkled on seed it discards.",
+        "calcium"
+      ],
+      [
+        "uvb-fixture",
+        "A parrot indoors gets no cutaneous vitamin D3; a tube over the cage is what lets absorbed calcium be used.",
+        "uvb"
+      ]
+    ],
+    "tags": [
+      "african grey",
+      "Psittacus erithacus",
+      "hypocalcaemia",
+      "calcium",
+      "bird"
+    ],
+    "body_html": ""
   }
 ]
