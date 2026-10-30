@@ -67,11 +67,19 @@ same document:
 
 | Beat | What the checker looks for |
 | ---- | -------------------------- |
-| ① Science hook | the opening `<p>` carries a number with a unit, and a Latin binomial appears in `<em>` at first mention |
+| ① Science hook | the opening `<p>` carries a **physical** number with its unit, and a Latin binomial appears in `<em>` at first mention |
 | ② Keeper's diary | one `<h2>` section with ≥3 first-person markers and ≥60 words |
 | ③ Care guide | 4–7 `<h2>` sections, plus a step sequence, an option list or a summary table |
 | ④ Quiet recommendation | affiliate tokens only, never hand-written commerce markup |
 | — | a "Frequently asked questions" `<h2>` with three `<h3>` |
+
+"Physical" is the operative word in beat ①. `_MEASURE_RE` accepts °C/°F, %,
+cm/mm/µm/nm/inches/ft, g/mg/kg, ml/L, UVI, lux, pH, gallons and watts — anything
+an instrument could read. It deliberately rejects **durations**: "a reliable
+10-14 day feeder" is not a measurement of the animal's environment, and
+accepting it let a draft clear the hook without containing any data at all. The
+prompt names the same unit families and includes a worked example paragraph so
+the model has a shape to copy rather than a rule to interpret.
 
 `BANNED_VOICE` catches the assistant register: "as an AI", "in today's
 fast-paced world", "delve into", "in conclusion" and friends. A body that

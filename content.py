@@ -325,7 +325,7 @@ POSTS = {
         ],
         "tags": ["ball python", "feeding strike", "frozen thawed", "Python regius"],
         "body_html": """
-<p>Your ball python has eaten frozen-thawed reliably for eight months. Then it stops. It ignores the rat, balls up, and looks at you with the flat indifference that only a <em>Python regius</em> can manage. Two weeks pass. Three. A ball python can go from a reliable 10–14 day feeder to a two-month fast with nothing wrong except a warm-end temperature that slipped four degrees, and no amount of scenting will fix a cold hide.</p>
+<p>Your ball python has eaten frozen-thawed reliably for eight months. Then it stops. It ignores the rat, balls up, and looks at you with the flat indifference that only a <em>Python regius</em> can manage. Two weeks pass. Three. A ball python can go from a reliable 10–14 day feeder to a two-month fast with nothing wrong except a warm-end temperature that slipped from 31 °C to 27 °C, and no amount of scenting will fix a cold hide.</p>
 
 <p>This is the most common question in the species, and the honest answer is that a feeding strike is usually not about food at all. Work through these in order, and do not skip ahead.</p>
 
@@ -427,7 +427,7 @@ POSTS = {
         ],
         "tags": ["leopard gecko", "UVB", "lighting", "Eublepharis macularius"],
         "body_html": """
-<p>Ask ten keepers whether leopard geckos need UVB and you will get two confident, opposite answers. Both camps are arguing from the same wrong premise: that this is a nocturnal animal living in total darkness. <em>Eublepharis macularius</em> is crepuscular, not nocturnal — it comes out within 30–60 minutes of lights-off, while the sky still carries UVB, and that narrow window is exactly what a lamp is trying to reproduce.</p>
+<p>Ask ten keepers whether leopard geckos need UVB and you will get two confident, opposite answers. Both camps are arguing from the same wrong premise: that this is a nocturnal animal living in total darkness. <em>Eublepharis macularius</em> is crepuscular, not nocturnal — it comes out within 30–60 minutes of lights-off, while the sky still carries UVB at 290–320 nm, and that narrow window is exactly what a lamp is trying to reproduce.</p>
 
 <p>Leopard geckos are <strong>crepuscular</strong>. They are active at dawn and dusk, they bask briefly at burrow mouths, and field data shows them exposed to low-level sunlight. That reframes the question: not "UVB or no UVB", but "how much, and what changes if I provide it".</p>
 

@@ -207,7 +207,7 @@ def credit_html(filename: str, prefix: str = "Photograph") -> str:
 # Bump this whenever PROMPT or the structural contract changes. It is part of
 # the cache fingerprint, so a prompt edit invalidates every cached body instead
 # of leaving old, off-brief articles in place for months.
-PROMPT_VERSION = "2026-10-30.1"
+PROMPT_VERSION = "2026-10-30.2"
 
 PROMPT = Template("""You are the senior keeper at Exotic Pet Care Hub, an independent magazine
 written by people who keep the animals, for people who keep them. You have a
@@ -226,10 +226,29 @@ $products
 ## The four beats, in this order
 
 1. THE SCIENCE HOOK — no heading, 2-4 sentences, opens the article.
-   Lead with something true and specific: a measurement, a physiological
-   constraint, a piece of wild ecology, a Latin name doing real work. The reader
-   must learn a fact in the first sentence. No throat-clearing, no "exotic pets
-   are increasingly popular", no definition of the animal.
+   HARD REQUIREMENT, NOT NEGOTIABLE: the first paragraph must contain at least
+   one concrete measurement with its unit. Any of these satisfies it:
+     · a temperature range        72-80 °F  ·  22-27 °C
+     · a humidity percentage      60-70 %
+     · an adult body length       12-18 mm  ·  1.5 inches
+     · a UVB wavelength           290-320 nm
+     · a UV index or a dose       0.6-1.1 UVI  ·  10 mg/kg
+     · an enclosure volume        40-gallon  ·  45 × 45 × 60 cm
+   A number without a unit does not count. A claim with no number in it does not
+   count. A duration does not count either: "a reliable 10-14 day feeder" is not
+   a measurement of the animal's environment. It has to be something an
+   instrument could read — a temperature, a humidity, a length, a wavelength.
+   Do not open with a scene, a question or a definition and put the data in
+   paragraph two — the number belongs in the first paragraph.
+   Then earn it in the same paragraph: say what that number does to the animal.
+   No throat-clearing, no "exotic pets are increasingly popular".
+
+   Worked example of a compliant opening. Copy the shape, never the species or
+   the numbers:
+   "<p>A crested gecko's enclosure runs 72-80 °F at the warm end and 60-70 %
+   relative humidity, and the animal's entire welfare budget is spent inside
+   those two ranges. Step outside them for a week and the first thing you lose
+   is appetite, not weight.</p>"
 
 2. THE KEEPER'S DIARY — one <h2> section, 120-180 words, first person singular.
    One animal, one evening, concrete detail: what it did, what you got wrong,
@@ -288,6 +307,9 @@ questions, each answered by a single <p> of 40-70 words.
 - No <a>, no <img>, no price, no star rating, no button, no inline style. The
   template renders every product card.
 - 750-950 words. Four to seven <h2> sections in total.
+- Before returning, re-read your first paragraph. If it has no number with
+  a unit in it, rewrite that paragraph. This is the one rule that is
+  checked automatically and rejected automatically.
 - Never write about a different species as the subject of the article.
 """)
 
@@ -351,8 +373,23 @@ BANNED_VOICE = (
     "in conclusion", "testament to the",
 )
 
+# Any number that carries a *physical* unit — the kind of number a keeper can
+# put an instrument on. Durations are deliberately absent: "a reliable 10-14 day
+# feeder" is not a measurement of the animal's environment, and accepting it
+# let a draft clear the hook check without containing any actual data.
+# `[\s-]*` lets "40-gallon" through without letting a bare "in" match "2 in the
+# morning" — inches must be written "in." or "inch(es)".
 _MEASURE_RE = re.compile(
-    r"\d+(?:\.\d+)?\s*(?:°\s?[CF]|%|cm|mm|kg|ml|minutes?|hours?|days?|weeks?|months?|years?)",
+    r"\d+(?:\.\d+)?[\s-]*(?:"
+    r"°\s?[CF]|%|"
+    r"cm|mm|µm|um|nm|km|m\b|"
+    r"in\.|inch(?:es)?\b|ft\b|feet\b|"
+    r"µg|mg|kg|grams?\b|g\b|"
+    r"ml\b|cl\b|litres?\b|liters?\b|l\b|"
+    r"UVI|lux|lx|pH|"
+    r"gal(?:lon)?s?\b|"
+    r"watts?\b|W\b"
+    r")",
     re.I,
 )
 _FIRST_PERSON_RE = re.compile(r"\b(I|my|me|we|our)\b")
@@ -386,10 +423,12 @@ def check_structure(body: str) -> list[str]:
 
     first_p = re.search(r"<p[^>]*>(.*?)</p>", body, re.S)
     hook = prose_text(first_p.group(1)) if first_p else ""
+    # Both can be true at once; reporting them together saves a repair round.
     if len(hook.split()) < 25:
         problems.append("the opening paragraph is too short to carry a science hook")
-    elif not _MEASURE_RE.search(hook):
-        problems.append("the opening paragraph has no concrete measurement")
+    if not _MEASURE_RE.search(hook):
+        problems.append("the opening paragraph has no unit-bearing measurement "
+                        "(needs e.g. 72-80 °F, 60-70 %, 12-18 mm, 290-320 nm, 0.6-1.1 UVI)")
 
     if not _BINOMIAL_RE.search(body):
         problems.append("no Latin binomial in <em> at first mention")
@@ -578,12 +617,15 @@ def sanitize_body(body: str, post: dict) -> str:
 # Temperatures, humidity percentages and physical dimensions are the numbers a
 # keeper actually scans for. They get a high-contrast badge so the eye can find
 # them in a wall of prose.
-_UNIT = r"(?:cm|mm|ft|inches?)"
+_UNIT = r"(?:cm|mm|µm|um|nm|ft|inches?)"
 PARAM_RE = re.compile(
     r"(?P<temp>\b\d{1,3}(?:\s*[–—-]\s*\d{1,3})?\s*°\s?[CF]\b)"
     r"|(?P<pct>\b\d{1,3}(?:\s*[–—-]\s*\d{1,3})?\s*%)"
     rf"|(?P<dim>\b\d+(?:\.\d+)?(?:\s*[×x]\s*\d+(?:\.\d+)?){{1,2}}\s*{_UNIT}\b)"
-    rf"|(?P<size>\b\d+(?:\.\d+)?(?:\s*[–—-]\s*\d+(?:\.\d+)?)?\s*{_UNIT}\b)",
+    rf"|(?P<size>\b\d+(?:\.\d+)?(?:\s*[–—-]\s*\d+(?:\.\d+)?)?\s*{_UNIT}\b)"
+    # A measurement the hook check now accepts should also read as data on the
+    # page — a UVB wavelength is as concrete as a temperature.
+    r"|(?P<tech>\b\d+(?:\.\d+)?(?:\s*[–—-]\s*\d+(?:\.\d+)?)?\s*(?:UVI|lux|lx|pH)\b)",
     re.I,
 )
 
