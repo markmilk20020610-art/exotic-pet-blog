@@ -75,7 +75,7 @@ def vivarium_html() -> str:
     return f"""
 <div class="viv" data-vivarium>
   <div class="viv__frame" tabindex="0" role="group"
-       aria-label="Interactive vivarium. Lucas the regal jumping spider hangs from a web in the corner. Move your pointer to lure him across the glass, click him to say hello, or click the glass to feed.">
+       aria-label="Interactive vivarium. Lucas the regal jumping spider waits in a web nest in the corner. Click anywhere in the enclosure to drop a fruit fly and watch him hunt.">
     <div class="viv__scene" aria-hidden="true">
       <span class="viv__lamp"></span>
       <span class="viv__glass"></span>
@@ -88,7 +88,6 @@ def vivarium_html() -> str:
     <svg class="viv__silk" aria-hidden="true" focusable="false">
       <path class="viv__silk-glow" d="M346 58 Q 315 105 285 152"/>
       <path class="viv__silk-line" d="M346 58 Q 315 105 285 152"/>
-      <path class="viv__spit" d=""/>
     </svg>
 
     <div class="viv__pet" data-species="spider">
@@ -119,7 +118,7 @@ def vivarium_html() -> str:
     </button>
 
     <div class="viv__bubble" aria-live="polite"></div>
-    <div class="viv__hint">Click the glass to feed</div>
+    <div class="viv__hint">Click the glass to hunt</div>
 
     <div class="viv__info">
       <div class="viv__kicker"><span>Resident</span><i></i><span>Enclosure 04</span></div>

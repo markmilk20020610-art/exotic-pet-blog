@@ -200,6 +200,9 @@ button { font: inherit; }
 .nav__links a:hover { color: var(--ink); }
 .nav__links a:hover::after { transform: scaleX(1); transform-origin: left; }
 
+.nav__links a.is-active { color: var(--ink); }
+.nav__links a.is-active::after { transform: scaleX(1); transform-origin: left; }
+
 .nav__actions { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
 
 .nav__cta {
@@ -1919,4 +1922,85 @@ button { font: inherit; }
   .nav, .strip, .newsletter, .rail, .progress, .related, .footer__legal { display: none; }
   body { background: #fff; }
   .article-layout { grid-template-columns: 1fr; }
+}
+
+/* ---------- filtered index pages (category / species / all) ---------- */
+
+.collection {
+  padding: 68px 0 52px;
+  border-bottom: 1px solid var(--line);
+}
+
+.collection__kicker {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.collection__title {
+  font-family: var(--serif);
+  font-size: clamp(38px, 6vw, 68px);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  margin: 0 0 18px;
+  max-width: 16ch;
+}
+
+.collection__title em { font-style: italic; color: var(--accent); }
+
+.collection__dek {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: 60ch;
+  margin: 0 0 20px;
+}
+
+.collection__meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.collection__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 30px;
+}
+
+.collection__chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  transition: background 0.25s var(--ease), color 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+
+.collection__chip:hover { border-color: var(--ink); color: var(--ink); }
+
+.collection__chip.is-active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+@media (max-width: 430px) {
+  .collection { padding: 44px 0 36px; }
+  .collection__dek { font-size: 15px; }
+  .collection__chips { margin-top: 22px; }
 }

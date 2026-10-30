@@ -12,7 +12,7 @@ generate.py        templates, SEO head, JSON-LD, sitemap.xml, robots.txt, feed.x
 vivarium.py        the hero widget's markup + the generated orb web
 static/style.css   the entire design system (one file, no build step)
 static/vivarium.css  the widget's own styles, scoped to .viv
-static/vivarium.js   resident roster + dragline physics
+static/vivarium.js   resident roster + the click-to-hunt sequence
 tools/build_vivarium_assets.py  source photos → the widget's WebP layers
 static/images/     species photographs + credits.json
 cache/             generated bodies, committed so the site is reproducible
@@ -104,8 +104,7 @@ The silk is a quadratic Bézier from the web's retreat to the animal's
 spinnerets, redrawn every frame:
 
 - the bow is `−v⊥ · 7` — velocity **perpendicular** to the thread bows it,
-  velocity along it does not — plus a slow sine wobble that grows on hover,
-  clamped to ±34 px;
+  velocity along it does not — plus a slow sine wobble, clamped to ±34 px;
 - it attaches at `pos.y − petH·0.46`, the top of the abdomen, so the animal hangs
   from it rather than being pierced by it;
 - hovering the animal brightens and thickens both strokes (`.viv.is-hover`), so
@@ -124,59 +123,72 @@ the web to a width of `k` (as a share of the frame), solve
 `left = 0.805 − 0.924·k` and `top = 0.108 − 0.0606·k` — otherwise the thread
 visibly leaves from empty glass beside the hub.
 
-### Kinematics
+### Kinematics — click to hunt
 
-The animal is one flat cut-out, so the movement is built in three composed
-layers. Each one owns exactly one thing:
+The widget no longer follows the pointer. It is a small state machine
+(`idle → spot → lunge → wrap → haul → idle`) driven by clicks, so the enclosure
+stays still until someone touches it.
 
-1. **Position** — `.viv__pet` gets a `translate3d` from the script. Damped
-   steering: `speed = min(3px, distance · 0.062)`. The cap turns a long chase
-   into a steady crawl (~180 px/s at 60 fps) instead of a 12 px first-frame
-   dash, while short corrections stay purely damped.
+The animal is one flat cut-out, so movement is built in three composed layers.
+Each owns exactly one thing:
+
+1. **Position** — `.viv__pet` gets a `translate3d` from the script. During the
+   lunge and the haul the position is sampled from a quadratic Bézier, not
+   lerped toward a point.
 2. **Gait** — `.viv__pet-gait` runs the `vivGait` keyframes (0.58 s, two steps
    per cycle) and the script only writes `--gait` (0 → 1, from measured speed).
    The keyframes scale themselves off that variable: `--bob` 3 px, `--roll`
    ±2.4°, `--shove` 1.3 px. The pivot is `transform-origin: 50% 0%` — the
    spinnerets — so the body swings on the thread like the pendulum it is and the
    silk stays attached at the top.
-3. **Idle sway** — `.viv__pet-sway` keeps the slow ±1.5° breathing, composed on
-   top, so a parked animal is still faintly alive.
+3. **Idle sway** — `.viv__pet-sway` keeps the slow ±1.5° breathing plus a 2.4 px
+   rise; the silk breathes with an opacity pulse (`vivSilkBreath`, only while
+   `.viv.is-idle`), so both endpoints stay welded to the web hub and the
+   spinnerets.
 
 Writing a *variable* rather than the animation duration matters: changing
 `animation-duration` restarts the cycle and snaps the phase, which at full
 amplitude is a visible 5° jolt. Scaling amplitude through a var lets the gait
 follow the speed every frame without ever restarting.
 
-**Why the path snakes.** Steering by a jittered *point* does not produce a
-crooked walk: the LERP smooths any offset into a curve, and a uniform random
-heading cancels itself out over a few hundred pixels — measured cross-track
-deviation was under 4 px on a 195 px chord, i.e. invisible. The heading itself
-has to wander. The animal walks toward the lure with its nose 5–20° off, the
-sign flips on ~78 % of re-rolls (so it snakes instead of random-walking), and
-the offset fades with distance so it can still converge. Measured after the
-change: ±10 px cross-track on a 183 px chord.
+**The sequence.**
 
-**Return home.** `goHome()` does not lerp toward the nest. It samples the
-thread's own control point, blends it into a quadratic from the current position
-to the resting spot, and walks `t` with an ease-out cubic over 22–72 frames
-(~0.4–1.2 s, scaled by distance). The animal visibly arcs up along the silk and
-reels itself in; measured bow is ~19 px above the straight chord.
+- **A — prey.** A click spawns a 27 px fly at the click point, clamped into
+  `ROAM` and pushed at least 78 px from the spider so the strike is always
+  visible. It pops in (`scale(0) → 1`), flutters its wings at 90 ms and jitters
+  on a 160 ms `steps(2)` cycle. A soft warm halo keeps the dark body legible on
+  the moss.
+- **B — lunge.** A 220 ms beat of attention, then a quadratic from the resting
+  spot to the fly whose control point bows off the chord and lifts by
+  `0.42 · d`. Progress is eased with `easeOutBack` (one ~12 % overshoot, no
+  oscillation), so the animal arrives with momentum and settles exactly on the
+  prey. Duration is `clamp(d · 0.26, 16, 40)` frames — ~270–660 ms.
+- **C — wrap.** On arrival: a light flash, three dashed silk rings spun in
+  sequence, six flecks thrown outward, and the bubble "Caught a snack! 🪰". The
+  bubble flips below the catch when it is high in the frame, so it never covers
+  the readout panel.
+- **D — haul.** The spider retracts along the thread with `smoothstep`
+  (ease-in-out) over `clamp(d · 0.5, 26, 64)` frames, the parcel trailing at
+  `pos.y + petH · 0.24`. At the nest the fly and the burst are removed, the
+  bubble is dismissed, and the animal parks back into idle.
+
+The wrap burst is z-index 4, above the animal, so the rings read even though the
+spider is sitting on the prey.
 
 | Input | Response |
 | ----- | -------- |
-| pointer move | damped crawl with a wandering heading, gait amplitude following the speed |
-| pointer leaves, or 2.6 s still | ease-out climb back along the silk; parks exactly on the nest and stops the loop |
-| hover the animal | silk bow amplitude and sway speed both increase |
-| click the animal | `.is-probe` lunge, a short spit of silk toward the cursor, and a speech bubble |
-| click the glass / `Feed` / <kbd>Enter</kbd> | a feeder insect drops, a ripple expands, and the animal walks straight in for the prey (no wander on a stationary target) |
-| touch device | no hover, so the same pointer events drive it from the tap |
+| click anywhere in the enclosure | spawn a fly there and run the full hunt |
+| click while a hunt is running | ignored — one hunt at a time |
+| `Feed` button / <kbd>Enter</kbd> / <kbd>Space</kbd> | the same hunt, at a random spot in `ROAM` |
+| hover the animal | the dragline brightens and thickens; it no longer lures the animal |
+| touch device | a tap is the click |
 
-`ROAM` clamps the animal to the middle of the enclosure — 17–83 % across,
-19–58 % down — so it can never crawl under the caption scrim or off the glass.
+`ROAM` clamps the prey — 17–83 % across, 19–58 % down — so a hunt never ends
+under the caption scrim.
 
-`prefers-reduced-motion: reduce` stops the loop entirely: the animal stays on
-the nest, the gait, sway and probe animations are switched off, and only the
-readout keeps ticking. Verified: three position samples 2 s apart are identical.
+`prefers-reduced-motion: reduce` keeps the hunt (it is user-triggered feedback)
+but strips the decoration: no fly flutter, no wrap rings, no flash, no idle
+breathing, and shorter waits. The position arc still runs.
 
 ### Residents
 
@@ -223,6 +235,47 @@ under every figure.
 3. Add the image to `static/images/` plus a `credits.json` record, and register
    it in `SPECIES_IMAGE`.
 4. `python generate.py`.
+
+The nav, the filtered index pages (`guides.html`, `category-*.html`,
+`species*.html`) and their sitemap rows are all derived from the new post's
+`category` / `group`, so there is nothing else to edit by hand.
+
+## Navigation and filtered indexes
+
+The primary nav is generated from the posts, never hand-written. Each label is a
+real page:
+
+| Label | URL | Lists |
+| ----- | --- | ----- |
+| Field Guides | `guides.html` | every guide, newest first |
+| Feeding / Habitat / Health | `category-<slug>.html` | that editorial category |
+| By species | `species.html` | every group, in sections |
+| — | `species-<group>.html` | one species class |
+
+`nav_items(tax)` is the single source of truth; `collection_pages(posts, tax)`
+writes one page per entry. The nav, footer, article breadcrumb and the category
+chip on each article all point at these URLs, so a click always lands on a page
+that shows exactly that slice.
+
+Why pages and not `#anchors`: the old nav linked Feeding, Habitat, Health and
+By species at four columns of the same `#browse` grid. Those columns sit on one
+row, so every link scrolled to the same place and the nav looked dead. The
+filtered pages also work without JavaScript and are indexed individually.
+
+`audit_collections()` re-reads each page and asserts that its card ids equal the
+expected set — a category page that lists a stray article fails the build.
+
+## Content integrity
+
+Two articles must never share a title or a body. `audit_content()` hashes the
+sanitised prose of every post and fails the build on a collision; it also
+re-reads each written page and checks that the `<h1>` and prose belong to that
+post, so a data/template mix-up cannot ship silently.
+
+`resolve_body()` writes a `cache/<id>.json` sidecar with a fingerprint of the
+prompt inputs (id, keyword, topic, species). A cache file is only reused when
+its fingerprint matches, and a body under 400 characters is treated as a miss —
+so a stale or copied cache file can never become another article's content.
 
 ## Affiliate system
 

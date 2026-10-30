@@ -143,8 +143,7 @@
 }
 
 .viv__silk-line,
-.viv__silk-glow,
-.viv__spit {
+.viv__silk-glow {
   fill: none;
   stroke-linecap: round;
 }
@@ -177,11 +176,19 @@
   stroke-width: 4;
 }
 
-.viv__spit {
-  stroke: rgba(236, 246, 242, 0.9);
-  stroke-width: 0.9;
-  stroke-dasharray: 0 400;
-  transition: stroke-dasharray 0.22s linear;
+/* Idle: the thread takes a slow breath. Animating opacity rather than the
+   path keeps both endpoints welded to the web hub and the spinnerets. */
+.viv.is-idle .viv__silk-line {
+  animation: vivSilkBreath 5.4s ease-in-out infinite;
+}
+
+.viv.is-idle .viv__silk-glow {
+  animation: vivSilkBreath 5.4s ease-in-out infinite;
+}
+
+@keyframes vivSilkBreath {
+  0%, 100% { opacity: 0.62; }
+  50%      { opacity: 1; }
 }
 
 /* ---------- resident ---------- */
@@ -208,8 +215,8 @@
 }
 
 @keyframes vivSway {
-  0%, 100% { transform: rotate(-1.5deg); }
-  50% { transform: rotate(1.5deg); }
+  0%, 100% { transform: rotate(-1.5deg) translateY(0); }
+  50%      { transform: rotate(1.5deg) translateY(-2.4px); }
 }
 
 /* ---------- gait ---------- */
@@ -559,40 +566,168 @@
 
 .viv.is-used .viv__hint { opacity: 0; }
 
-/* ---------- feeding ---------- */
+/* ---------- prey: the fly ---------- */
 
-.viv__feeder {
+.viv__fly {
   position: absolute;
+  left: 0;
+  top: 0;
   z-index: 3;
-  width: 16px;
-  height: 16px;
-  margin: -8px 0 0 -8px;
+  width: 27px;
+  height: 27px;
   pointer-events: none;
-  opacity: 0;
-  transform: translateY(-26px) rotate(-14deg);
-  transition: transform 0.55s cubic-bezier(0.34, 0.02, 0.86, 0.5), opacity 0.3s;
+  will-change: transform;
 }
 
-.viv__feeder.is-drop {
-  opacity: 1;
-  transform: translateY(6px) rotate(6deg);
-}
-
-.viv__ripple {
+/* a soft warm halo lifts the small dark body off the moss */
+.viv__fly::before {
+  content: "";
   position: absolute;
-  z-index: 2;
-  width: 10px;
-  height: 10px;
-  margin: -5px 0 0 -5px;
+  inset: -9px;
   border-radius: 50%;
-  border: 1px solid rgba(190, 230, 210, 0.55);
+  background: radial-gradient(circle, rgba(255, 238, 204, 0.26) 0%, rgba(255, 238, 204, 0.06) 55%, transparent 72%);
   pointer-events: none;
-  animation: vivRipple 0.9s var(--ease-out) forwards;
 }
 
-@keyframes vivRipple {
-  from { transform: scale(0.4); opacity: 0.9; }
-  to { transform: scale(5); opacity: 0; }
+.viv__fly-pop {
+  width: 100%;
+  height: 100%;
+  transform: scale(0);
+  opacity: 0;
+  transition: transform 0.28s cubic-bezier(0.18, 1.6, 0.4, 1), opacity 0.2s ease;
+}
+
+.viv__fly.is-on .viv__fly-pop {
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* caught: the parcel shrinks into the spider's grip */
+.viv__fly.is-caught .viv__fly-pop {
+  transform: scale(0.8);
+}
+
+.viv__fly.is-gone {
+  opacity: 0;
+  transition: opacity 0.26s ease;
+}
+
+.viv__fly-in {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  animation: vivFlyJitter 0.16s steps(2) infinite;
+}
+
+.viv__fly svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.55));
+}
+
+.viv__fly-wings {
+  transform-origin: 50% 55%;
+  animation: vivFlyWings 0.09s linear infinite;
+}
+
+@keyframes vivFlyJitter {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(1px, -1px); }
+  50%  { transform: translate(-1px, 0.5px); }
+  75%  { transform: translate(0.5px, 1px); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes vivFlyWings {
+  0%, 100% { transform: scaleY(1); }
+  50%      { transform: scaleY(0.42); }
+}
+
+/* the silk cocoon that stays on the parcel while it is hauled home */
+.viv__fly.is-caught .viv__fly-in::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px dashed rgba(245, 252, 247, 0.82);
+  animation: vivCocoonSpin 2.2s linear infinite;
+}
+
+@keyframes vivCocoonSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- prey: the silk burst ---------- */
+
+.viv__wrap {
+  position: absolute;
+  z-index: 4;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  transition: opacity 0.34s ease;
+}
+
+.viv__wrap.is-gone { opacity: 0; }
+
+.viv__wrap-ring {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border: 1px dashed rgba(245, 252, 247, 0.9);
+  border-radius: 50%;
+  opacity: 0;
+  animation: vivWrapRing 0.7s cubic-bezier(0.3, 0.9, 0.4, 1) forwards;
+}
+
+@keyframes vivWrapRing {
+  0%   { transform: scale(0.2) rotate(0deg); opacity: 0; }
+  26%  { opacity: 1; }
+  70%  { transform: scale(1.25) rotate(160deg); opacity: 0.85; }
+  100% { transform: scale(1.5) rotate(230deg); opacity: 0; }
+}
+
+/* a soft pop of light at the instant of capture */
+.viv__wrap-flash {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.22) 42%, transparent 70%);
+  opacity: 0;
+  animation: vivWrapFlash 0.42s ease-out forwards;
+}
+
+@keyframes vivWrapFlash {
+  0%   { transform: scale(0.4); opacity: 0.9; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+
+.viv__wrap-fleck {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3.4px;
+  height: 3.4px;
+  margin: -1.7px 0 0 -1.7px;
+  border-radius: 50%;
+  background: rgba(246, 252, 248, 0.95);
+  box-shadow: 0 0 5px rgba(220, 244, 230, 0.8);
+  opacity: 0;
+  animation: vivWrapFleck 0.66s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes vivWrapFleck {
+  0%   { transform: rotate(var(--a)) translateX(2px); opacity: 0; }
+  20%  { opacity: 1; }
+  100% { transform: rotate(var(--a)) translateX(var(--r)); opacity: 0; }
 }
 
 /* ---------- speech bubble ---------- */
@@ -608,6 +743,7 @@
   -webkit-backdrop-filter: blur(10px) saturate(140%);
   backdrop-filter: blur(10px) saturate(140%);
   color: #1b1712;
+  font-family: var(--sans), "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
   font-size: 12.5px;
   line-height: 1.45;
   font-weight: 500;
@@ -622,6 +758,18 @@
 .viv__bubble.is-on {
   opacity: 1;
   transform: translate(-50%, -100%) scale(1);
+}
+
+/* near the top of the frame the bubble flips below the catch so it never
+   covers the environment panel */
+.viv__bubble.is-below {
+  transform-origin: 0 0;
+  border-radius: 5px 14px 14px 14px;
+  transform: translate(-50%, 8px) scale(0.92);
+}
+
+.viv__bubble.is-below.is-on {
+  transform: translate(-50%, 0) scale(1);
 }
 
 .viv__bubble em { font-style: italic; }
@@ -672,7 +820,14 @@
   .viv__pet-gait,
   .viv__pet.is-probe .viv__pet-img,
   .viv__hud-status i,
-  .viv__ripple { animation: none !important; }
-  .viv__pet-img { transition: none; }
-  .viv__silk-spit { transition: none; }
+  .viv__fly-in,
+  .viv__fly-wings,
+  .viv__wrap-ring,
+  .viv__wrap-fleck,
+  .viv__wrap-flash,
+  .viv__fly.is-caught .viv__fly-in::after,
+  .viv.is-idle .viv__silk-line,
+  .viv.is-idle .viv__silk-glow { animation: none !important; }
+  .viv__pet-img,
+  .viv__fly-pop { transition: none; }
 }

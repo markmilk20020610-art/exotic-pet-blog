@@ -1,7 +1,18 @@
 /* ==========================================================================
-   Interactive Vivarium — resident physics
+   Interactive Vivarium — click-to-hunt
    Vanilla JS, no dependencies. The animal is already in the HTML; this file
    only moves it. Without JS the enclosure still shows a spider on its web.
+
+   Interaction model (replaces the old pointer-follow chase entirely):
+
+     idle   the spider hangs from the corner web; the silk breathes (CSS)
+     click  A  a fruit fly spawns where you clicked, fluttering in place
+            B  the spider pounces along a spring arc onto it
+            C  silk wraps the prey and a small bubble pops up
+            D  the spider hauls the parcel back up the thread, then resets
+
+   Nothing here follows the pointer. Every move is a damped, user-triggered
+   event, so the enclosure is calm until you touch it.
    ========================================================================== */
 
 (function () {
@@ -15,7 +26,6 @@
   var bubble = root.querySelector('.viv__bubble');
   var silkLine = root.querySelector('.viv__silk-line');
   var silkGlow = root.querySelector('.viv__silk-glow');
-  var spit = root.querySelector('.viv__spit');
   var tempEl = root.querySelector('[data-temp]');
   var humEl = root.querySelector('[data-hum]');
   var barEl = root.querySelector('[data-hum-bar]');
@@ -23,16 +33,9 @@
 
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  var PET_RATIO = 363 / 560;   // intrinsic aspect of the cut-out
+  var PET_RATIO = 363 / 560;            // intrinsic aspect of the cut-out
 
-  /* Deliberately low: a jumping spider that teleports to the cursor reads as a
-     cursor, not an animal. 0.06 lands a 200 px move in roughly half a second. */
-  var LERP_HUNT = 0.062;
-  var IDLE_MS = 2600;
-  /* the LERP alone would let it dash 12 px on the first frame of a long chase;
-     capping the step turns that into a steady crawl (≈130 px/s at 60 fps)
-     while leaving short corrections purely damped */
-  var MAX_STEP = 3;
+  /* where prey may appear: clear of the web, the HUD and the caption scrim */
   var ROAM = { x0: 0.17, x1: 0.83, y0: 0.19, y1: 0.58 };
 
   var W = 0, H = 0, petW = 0, petH = 0;
@@ -40,33 +43,50 @@
   var home = { x: 0, y: 0 };
   var pos = { x: 0, y: 0 };
   var prev = { x: 0, y: 0 };
-  var target = { x: 0, y: 0 };
   var silkCtrl = { x: 0, y: 0 };
   var tilt = 0;
-  var mode = 'home';
-  var hover = 0;
-  var gait = 0;
-  var gaitShown = -1;
   var clock = 0;
   var raf = null;
-  var idleTimer = null;
-  var bubbleTimer = null;
+  var gait = 0;
+  var gaitShown = -1;
   var started = false;
 
-  var climb = { t: 0, step: 0, from: { x: 0, y: 0 }, ctrl: { x: 0, y: 0 }, to: { x: 0, y: 0 } };
-  var lurePt = { x: 0, y: 0 };
-  var wander = true;
-  var steer = 0;                       // current heading offset, radians
-  var steerTo = 0;
-  var steerSign = 1;
-  var steerAt = 0;
+  /* 'idle' | 'spot' | 'lunge' | 'wrap' | 'haul' */
+  var mode = 'idle';
 
-  var PROBE_LINES = [
-    'Ah — you noticed me. Most people don’t.',
-    'A little silk, just to test the glass. You understand.',
-    'Careful. I am still deciding whether you are food.',
-    'Hello. I have six more eyes than you and I am still surprised.'
-  ];
+  var seq = {
+    from: { x: 0, y: 0 },
+    ctrl: { x: 0, y: 0 },
+    to: { x: 0, y: 0 },
+    t: 0,
+    step: 0
+  };
+
+  var fly = null;      // { x, y, el }
+  var wrap = null;     // the burst of silk rings around the catch
+  var timers = [];
+
+  var FLY_SVG =
+    '<div class="viv__fly-pop">' +
+      '<div class="viv__fly-in">' +
+        '<svg viewBox="0 0 40 40" fill="none" aria-hidden="true">' +
+          '<g class="viv__fly-wings">' +
+            '<ellipse cx="13.5" cy="13" rx="9" ry="4.4" fill="rgba(228,242,242,.52)" stroke="rgba(255,255,255,.5)" stroke-width=".8" transform="rotate(-27 13.5 13)"/>' +
+            '<ellipse cx="26.5" cy="13" rx="9" ry="4.4" fill="rgba(228,242,242,.46)" stroke="rgba(255,255,255,.44)" stroke-width=".8" transform="rotate(27 26.5 13)"/>' +
+          '</g>' +
+          '<g stroke="#2a2016" stroke-width="1.1" stroke-linecap="round">' +
+            '<path d="M16 24.5 L9.5 30 M16 26.5 L10 34 M24 24.5 L30.5 30 M24 26.5 L30 34"/>' +
+          '</g>' +
+          '<ellipse cx="20" cy="22.5" rx="6.2" ry="8.4" fill="#3b2c1c"/>' +
+          '<ellipse cx="20" cy="20.6" rx="3.9" ry="5.2" fill="#5c4527"/>' +
+          '<circle cx="20" cy="12.8" r="3.9" fill="#241a10"/>' +
+          '<circle cx="18.4" cy="11.8" r="1.05" fill="#d94f3a"/>' +
+          '<circle cx="21.6" cy="11.8" r="1.05" fill="#d94f3a"/>' +
+        '</svg>' +
+      '</div>' +
+    '</div>';
+
+  var CATCH_LINE = 'Caught a snack! \uD83E\uDEB0';
 
   /* The enclosure is a jumping-spider vivarium, so the roster rotates
      individuals rather than species — the silk physics only makes sense for a
@@ -98,16 +118,7 @@
     }
   ];
 
-  var FEED_LINES = [
-    '*Chomp.* Live prey. Finally, someone who understands.',
-    'That was the correct size. Well judged.',
-    '*Crunch.* Two more and I will consider a moult.',
-    'Excellent hunting. You may stay.'
-  ];
-
-  function pick(list) {
-    return list[Math.floor(Math.random() * list.length)];
-  }
+  function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
 
   /* ------------------------------------------------------------------ */
   /* resident of the day                                                 */
@@ -140,9 +151,8 @@
     if (traitsEl) traitsEl.textContent = r.traits;
     if (lineEl) lineEl.textContent = '\u201C' + r.quote + '\u201D';
     frame.setAttribute('aria-label',
-      'Interactive vivarium. ' + r.alt + ' hangs from a web in the corner. ' +
-      'Move your pointer to lure them across the glass, click them to say ' +
-      'hello, or click the glass to feed.');
+      'Interactive vivarium. ' + r.alt + ' waits in a web nest in the corner. ' +
+      'Click anywhere in the enclosure to drop a fruit fly and watch the hunt.');
   })();
 
   /* ------------------------------------------------------------------ */
@@ -180,8 +190,8 @@
     home.y = nest.y + petH * 1.45;
 
     if (!started) {
-      pos.x = target.x = home.x;
-      pos.y = target.y = home.y;
+      pos.x = home.x;
+      pos.y = home.y;
       prev.x = pos.x;
       prev.y = pos.y;
       started = true;
@@ -195,8 +205,8 @@
 
   function roamClamp(x, y) {
     return {
-      x: Math.min(W * ROAM.x1, Math.max(W * ROAM.x0, x)),
-      y: Math.min(H * ROAM.y1, Math.max(H * ROAM.y0, y))
+      x: clamp(x, W * ROAM.x0, W * ROAM.x1),
+      y: clamp(y, H * ROAM.y0, H * ROAM.y1)
     };
   }
 
@@ -204,10 +214,13 @@
   /* render                                                              */
   /* ------------------------------------------------------------------ */
 
+  function tr(x, y, r) {
+    return 'translate3d(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px,0)' +
+      ' translate(-50%,-50%) rotate(' + r.toFixed(2) + 'deg)';
+  }
+
   function paint() {
-    pet.style.transform =
-      'translate3d(' + pos.x.toFixed(2) + 'px,' + pos.y.toFixed(2) + 'px,0)' +
-      ' translate(-50%,-50%) rotate(' + tilt.toFixed(2) + 'deg)';
+    pet.style.transform = tr(pos.x, pos.y, tilt);
     drawSilk(null);
   }
 
@@ -227,7 +240,7 @@
       var vy = pos.y - prev.y;
       /* velocity across the thread bows it; velocity along it does not */
       var vperp = (vx * -dy + vy * dx) / dist;
-      var wob = Math.sin(clock * 0.055) * (1.3 + hover * 3.8);
+      var wob = Math.sin(clock * 0.055) * 1.6;
       bow = -vperp * 7 + wob;
       if (bow > 34) bow = 34;
       else if (bow < -34) bow = -34;
@@ -246,20 +259,23 @@
     silkLine.setAttribute('d', d);
     silkGlow.setAttribute('d', d);
 
-    /* the return-home path rides this same bow, so keep the control point */
+    /* the haul path rides this same bow, so keep the control point */
     silkCtrl.x = cx;
     silkCtrl.y = cy;
-  }
-
-  function wake() {
-    if (reduce || raf) return;
-    raf = requestAnimationFrame(tick);
   }
 
   function bez(a, c, b, t) {
     var u = 1 - t;
     return u * u * a + 2 * u * t * c + t * t * b;
   }
+
+  /* one small overshoot, no oscillation: the pounce lands with momentum */
+  function easeOutBack(t) {
+    var c1 = 1.12, c3 = c1 + 1, u = t - 1;
+    return 1 + c3 * u * u * u + c1 * u * u;
+  }
+
+  function smooth(t) { return t * t * (3 - 2 * t); }
 
   /* drive the CSS gait from measured speed: the keyframes own the shape, this
      only says how hard they run */
@@ -280,15 +296,18 @@
   function park(x, y) {
     pos.x = prev.x = x;
     pos.y = prev.y = y;
-    tilt *= 0.85;
+    tilt = 0;
     gait = 0;
     gaitShown = 0;
     pet.style.setProperty('--gait', '0');
     root.classList.remove('is-crawling');
-    pet.style.transform =
-      'translate3d(' + pos.x.toFixed(2) + 'px,' + pos.y.toFixed(2) + 'px,0)' +
-      ' translate(-50%,-50%) rotate(' + tilt.toFixed(2) + 'deg)';
+    pet.style.transform = tr(pos.x, pos.y, 0);
     drawSilk(0);
+  }
+
+  function wake() {
+    if (raf) return;
+    raf = requestAnimationFrame(tick);
   }
 
   function tick() {
@@ -298,263 +317,285 @@
     prev.x = pos.x;
     prev.y = pos.y;
 
-    /* ---- climbing back up the thread ---- */
-    if (mode === 'climb') {
-      climb.t += climb.step;
-      var t = climb.t > 1 ? 1 : climb.t;
-      var e = 1 - Math.pow(1 - t, 3);          // ease-out cubic
-      pos.x = bez(climb.from.x, climb.ctrl.x, climb.to.x, e);
-      pos.y = bez(climb.from.y, climb.ctrl.y, climb.to.y, e);
-      tilt += (0 - tilt) * 0.09;
-      if (climb.t >= 1) {
-        mode = 'home';
-        park(home.x, home.y);
-        return;
-      }
+    /* ---- B: the pounce ---- */
+    if (mode === 'lunge') {
+      seq.t += seq.step;
+      var t = seq.t > 1 ? 1 : seq.t;
+      var e = easeOutBack(t);
+      pos.x = bez(seq.from.x, seq.ctrl.x, seq.to.x, e);
+      pos.y = bez(seq.from.y, seq.ctrl.y, seq.to.y, e);
+
+      var want = clamp((seq.to.x - seq.from.x) * 0.14, -20, 20);
+      tilt += (want - tilt) * 0.18;
+
       step();
+      if (seq.t >= 1) { capture(); return; }
       raf = requestAnimationFrame(tick);
       return;
     }
 
-    /* ---- hunting ---- */
-    /* re-aim every frame so the wander keeps rolling even if the pointer has
-       stopped — a still cursor must not produce a ruler-straight walk */
-    aim();
-    steer += (steerTo - steer) * 0.3;
+    /* ---- D: haul the parcel home ---- */
+    if (mode === 'haul') {
+      seq.t += seq.step;
+      var t2 = seq.t > 1 ? 1 : seq.t;
+      var e2 = smooth(t2);
+      pos.x = bez(seq.from.x, seq.ctrl.x, seq.to.x, e2);
+      pos.y = bez(seq.from.y, seq.ctrl.y, seq.to.y, e2);
 
-    var dx = target.x - pos.x;
-    var dy = target.y - pos.y;
-    var dist = Math.sqrt(dx * dx + dy * dy);
+      var want2 = clamp((seq.to.x - seq.from.x) * 0.1, -14, 14);
+      tilt += (want2 - tilt) * 0.12;
 
-    /* damped speed: LERP on the remaining distance, capped so a long chase is
-       a steady crawl rather than a first-frame dash */
-    var sp = dist * LERP_HUNT;
-    if (sp > MAX_STEP) sp = MAX_STEP;
-
-    if (dist > 0.05) {
-      var ang = Math.atan2(dy, dx) + steer;
-      pos.x += Math.cos(ang) * sp;
-      pos.y += Math.sin(ang) * sp;
-    }
-
-    /* tilt toward the cursor, clamped so the animal leans rather than spins */
-    var want = dx * 0.16;
-    if (want > 17) want = 17;
-    else if (want < -17) want = -17;
-    tilt += (want - tilt) * 0.07;
-
-    var settled = Math.abs(dx) < 0.4 && Math.abs(dy) < 0.4;
-
-    if (settled && hover < 0.01) {
-      /* nothing left to animate: park and stop the loop */
-      park(target.x, target.y);
+      carryPrey();
+      step();
+      if (seq.t >= 1) { finish(); return; }
+      raf = requestAnimationFrame(tick);
       return;
     }
-
-    step();
-    raf = requestAnimationFrame(tick);
   }
 
   /* ------------------------------------------------------------------ */
-  /* intent                                                              */
+  /* prey                                                                */
   /* ------------------------------------------------------------------ */
 
-  function armIdle() {
-    clearTimeout(idleTimer);
-    idleTimer = setTimeout(goHome, IDLE_MS);
+  function setFlyPos(x, y) {
+    if (!fly || !fly.el) return;
+    fly.el.style.transform =
+      'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) translate(-50%,-50%)';
   }
 
-  /* A spider does not walk a ruler-straight line to its prey. Steering by a
-     point offset does not reproduce that — the LERP smooths any offset into a
-     curve. Instead the heading itself wanders: the animal walks *toward* the
-     lure but with its nose a few degrees off, re-rolled every few hundred
-     milliseconds, so the path snakes while still closing. The offset fades
-     with distance, otherwise it would circle its target forever. */
-  function aim() {
-    target.x = lurePt.x;
-    target.y = lurePt.y;
+  function spawnFly(x, y) {
+    var el = document.createElement('div');
+    el.className = 'viv__fly';
+    el.setAttribute('aria-hidden', 'true');
+    el.innerHTML = FLY_SVG;
+    frame.appendChild(el);
 
-    if (!wander) {
-      steerTo = 0;
-      return;
+    fly = { x: x, y: y, el: el };
+    setFlyPos(x, y);
+
+    /* commit the scale(0) start state for one frame, then pop in */
+    requestAnimationFrame(function () {
+      if (fly && fly.el === el) el.classList.add('is-on');
+    });
+  }
+
+  /* where the fly lands: at the click, but never right on top of the spider */
+  function huntPoint(cx, cy) {
+    var p = roamClamp(cx, cy);
+    var dx = p.x - pos.x;
+    var dy = p.y - pos.y;
+    var d = Math.sqrt(dx * dx + dy * dy);
+
+    if (d < 78) {
+      var a = d > 1 ? Math.atan2(dy, dx) : Math.random() * Math.PI * 2;
+      p = roamClamp(pos.x + Math.cos(a) * 100, pos.y + Math.sin(a) * 100);
     }
-    if (Date.now() < steerAt) return;
-
-    var dx = lurePt.x - pos.x;
-    var dy = lurePt.y - pos.y;
-    var far = Math.sqrt(dx * dx + dy * dy);
-    var amp = far > 110 ? 1 : far / 110;
-
-    /* Alternate the sign so the path snakes instead of random-walking: a
-       uniform random heading cancels itself out over a few hundred pixels and
-       the walk reads as straight. Skipping the flip now and then keeps the
-       rhythm from looking mechanical. */
-    if (Math.random() < 0.78) steerSign = -steerSign;
-    steerTo = steerSign * (0.09 + Math.random() * 0.27) * amp;
-    steerAt = Date.now() + 200 + Math.random() * 220;
+    return p;
   }
 
-  function lure(x, y) {
-    var p = roamClamp(x, y);
-    mode = 'hunt';
-    wander = true;
-    lurePt.x = p.x;
-    lurePt.y = p.y;
-    aim();
+  function buildWrap() {
+    if (!fly || reduce) return;
+
+    var el = document.createElement('div');
+    el.className = 'viv__wrap';
+    el.style.left = fly.x + 'px';
+    el.style.top = fly.y + 'px';
+
+    var flash = document.createElement('span');
+    flash.className = 'viv__wrap-flash';
+    el.appendChild(flash);
+
+    /* three dashed rings spun in sequence around the catch */
+    for (var i = 0; i < 3; i++) {
+      var ring = document.createElement('span');
+      ring.className = 'viv__wrap-ring';
+      ring.style.animationDelay = (i * 0.09) + 's';
+      el.appendChild(ring);
+    }
+
+    /* a few silk flecks thrown outward */
+    for (var j = 0; j < 6; j++) {
+      var fleck = document.createElement('i');
+      fleck.className = 'viv__wrap-fleck';
+      var ang = (j / 6) * Math.PI * 2 + Math.random() * 0.5;
+      fleck.style.setProperty('--a', ang.toFixed(2) + 'rad');
+      fleck.style.setProperty('--r', (12 + Math.random() * 13).toFixed(0) + 'px');
+      fleck.style.animationDelay = (0.04 * j) + 's';
+      el.appendChild(fleck);
+    }
+
+    frame.appendChild(el);
+    wrap = el;
+  }
+
+  function carryPrey() {
+    if (!fly || !fly.el) return;
+    /* the parcel trails just under the animal as it climbs */
+    setFlyPos(pos.x, pos.y + petH * 0.24);
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* the sequence                                                        */
+  /* ------------------------------------------------------------------ */
+
+  function later(fn, ms) {
+    timers.push(setTimeout(fn, ms));
+  }
+
+  function clearTimers() {
+    while (timers.length) clearTimeout(timers.pop());
+  }
+
+  function beginHunt(cx, cy) {
+    if (mode !== 'idle') return;
+
+    /* drop any bubble-hide still queued from the last hunt */
+    clearTimers();
+
+    root.classList.add('is-used');
+    root.classList.remove('is-idle');
+
+    /* A: the fly appears */
+    var p = huntPoint(cx, cy);
+    spawnFly(p.x, p.y);
+
+    /* a beat of attention before the strike */
+    mode = 'spot';
+    tilt = clamp((p.x - pos.x) * 0.14, -16, 16);
+    paint();
+
+    later(startLunge, reduce ? 80 : 220);
+  }
+
+  /* B: quadratic arc with a spring ease — the animal leaves the nest, bulges
+     off the straight line and snaps onto the fly */
+  function startLunge() {
+    if (!fly) return;
+
+    var from = { x: pos.x, y: pos.y };
+    var to = { x: fly.x, y: fly.y };
+    var dx = to.x - from.x;
+    var dy = to.y - from.y;
+    var d = Math.sqrt(dx * dx + dy * dy) || 1;
+
+    var mx = (from.x + to.x) * 0.5;
+    var my = (from.y + to.y) * 0.5;
+    var bow = Math.min(78, d * 0.5);
+
+    /* unit normal, flipped so the arc bows upward and away from the glass */
+    var nx = -dy / d;
+    var ny = dx / d;
+    var s = ny > 0 ? -1 : 1;
+
+    seq.from.x = from.x; seq.from.y = from.y;
+    seq.to.x = to.x; seq.to.y = to.y;
+    seq.ctrl.x = mx + nx * bow * s * 0.55;
+    seq.ctrl.y = my + ny * bow * s * 0.55 - bow * 0.42;
+
+    seq.t = 0;
+    seq.step = 1 / clamp(d * 0.26, 16, 40);   // ~270–660 ms at 60 fps
+    mode = 'lunge';
     wake();
-    armIdle();
   }
 
-  function startClimb() {
-    var d = Math.sqrt(Math.pow(home.x - pos.x, 2) + Math.pow(home.y - pos.y, 2));
-    if (d < 0.6) {
-      mode = 'home';
-      park(home.x, home.y);
-      return;
+  /* C: silk wraps the prey, bubble pops */
+  function capture() {
+    pos.x = seq.to.x;
+    pos.y = seq.to.y;
+    prev.x = pos.x;
+    prev.y = pos.y;
+    tilt *= 0.5;
+    pet.style.transform = tr(pos.x, pos.y, tilt);
+    drawSilk(0);
+
+    mode = 'wrap';
+    if (fly && fly.el) fly.el.classList.add('is-caught');
+    buildWrap();
+    say(CATCH_LINE, fly.x, fly.y, fly.y < H * 0.40);
+
+    later(startHaul, reduce ? 480 : 820);
+  }
+
+  /* D: retreat along the taut thread, ease-in-out, parcel in tow */
+  function startHaul() {
+    if (!fly) { finish(); return; }
+
+    if (wrap) {
+      var w = wrap;
+      wrap = null;
+      w.classList.add('is-gone');
+      later(function () { if (w.parentNode) w.parentNode.removeChild(w); }, 380);
     }
 
-    climb.from.x = pos.x;
-    climb.from.y = pos.y;
-    climb.to.x = home.x;
-    climb.to.y = home.y;
+    var from = { x: pos.x, y: pos.y };
+    var to = { x: home.x, y: home.y };
+    var d = Math.sqrt(Math.pow(to.x - from.x, 2) + Math.pow(to.y - from.y, 2));
+
+    seq.from.x = from.x; seq.from.y = from.y;
+    seq.to.x = to.x; seq.to.y = to.y;
 
     /* blend the thread's own control point into the path: the animal recedes
        along the silk instead of sliding across open glass */
-    var mx = (pos.x + home.x) * 0.5;
-    var my = (pos.y + home.y) * 0.5;
-    climb.ctrl.x = mx + (silkCtrl.x - mx) * 0.55;
-    climb.ctrl.y = my + (silkCtrl.y - my) * 0.55;
+    var mx = (from.x + to.x) * 0.5;
+    var my = (from.y + to.y) * 0.5;
+    seq.ctrl.x = mx + (silkCtrl.x - mx) * 0.6;
+    seq.ctrl.y = my + (silkCtrl.y - my) * 0.6;
 
-    /* ease-out over a fixed number of frames, so a short hop is quick and a
-       long haul back across the enclosure takes its time */
-    climb.t = 0;
-    climb.step = 1 / Math.max(22, Math.min(72, d * 0.55));
-    mode = 'climb';
+    seq.t = 0;
+    seq.step = 1 / clamp(d * 0.5, 26, 64);    // ~430–1070 ms at 60 fps
+    mode = 'haul';
     wake();
   }
 
-  function goHome() {
-    clearTimeout(idleTimer);
-    hideBubble();
-    if (mode === 'home' || mode === 'climb') return;
-    startClimb();
+  function finish() {
+    clearTimers();
+
+    /* remove whatever prey/burst is still in the frame — normally just the
+       carried fly, but this also sweeps up anything a mid-haul resize orphaned */
+    var leftovers = frame.querySelectorAll('.viv__fly, .viv__wrap');
+    for (var i = 0; i < leftovers.length; i++) {
+      var node = leftovers[i];
+      node.classList.add('is-gone');
+      (function (n) {
+        setTimeout(function () { if (n.parentNode) n.parentNode.removeChild(n); }, 280);
+      })(node);
+    }
+    fly = null;
+    wrap = null;
+
+    mode = 'idle';
+    park(home.x, home.y);
+    root.classList.add('is-idle');
+    later(hideBubble, 900);
   }
 
   /* ------------------------------------------------------------------ */
   /* speech                                                              */
   /* ------------------------------------------------------------------ */
 
+  var bubbleTimer = null;
+
   function hideBubble() {
     clearTimeout(bubbleTimer);
     bubble.classList.remove('is-on');
   }
 
-  function say(text, x, y) {
+  function say(text, x, y, below) {
     bubble.innerHTML = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
     var half = (bubble.offsetWidth || 180) / 2 + 6;
-    bubble.style.left = Math.max(half, Math.min(W - half, x)) + 'px';
-    bubble.style.top = Math.max(62, y) + 'px';
+    bubble.style.left = clamp(x, half, W - half) + 'px';
+
+    if (below) {
+      bubble.classList.add('is-below');
+      bubble.style.top = Math.min(H - 54, Math.max(y + 24, 138)) + 'px';
+    } else {
+      bubble.classList.remove('is-below');
+      bubble.style.top = Math.max(62, y - 30) + 'px';
+    }
+
     bubble.classList.add('is-on');
     clearTimeout(bubbleTimer);
-    bubbleTimer = setTimeout(hideBubble, 3200);
-  }
-
-  /* ------------------------------------------------------------------ */
-  /* the probe: a short spit of silk toward the cursor                   */
-  /* ------------------------------------------------------------------ */
-
-  function spitAt(clientX, clientY) {
-    if (!spit) return;
-    var r = frame.getBoundingClientRect();
-    var tx = clientX - r.left;
-    var ty = clientY - r.top;
-    var ax = pos.x;
-    var ay = pos.y + petH * 0.08;
-    var dx = tx - ax;
-    var dy = ty - ay;
-    var d = Math.sqrt(dx * dx + dy * dy) || 1;
-    var len = Math.min(76, Math.max(24, d));
-    var ex = ax + (dx / d) * len;
-    var ey = ay + (dy / d) * len;
-    var mx = (ax + ex) / 2 + (ey - ay) * 0.14;
-    var my = (ay + ey) / 2 - (ex - ax) * 0.14;
-
-    spit.setAttribute('d', 'M' + ax.toFixed(1) + ' ' + ay.toFixed(1) +
-      'Q' + mx.toFixed(1) + ' ' + my.toFixed(1) + ' ' + ex.toFixed(1) + ' ' + ey.toFixed(1));
-
-    if (reduce) return;
-    var total = len + 40;
-    spit.style.transition = 'none';
-    spit.style.strokeDasharray = '0 ' + total;
-    void spit.getBoundingClientRect();
-    spit.style.transition = 'stroke-dasharray .18s ease-out';
-    spit.style.strokeDasharray = (len + 8) + ' ' + total;
-    setTimeout(function () {
-      spit.style.transition = 'stroke-dasharray .3s ease-in';
-      spit.style.strokeDasharray = '0 ' + total;
-    }, 460);
-  }
-
-  function probe(ev) {
-    root.classList.add('is-used');
-    armIdle();
-
-    if (!reduce) {
-      pet.classList.add('is-probe');
-      setTimeout(function () { pet.classList.remove('is-probe'); }, 660);
-    }
-    spitAt(ev.clientX, ev.clientY);
-    setTimeout(function () {
-      say(pick(PROBE_LINES), pos.x, pos.y - petH * 0.66);
-    }, 250);
-  }
-
-  /* ------------------------------------------------------------------ */
-  /* feeding                                                             */
-  /* ------------------------------------------------------------------ */
-
-  function feedAt(x, y) {
-    root.classList.add('is-used');
-
-    var feeder = document.createElement('div');
-    feeder.className = 'viv__feeder';
-    feeder.innerHTML =
-      '<svg viewBox="0 0 24 24" aria-hidden="true">' +
-        '<ellipse cx="12" cy="14" rx="6.5" ry="5" fill="#6b5230"/>' +
-        '<circle cx="12" cy="8.5" r="3.4" fill="#4d3a1f"/>' +
-        '<path d="M9 7 C6 4 5 2 4 1 M15 7 C18 4 19 2 20 1" stroke="#3a2b17" stroke-width="1.2" fill="none" stroke-linecap="round"/>' +
-        '<path d="M8 16 L5 20 M12 17 L12 21 M16 16 L19 20" stroke="#3a2b17" stroke-width="1.1" stroke-linecap="round"/>' +
-      '</svg>';
-    feeder.style.left = x + 'px';
-    feeder.style.top = y + 'px';
-    frame.appendChild(feeder);
-    requestAnimationFrame(function () { feeder.classList.add('is-drop'); });
-
-    var ripple = document.createElement('span');
-    ripple.className = 'viv__ripple';
-    ripple.style.left = x + 'px';
-    ripple.style.top = y + 'px';
-    frame.appendChild(ripple);
-
-    setTimeout(function () {
-      feeder.style.opacity = '0';
-      if (feeder.parentNode) feeder.parentNode.removeChild(feeder);
-    }, 620);
-    setTimeout(function () { if (ripple.parentNode) ripple.parentNode.removeChild(ripple); }, 950);
-
-    /* the animal turns and goes for the prey instead of chomping on the spot */
-    var p = roamClamp(x, y - petH * 0.25);
-    mode = 'hunt';
-    wander = false;                       /* prey does not wander: straight in */
-    lurePt.x = p.x;
-    lurePt.y = p.y;
-    aim();
-    wake();
-    armIdle();
-
-    setTimeout(function () {
-      say(pick(FEED_LINES), pos.x, pos.y - petH * 0.66);
-    }, 460);
+    bubbleTimer = setTimeout(hideBubble, 2600);
   }
 
   /* ------------------------------------------------------------------ */
@@ -585,78 +626,52 @@
   if (!measure()) {
     /* the hero may be laid out after this runs; retry once on load */
     window.addEventListener('load', function () {
-      if (measure()) { paint(); if (!reduce) drawSilk(0); }
+      if (measure()) { paint(); drawSilk(0); }
     }, { once: true });
   } else {
     paint();
-    if (!reduce) drawSilk(0);
+    drawSilk(0);
   }
 
-  if (!reduce) {
-    frame.addEventListener('pointermove', function (ev) {
-      var r = frame.getBoundingClientRect();
-      lure(ev.clientX - r.left, ev.clientY - r.top);
-    }, { passive: true });
+  root.classList.add('is-idle');
 
-    frame.addEventListener('pointerleave', goHome);
-    frame.addEventListener('pointercancel', goHome);
-
-    pet.addEventListener('pointerenter', function () {
-      hover = 1;
-      root.classList.add('is-hover');
-      wake();
-    });
-    pet.addEventListener('pointerleave', function () {
-      hover = 0;
-      root.classList.remove('is-hover');
-      wake();
-    });
-
-    pet.addEventListener('click', function (ev) {
-      ev.stopPropagation();
-      ev.preventDefault();
-      probe(ev);
-    });
-  }
-
+  /* clicking anywhere in the enclosure starts a hunt */
   frame.addEventListener('click', function (ev) {
     var r = frame.getBoundingClientRect();
-    feedAt(ev.clientX - r.left, ev.clientY - r.top);
+    beginHunt(ev.clientX - r.left, ev.clientY - r.top);
   });
+
+  /* the button drops a fly at a random spot, for keyboard and touch users */
+  function feedRandom() {
+    beginHunt(W * (0.24 + Math.random() * 0.52), H * (0.22 + Math.random() * 0.32));
+  }
 
   if (feedBtn) {
     feedBtn.addEventListener('click', function (ev) {
       ev.stopPropagation();
-      var r = frame.getBoundingClientRect();
-      feedAt(pos.x, pos.y + petH * 0.2);
+      feedRandom();
     });
   }
 
   frame.addEventListener('keydown', function (ev) {
     if (ev.key === 'Enter' || ev.key === ' ') {
       ev.preventDefault();
-      feedAt(pos.x, pos.y + petH * 0.2);
+      feedRandom();
     }
   });
+
+  /* hover only brightens the silk — it no longer lures the animal */
+  pet.addEventListener('pointerenter', function () { root.classList.add('is-hover'); });
+  pet.addEventListener('pointerleave', function () { root.classList.remove('is-hover'); });
 
   /* keep the silk anchored when the column width changes */
   var lastW = W;
   function relayout() {
     if (!measure()) return;
     if (Math.abs(lastW - W) > 1) {
-      if (mode === 'home' || mode === 'climb') {
-        mode = 'home';
-        park(home.x, home.y);
-      } else {
-        var p = roamClamp(target.x, target.y);
-        target.x = p.x;
-        target.y = p.y;
-        pos.x = Math.min(pos.x, W);
-        pos.y = Math.min(pos.y, H);
-        paint();
-      }
+      if (mode !== 'idle') finish();
+      else park(home.x, home.y);
       lastW = W;
-      wake();
     }
   }
 

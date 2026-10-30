@@ -35,6 +35,7 @@ Usage
 from __future__ import annotations
 
 import argparse
+import hashlib
 import html
 import json
 import os
@@ -70,6 +71,13 @@ CATEGORY_SHORT = {
     "Troubleshooting": "Health",
 }
 CATEGORY_ORDER = ["Feeding Guide", "Habitat Setup", "Troubleshooting"]
+
+# One-sentence pitch per editorial topic, used as the dek on its own index page.
+CATEGORY_DEK = {
+    "Feeding Guide": "What to feed, how much and how often — portioning, schedules and the mistakes that shorten lives.",
+    "Habitat Setup": "Enclosures, substrate, heating and lighting that hold a stable, bioactive environment.",
+    "Troubleshooting": "When something is wrong: humidity, mould, refusals, and the fixes that actually work.",
+}
 
 # Exact species image per article. This is the fix for "animal mix-ups":
 # the photograph is chosen by species, never by category or random seed.
@@ -233,13 +241,39 @@ def prompt_products(kit: list[dict]) -> str:
     return "\n".join(lines)
 
 
+def body_fingerprint(item: dict, post: dict) -> str:
+    """Stable hash of the inputs that make this article this article."""
+    raw = "|".join([item["id"], item["target_keyword"], item["topic"], post["species"]])
+    return hashlib.sha1(raw.encode("utf-8")).hexdigest()[:16]
+
+
 def resolve_body(item: dict, post: dict, refresh: bool) -> tuple[str, str]:
-    """Return (body_html, source)."""
+    """Return (body_html, source).
+
+    The cache is keyed by article id *and* validated against a fingerprint of
+    the prompt inputs, so a body written for one article can never be served
+    for another. The old code trusted the filename alone: a stale or copied
+    `cache/pet-00N.html` would silently become that article's body.
+    """
     CACHE.mkdir(exist_ok=True)
     cache_file = CACHE / f"{item['id']}.html"
+    meta_file = CACHE / f"{item['id']}.json"
+    stamp = body_fingerprint(item, post)
 
     if cache_file.exists() and not refresh:
-        return cache_file.read_text(encoding="utf-8"), "cache"
+        cached = cache_file.read_text(encoding="utf-8")
+        meta: dict = {}
+        if meta_file.exists():
+            try:
+                meta = json.loads(meta_file.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                meta = {}
+        # A body shorter than a real guide, or one whose fingerprint does not
+        # match this prompt, is a miss — never reused. No fingerprint means we
+        # cannot prove provenance, so it is a miss too.
+        if len(strip_tags(cached)) >= 400 and meta.get("fingerprint") == stamp:
+            return cached, "cache"
+        print(f"    ! stale cache for {item['id']} — regenerating")
 
     api_key = os.environ.get("DEEPSEEK_API_KEY")
     if api_key:
@@ -267,7 +301,17 @@ def resolve_body(item: dict, post: dict, refresh: bool) -> tuple[str, str]:
                     )
                     body = resp.choices[0].message.content
                     body = re.sub(r"^```(?:html)?|```$", "", body.strip(), flags=re.M).strip()
+                    if len(strip_tags(body)) < 300:
+                        raise ValueError("model returned an empty body")
                     cache_file.write_text(body, encoding="utf-8")
+                    meta_file.write_text(
+                        json.dumps(
+                            {"id": item["id"], "fingerprint": stamp,
+                             "keyword": item["target_keyword"]},
+                            ensure_ascii=False,
+                        ),
+                        encoding="utf-8",
+                    )
                     return body, "deepseek"
                 except Exception as exc:  # noqa: BLE001
                     print(f"    retry {attempt + 1}/3: {exc}")
@@ -404,18 +448,32 @@ def head(
 """
 
 
-def nav_html(tax: dict) -> str:
-    """Primary nav: topics first, species second.
+def nav_items(tax: dict) -> list[tuple[str, str, str]]:
+    """(label, href, key) for every primary nav entry.
 
-    Every href is generated from `tax`, so it always has a matching section on
-    the homepage. Adding a category to `content.py` extends the nav by itself.
+    Each topic and the species index are *pages*, not anchors on the homepage.
+    The old version pointed all four links at columns of the same `#browse`
+    grid, which sit side by side on one row — so every click scrolled to the
+    same place and the nav looked broken. Real pages give each label a distinct
+    URL that works without JavaScript and can be indexed separately.
     """
-    items = [("Field Guides", "index.html#guides")]
-    items += [(CATEGORY_SHORT.get(c, c), f"index.html#{s}") for c, s in tax["cats"]]
-    items += [("By species", "index.html#browse")]
+    items = [("Field Guides", "guides.html", "guides")]
+    items += [
+        (CATEGORY_SHORT.get(c, c), f"category-{s}.html", f"category-{s}")
+        for c, s in tax["cats"]
+    ]
+    items += [("By species", "species.html", "species")]
+    return items
 
-    links = "".join(f'<li><a href="{href}">{e(label)}</a></li>' for label, href in items)
-    mobile = "".join(f'<li><a href="{href}">{e(label)}</a></li>' for label, href in items)
+
+def nav_html(tax: dict, active: str | None = None) -> str:
+    def link(label: str, href: str, key: str) -> str:
+        cur = ' class="is-active" aria-current="page"' if key == active else ""
+        return f'<li><a href="{href}"{cur}>{e(label)}</a></li>'
+
+    items = nav_items(tax)
+    links = "".join(link(*it) for it in items)
+    mobile = "".join(link(*it) for it in items)
     return f"""
 <div class="strip">
   <div class="container strip__inner">
@@ -441,7 +499,7 @@ def nav_html(tax: dict) -> str:
       <ul class="nav__links">{links}</ul>
     </nav>
     <div class="nav__actions">
-      <a class="nav__cta" href="index.html#guides">All guides</a>
+      <a class="nav__cta" href="guides.html">All guides</a>
       <details class="nav__mobile">
         <summary>Menu</summary>
         <ul>{mobile}</ul>
@@ -476,11 +534,11 @@ def newsletter_html() -> str:
 
 def footer_html(tax: dict) -> str:
     cat_links = "".join(
-        f'<li><a href="index.html#{s}">{e(CATEGORY_SHORT.get(c, c))}</a></li>'
+        f'<li><a href="category-{s}.html">{e(CATEGORY_SHORT.get(c, c))}</a></li>'
         for c, s in tax["cats"]
     )
     group_links = "".join(
-        f'<li><a href="index.html#{s}">{e(g)}</a></li>' for g, s in tax["groups"]
+        f'<li><a href="species-{s}.html">{e(g)}</a></li>' for g, s in tax["groups"]
     )
     return f"""
 <footer class="footer">
@@ -496,7 +554,7 @@ def footer_html(tax: dict) -> str:
       <div class="footer__col">
         <h3>Field guides</h3>
         <ul>
-          <li><a href="index.html#guides">All guides</a></li>
+          <li><a href="guides.html">All guides</a></li>
           {cat_links}
         </ul>
       </div>
@@ -699,6 +757,122 @@ def render_index(posts: list[dict]) -> str:
     return doc
 
 
+def collection_chips(tax: dict, active: str) -> str:
+    """Cross-links between every filtered index, with the current one marked."""
+    def chip(label: str, href: str, key: str) -> str:
+        cur = (' class="collection__chip is-active" aria-current="page"'
+               if key == active else ' class="collection__chip"')
+        return f'<a href="{href}"{cur}>{e(label)}</a>'
+
+    out = [chip("All guides", "guides.html", "guides")]
+    out += [chip(CATEGORY_SHORT.get(c, c), f"category-{s}.html", f"category-{s}")
+            for c, s in tax["cats"]]
+    out += [chip(g, f"species-{s}.html", f"species-{s}") for g, s in tax["groups"]]
+    return "".join(out)
+
+
+def render_collection(
+    tax: dict,
+    posts: list[dict],
+    *,
+    slug: str,
+    kicker: str,
+    title: str,
+    dek: str,
+    active: str,
+    title_html: str = "",
+    note: str = "",
+    sections: list[tuple[str, list[dict]]] | None = None,
+) -> str:
+    """A filtered index page: one topic, one species, or the whole library.
+
+    `sections` renders several headed groups (used by the species index);
+    otherwise the posts are shown as a single grid. Every link on the page is a
+    real URL, so the filter works with JavaScript disabled.
+    """
+    canonical = absolute(slug + ".html")
+    listed = posts if sections is None else [p for _, items in sections for p in items]
+
+    jsonld = [
+        {
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "name": title,
+            "description": dek,
+            "url": canonical,
+            "isPartOf": {"@type": "WebSite", "name": SITE_NAME, "url": SITE_URL + "/"},
+        },
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "Home", "item": SITE_URL + "/"},
+                {"@type": "ListItem", "position": 2, "name": title, "item": canonical},
+            ],
+        },
+        {
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "name": title,
+            "numberOfItems": len(listed),
+            "itemListElement": [
+                {"@type": "ListItem", "position": i + 1,
+                 "url": absolute(p["id"] + ".html"), "name": p["title"]}
+                for i, p in enumerate(listed)
+            ],
+        },
+    ]
+
+    doc = head(f"{title} — {SITE_NAME}", dek, canonical, jsonld=jsonld,
+               body_class="page-collection")
+    doc += nav_html(tax, active)
+
+    meta = f'<span>{len(listed):02d} field guides</span>'
+    if note:
+        meta += f'<span class="dot"></span><span>{e(note)}</span>'
+
+    doc += f"""
+<main id="main">
+  <section class="collection">
+    <div class="container">
+      <div class="collection__kicker">{e(kicker)}</div>
+      <h1 class="collection__title">{title_html or e(title)}</h1>
+      <p class="collection__dek">{e(dek)}</p>
+      <div class="collection__meta">{meta}</div>
+      <nav class="collection__chips" aria-label="Filter guides">{collection_chips(tax, active)}</nav>
+    </div>
+  </section>
+"""
+
+    if sections is None:
+        doc += f"""
+  <section class="section">
+    <div class="container">
+      <div class="grid">{"".join(card_html(p) for p in posts)}</div>
+    </div>
+  </section>
+"""
+    else:
+        for heading, items in sections:
+            if not items:
+                continue
+            doc += f"""
+  <section class="section">
+    <div class="container">
+      <div class="section__head">
+        <h2 class="section__title">{e(heading)}</h2>
+        <span class="section__note">{len(items):02d} guides</span>
+      </div>
+      <div class="grid">{"".join(card_html(p) for p in items)}</div>
+    </div>
+  </section>
+"""
+
+    doc += newsletter_html()
+    doc += "</main>\n" + footer_html(tax) + "</body>\n</html>\n"
+    return doc
+
+
 def render_facts(post: dict) -> str:
     rows = "".join(
         f'<div class="facts__row"><dt>{e(k)}</dt><dd>{e(v)}</dd></div>'
@@ -861,7 +1035,7 @@ def render_article(post: dict, body: str, related: list[dict], tax: dict) -> str
             "itemListElement": [
                 {"@type": "ListItem", "position": 1, "name": "Home", "item": SITE_URL + "/"},
                 {"@type": "ListItem", "position": 2, "name": post["category"],
-                 "item": SITE_URL + "/#" + slugify(post["category"])},
+                 "item": absolute(f"category-{slugify(post['category'])}.html")},
                 {"@type": "ListItem", "position": 3, "name": post["title"], "item": canonical},
             ],
         },
@@ -899,10 +1073,10 @@ def render_article(post: dict, body: str, related: list[dict], tax: dict) -> str
     <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="index.html">Home</a><span class="sep">/</span>
-        <a href="index.html#guides">Field guides</a><span class="sep">/</span>
-        <a href="index.html#{slugify(post['category'])}">{e(post['category'])}</a>
+        <a href="guides.html">Field guides</a><span class="sep">/</span>
+        <a href="category-{slugify(post['category'])}.html">{e(post['category'])}</a>
       </nav>
-      <a class="article-head__cat" href="index.html#{slugify(post['category'])}">{e(post['category'])}</a>
+      <a class="article-head__cat" href="category-{slugify(post['category'])}.html">{e(post['category'])}</a>
       <h1>{e(post['title'])}</h1>
       <p class="article-head__dek">{e(post['dek'])}</p>
       <div class="byline">
@@ -956,7 +1130,7 @@ def render_article(post: dict, body: str, related: list[dict], tax: dict) -> str
       <div class="section__head">
         <span class="section__num">03</span>
         <h2 class="section__title" id="related-title">Keep <em>reading</em></h2>
-        <a class="section__link" href="index.html#guides">All guides</a>
+        <a class="section__link" href="guides.html">All guides</a>
       </div>
       <div class="grid">{related_cards}</div>
     </div>
@@ -971,11 +1145,23 @@ def render_article(post: dict, body: str, related: list[dict], tax: dict) -> str
 # sitemap / robots / feed
 # --------------------------------------------------------------------------- #
 
-def render_sitemap(posts: list[dict]) -> str:
+def render_sitemap(posts: list[dict], tax: dict) -> str:
     newest = max(p["date"] for p in posts)
     entries = [("", newest, "weekly", "1.0")]
     for p in posts:
         entries.append((p["id"] + ".html", p["date"], "monthly", "0.8"))
+
+    # The filtered indexes are real, indexable pages, so they belong in the
+    # sitemap alongside the articles. Lastmod is derived from the posts each
+    # page lists — still fully automatic, nothing hand-maintained.
+    entries.append(("guides.html", newest, "weekly", "0.7"))
+    for c, s in tax["cats"]:
+        last = max((p["date"] for p in posts if p["category"] == c), default=newest)
+        entries.append((f"category-{s}.html", last, "weekly", "0.7"))
+    entries.append(("species.html", newest, "monthly", "0.6"))
+    for g, s in tax["groups"]:
+        last = max((p["date"] for p in posts if p["group"] == g), default=newest)
+        entries.append((f"species-{s}.html", last, "monthly", "0.6"))
 
     urls = ""
     for path, lastmod, freq, prio in entries:
@@ -1149,6 +1335,130 @@ def audit(posts: list[dict], tax: dict) -> list[str]:
     return problems
 
 
+def audit_content(posts: list[dict]) -> list[str]:
+    """Prove that every article is its own article.
+
+    Catches the two failure modes that make a library read as one page repeated:
+    two posts sharing a title, and two posts sharing a body (a stale cache file
+    or a template that rendered the wrong record). It also re-reads each written
+    page and checks that its <h1> and prose belong to that post, so a mismatch
+    between the data and the output cannot ship silently.
+    """
+    problems: list[str] = []
+    seen_titles: dict[str, str] = {}
+    seen_bodies: dict[str, str] = {}
+
+    for p in posts:
+        key = p["title"].strip().lower()
+        if key in seen_titles:
+            problems.append(f"{p['id']} reuses the title of {seen_titles[key]}")
+        seen_titles[key] = p["id"]
+
+        text = re.sub(r"\s+", " ", strip_tags(p["_body"])).strip()
+        digest = hashlib.sha1(text.encode("utf-8")).hexdigest()
+        if digest in seen_bodies:
+            problems.append(f"{p['id']} shares its body with {seen_bodies[digest]}")
+        seen_bodies[digest] = p["id"]
+
+        page = ROOT / f"{p['id']}.html"
+        if not page.exists():
+            problems.append(f"{p['id']}.html was not written")
+            continue
+        doc = page.read_text(encoding="utf-8")
+
+        h1 = re.search(r"<h1[^>]*>(.*?)</h1>", doc, re.S)
+        if not h1 or html.unescape(strip_tags(h1.group(1))) != p["title"]:
+            problems.append(f"{p['id']}.html <h1> does not match its title")
+
+        h2 = re.search(r"<h2[^>]*>(.*?)</h2>", p["_body"], re.S)
+        prose = re.search(r'<div class="prose">(.*?)</div>\s*<section class="gear"', doc, re.S)
+        if h2 and prose:
+            needle = html.unescape(strip_tags(h2.group(1))).strip()
+            if needle and needle not in html.unescape(prose.group(1)):
+                problems.append(f"{p['id']}.html prose is not this article's body")
+
+    return problems
+
+
+def audit_collections(posts: list[dict], tax: dict) -> list[str]:
+    """Every filtered index must list exactly its own slice — no more, no less."""
+    problems: list[str] = []
+
+    def card_ids(name: str) -> set[str]:
+        page = ROOT / name
+        if not page.exists():
+            problems.append(f"{name} was not written")
+            return set()
+        doc = page.read_text(encoding="utf-8")
+        return set(re.findall(
+            r'<article class="card[^"]*">\s*<a[^>]*href="(pet-\d+)\.html"', doc, re.S))
+
+    want = {p["id"] for p in posts}
+    if card_ids("guides.html") != want:
+        problems.append("guides.html does not list every guide")
+    if card_ids("species.html") != want:
+        problems.append("species.html does not list every guide")
+
+    for c, s in tax["cats"]:
+        expect = {p["id"] for p in posts if p["category"] == c}
+        got = card_ids(f"category-{s}.html")
+        if got != expect:
+            problems.append(f"category-{s}.html lists {sorted(got)}, expected {sorted(expect)}")
+
+    for g, s in tax["groups"]:
+        expect = {p["id"] for p in posts if p["group"] == g}
+        got = card_ids(f"species-{s}.html")
+        if got != expect:
+            problems.append(f"species-{s}.html lists {sorted(got)}, expected {sorted(expect)}")
+
+    return problems
+
+
+def collection_pages(posts: list[dict], tax: dict) -> list[tuple[str, str]]:
+    """(filename, html) for every filtered index page.
+
+    Generated from `tax`, so a new category or species in `content.py` gets its
+    own page, nav entry and sitemap row without touching this function.
+    """
+    pages: list[tuple[str, str]] = []
+
+    pages.append(("guides.html", render_collection(
+        tax, posts,
+        slug="guides", kicker="The collection",
+        title="All field guides", title_html="All <em>field guides</em>",
+        dek="Every keeper-written guide in the archive, newest first.",
+        active="guides", note="Independent · reader-supported")))
+
+    for c, s in tax["cats"]:
+        items = [p for p in posts if p["category"] == c]
+        label = CATEGORY_SHORT.get(c, c)
+        pages.append((f"category-{s}.html", render_collection(
+            tax, items,
+            slug=f"category-{s}", kicker="Filed under",
+            title=f"{label} guides", title_html=f"{e(label)} <em>guides</em>",
+            dek=CATEGORY_DEK.get(c, f"Every guide filed under {label}."),
+            active=f"category-{s}", note=c)))
+
+    groups = [(g, s, [p for p in posts if p["group"] == g]) for g, s in tax["groups"]]
+
+    pages.append(("species.html", render_collection(
+        tax, posts,
+        slug="species", kicker="By species",
+        title="Species index", title_html="Species <em>index</em>",
+        dek="Browse the archive by the animal in the enclosure.",
+        active="species", sections=[(g, items) for g, s, items in groups])))
+
+    for g, s, items in groups:
+        pages.append((f"species-{s}.html", render_collection(
+            tax, items,
+            slug=f"species-{s}", kicker="By species",
+            title=f"{g} guides", title_html=f"{e(g)} <em>guides</em>",
+            dek=f"Field guides for the {g.lower()} in our collection.",
+            active=f"species-{s}", note=g)))
+
+    return pages
+
+
 def build(refresh: bool = False, batch: int = 0) -> None:
     posts = collect()
     tax = taxonomy(posts)
@@ -1167,7 +1477,19 @@ def build(refresh: bool = False, batch: int = 0) -> None:
         def age(p: dict) -> float:
             f = CACHE / f"{p['id']}.html"
             return f.stat().st_mtime if f.exists() else 0.0
-        forced = {p["id"] for p in sorted(posts, key=age)[:batch]}
+
+        # After a CI checkout every cache file has the same mtime, so sorting by
+        # age alone always picked the same first N guides and froze the rest.
+        # A persisted cursor rotates the window on each run.
+        order = sorted(posts, key=lambda p: (age(p), p["id"]))
+        cursor_file = CACHE / ".batch_cursor"
+        try:
+            start = int(cursor_file.read_text(encoding="utf-8").strip()) % len(order)
+        except (OSError, ValueError):
+            start = 0
+        take = min(batch, len(order))
+        forced = {order[(start + i) % len(order)]["id"] for i in range(take)}
+        cursor_file.write_text(str((start + take) % len(order)), encoding="utf-8")
         print(f"  batch mode: regenerating {len(forced)} of {len(posts)} guides")
 
     for post in posts:
@@ -1185,22 +1507,26 @@ def build(refresh: bool = False, batch: int = 0) -> None:
         )
 
     (ROOT / "index.html").write_text(render_index(posts), encoding="utf-8")
-    (ROOT / "sitemap.xml").write_text(render_sitemap(posts), encoding="utf-8")
+    indexes = collection_pages(posts, tax)
+    for name, page in indexes:
+        (ROOT / name).write_text(page, encoding="utf-8")
+    (ROOT / "sitemap.xml").write_text(render_sitemap(posts, tax), encoding="utf-8")
     (ROOT / "robots.txt").write_text(render_robots(), encoding="utf-8")
     (ROOT / "feed.xml").write_text(render_feed(posts), encoding="utf-8")
 
     cards = sum(p["_body"].count('<aside class="amz-card') for p in posts)
-    print(f"  wrote index.html + {len(posts)} article pages")
+    print(f"  wrote index.html + {len(posts)} article pages + {len(indexes)} index pages")
     print(f"  affiliate: {sum(len(p['_kit']) for p in posts)} products, {cards} in-article cards")
     print("  wrote sitemap.xml, robots.txt, feed.xml")
     print(f"  base url: {SITE_URL}")
 
-    problems = audit(posts, tax)
+    problems = audit(posts, tax) + audit_content(posts) + audit_collections(posts, tax)
     if problems:
         for p in problems:
             print(f"  ✗ {p}")
-        raise SystemExit(f"link audit failed: {len(problems)} problem(s)")
-    print(f"  link audit: clean ({sum(len(v) for v in [tax['cats'] + tax['groups']])} sections, {len(posts)} cards)")
+        raise SystemExit(f"audit failed: {len(problems)} problem(s)")
+    print(f"  link audit: clean ({len(tax['cats']) + len(tax['groups'])} sections, "
+          f"{len(posts)} cards, {len(posts)} unique bodies)")
 
 
 def serve(port: int = 8000) -> None:
