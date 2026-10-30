@@ -32,7 +32,10 @@ import os
 import re
 from urllib.parse import quote_plus
 
-AMAZON_TAG = os.environ.get("AMAZON_TAG", "exoticpethub-20")
+# An env var set to "" (or to whitespace) must not silently strip the tag off
+# every money link, so an empty value falls back to the same default as unset.
+DEFAULT_AMAZON_TAG = "exoticpethub-20"
+AMAZON_TAG = (os.environ.get("AMAZON_TAG") or "").strip() or DEFAULT_AMAZON_TAG
 
 # Google's guidance for affiliate outbound links. Order is irrelevant to
 # crawlers; this string is used verbatim on every money link on the site.
