@@ -1,0 +1,13 @@
+{
+  // Cloudflare Worker that serves this repo as static assets.
+  // Production: https://exotic-pet-blog.markmilk20020610.workers.dev
+  "name": "exotic-pet-blog",
+  "compatibility_date": "2026-10-30",
+  "assets": {
+    "directory": "./",
+    // The default ("auto-trailing-slash") answers every /foo.html with a 307 to
+    // /foo. That breaks the promise the sitemap, the canonical tags and the
+    // Google verification file all make, so serve files exactly as named.
+    "html_handling": "none"
+  }
+}

@@ -1,0 +1,4 @@
+# html_handling "none" means a bare / no longer maps onto index.html, so the
+# homepage needs an explicit 200 rewrite (a rewrite, not a redirect — the URL
+# bar must stay at /).
+/  /index.html  200
