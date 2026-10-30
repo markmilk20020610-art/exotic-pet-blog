@@ -52,5 +52,11 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m "Auto-generate new blog posts via DeepSeek API [skip ci]" || exit 0
+          # No "[skip ci]" here. This workflow only runs on schedule and
+          # workflow_dispatch, so a push could never retrigger it anyway — but
+          # Cloudflare Workers Builds *does* honour the marker, so tagging the
+          # commit suppressed the deploy. Generated articles were committed and
+          # then never reached production; the site only moved when a human
+          # pushed an ordinary commit on top.
+          git commit -m "content: auto-generate new guides via DeepSeek" || exit 0
           git push
