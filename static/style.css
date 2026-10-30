@@ -560,24 +560,37 @@ button { font: inherit; }
 }
 .card:hover .card__arrow { opacity: 1; transform: translateX(0); }
 
+/* The feature card owns its whole row. It used to span two of three columns,
+   which left a third-column card sitting beside it at a different height and
+   an empty cell underneath — the photograph and the headline then read as two
+   unrelated blocks. Full-width plus a single hairline frame keeps them one
+   object, and the remaining guides fill the next row evenly. */
 .card--wide {
-  grid-column: span 2;
+  grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: 1.05fr 1fr;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
   gap: 0;
   align-items: stretch;
+  min-height: 340px;
   background: var(--paper-2);
+  border: 1px solid var(--line);
   border-radius: 2px;
   overflow: hidden;
 }
 
-.card--wide .card__media { aspect-ratio: auto; height: 100%; border-radius: 0; }
+/* No aspect-ratio here: with `height: 100%` the ratio would drive the width
+   instead of the grid track, so at 900 px the photo grew to 566 px and squeezed
+   the headline column to 270 px. The image fills its track and crops. */
+.card--wide .card__media { aspect-ratio: auto; height: 100%; min-height: 320px; border-radius: 0; }
 .card--wide .card__body {
-  padding: 34px 32px;
+  padding: 38px 44px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+/* `margin-top: auto` on the footer is right for a stacked card, but in the
+   feature card it opened a dead band between the summary and the byline. */
+.card--wide .card__foot { margin-top: 26px; }
 .card--wide .card__title { font-size: clamp(26px, 2.4vw, 34px); }
 
 /* ==========================================================================
@@ -1848,7 +1861,7 @@ button { font: inherit; }
 @media (max-width: 1100px) {
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 28px; }
   .index-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 36px; }
-  .card--wide { grid-column: span 2; }
+  .card--wide { grid-column: 1 / -1; }
   .article-layout { grid-template-columns: minmax(0, 1fr) 260px; gap: 48px; }
   .footer__grid { grid-template-columns: 1fr 1fr; gap: 40px; }
 }
@@ -1879,8 +1892,11 @@ button { font: inherit; }
   .section { padding: 60px 0; }
   .grid { grid-template-columns: minmax(0, 1fr); gap: 34px; }
   .index-grid { grid-template-columns: minmax(0, 1fr); gap: 30px; }
-  .card--wide { grid-column: span 1; grid-template-columns: 1fr; }
-  .card--wide .card__media { aspect-ratio: 4 / 3; }
+  .card--wide { grid-column: 1 / -1; grid-template-columns: 1fr; border: 0; background: none; }
+  .card--wide { min-height: 0; }
+  .card--wide .card__media { aspect-ratio: 4 / 3; height: auto; min-height: 0; }
+  .card--wide .card__body { padding: 20px 0 0; }
+  .card--wide .card__foot { margin-top: auto; }
   .card--wide .card__body { padding: 22px 0 0; }
   .hero { min-height: 82vh; }
   .hero__content { padding-top: 90px; padding-bottom: 40px; }
@@ -2166,6 +2182,10 @@ button { font: inherit; }
   margin: 0;
   padding: 0;
   display: grid;
+  /* Capped, not full-bleed: with a single pinned guide a 1fr track stretched
+     the row to the container and stranded the → arrow a thousand pixels away
+     from the text it belongs to. */
+  max-width: 780px;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2px;
   background: var(--line-soft);

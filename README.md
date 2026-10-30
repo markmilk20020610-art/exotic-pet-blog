@@ -393,6 +393,47 @@ Where they land:
 `pet-00N.html` links against `rank_posts()`, so a template that quietly drops the
 ranking fails the build instead of shipping a homepage whose lead story drifts.
 
+## The article grid
+
+Every guide is one `<article class="card">` holding a `<a class="card__media">`
+and a `<div class="card__body">`. The photograph, the category tag, the kicker,
+the headline, the summary and the byline all live inside that one element — a
+card can never be split into an image block and a text block.
+
+```html
+<article class="card card--wide">
+  <a class="card__media" href="pet-003.html" aria-hidden="true">
+    <img src="static/images/isopods.jpg" …><span class="card__tag">Troubleshooting</span>
+  </a>
+  <div class="card__body">
+    <div class="card__cat"><i>Porcellio scaber</i></div>
+    <h3 class="card__title"><a href="pet-003.html">…</a></h3>
+    <p class="card__dek">…</p>
+    <div class="card__foot">…</div>
+  </div>
+</article>
+```
+
+The feature card spans the **whole row** (`grid-column: 1 / -1`) and splits
+1.1fr / 1fr into photo and text, with one hairline border around both. It used
+to span two of three columns, which left a third card beside it at a different
+height and an empty cell underneath — the photo and the headline then read as
+two unrelated blocks. The remaining guides fill the next row of three evenly.
+
+Two layout traps, both fixed:
+
+- `aspect-ratio` on the feature media together with `height: 100%` makes the
+  ratio drive the **width** rather than the grid track. At 900 px the photo grew
+  to 566 px and squeezed the headline column to 270 px. The media now has
+  `aspect-ratio: auto; height: 100%` and crops instead.
+- `.card__foot { margin-top: auto }` is right for a stacked card but opened a
+  dead band between the summary and the byline inside the feature card, so the
+  wide variant pins it to `26px`.
+
+`audit_cards()` re-reads `index.html` and every index page and fails any card
+that is missing its image or its headline, or whose image renders after the
+title — so a template edit cannot silently split them again.
+
 ## Content integrity
 
 Two articles must never share a title or a body. `audit_content()` hashes the

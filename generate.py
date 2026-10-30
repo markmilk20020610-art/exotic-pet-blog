@@ -1973,6 +1973,34 @@ def audit_voice(posts: list[dict]) -> list[str]:
     return problems
 
 
+def audit_cards(pages: list[str]) -> list[str]:
+    """Every card must hold its own photograph, title and summary.
+
+    A template that emits the media and the body as siblings still renders —
+    it just renders as two blocks that read like two separate articles. This
+    walks the written pages and names any card that lost one of its halves, or
+    whose image drifted below the headline.
+    """
+    problems: list[str] = []
+    for name in pages:
+        page = ROOT / name
+        if not page.exists():
+            continue
+        doc = page.read_text(encoding="utf-8")
+        for m in re.finditer(r'<article class="card[^"]*">(.*?)</article>', doc, re.S):
+            block = m.group(1)
+            label = re.search(r'href="(pet-\d+)\.html"', block)
+            pid = label.group(1) if label else "?"
+            has_img = "<img" in block
+            has_title = 'class="card__title"' in block
+            if not (has_img and has_title):
+                problems.append(f"{name}: card {pid} is split "
+                                f"(image={has_img}, title={has_title})")
+            elif block.index("<img") > block.index('class="card__title"'):
+                problems.append(f"{name}: card {pid} renders its image after the title")
+    return problems
+
+
 def audit_collections(posts: list[dict], tax: dict) -> list[str]:
     """Every filtered index must list exactly its own slice — no more, no less."""
     problems: list[str] = []
@@ -2218,7 +2246,8 @@ def build(refresh: bool = False, batch: int = 0, strict: bool = False) -> None:
     print(f"  base url: {SITE_URL}")
 
     problems = (audit(posts, tax) + audit_content(posts) + audit_voice(posts)
-                + audit_collections(posts, tax) + audit_pinned(posts, tax))
+                + audit_collections(posts, tax) + audit_pinned(posts, tax)
+                + audit_cards(["index.html"] + [name for name, _ in indexes]))
     if problems:
         for p in problems:
             print(f"  ⚠ {p}")

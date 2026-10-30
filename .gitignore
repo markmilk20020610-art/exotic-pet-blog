@@ -3,3 +3,7 @@ __pycache__/
 *.pyc
 .DS_Store
 tools/source/
+
+# Local project notes. This repo publishes a static site, so working memory
+# must never end up in the deployed output.
+.workbuddy-ai/
