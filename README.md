@@ -247,7 +247,7 @@ real page:
 
 | Label | URL | Lists |
 | ----- | --- | ----- |
-| Field Guides | `guides.html` | every guide, newest first |
+| Field Guides | `guides.html` | every guide, pinned first, then newest |
 | Feeding / Habitat / Health | `category-<slug>.html` | that editorial category |
 | By species | `species.html` | every group, in sections |
 | — | `species-<group>.html` | one species class |
@@ -264,6 +264,50 @@ filtered pages also work without JavaScript and are indexed individually.
 
 `audit_collections()` re-reads each page and asserts that its card ids equal the
 expected set — a category page that lists a stray article fails the build.
+
+## Magazine layer
+
+Article bodies come out of the model as plain semantic HTML. Everything visual
+is added afterwards, in `generate.py`, in this order:
+
+```
+resolve_body() → sanitize_body() → magazine_body() → aff.inject_cards() → .prose
+```
+
+`magazine_body()` = `add_lede(highlight_params(body))`:
+
+- **`highlight_params()`** wraps temperatures, percentages, dimensions
+  (`20×20×30 cm`) and bare sizes in `<span class="badge">`. It splits the string
+  on tags and walks the text nodes only, so a match can never land inside an
+  attribute, a heading id or a link. `BADGE_SKIP` keeps the walk out of `a`,
+  `code`, `pre`, tables and headings — a badge inside a link breaks the
+  affordance, and table cells already read as data.
+- **`add_lede()`** promotes the first bare `<p>` to `<p class="lede">`, which
+  CSS renders as a larger italic serif opener. The drop cap stays on
+  `p:first-of-type` and is rescaled for the lede's size.
+
+The order matters: badges are applied **before** the affiliate cards are
+injected, so the regex can never badge-ify a price or a dimension inside
+`.amz-card` markup.
+
+## Pinned guides
+
+`is_pinned` lives on each post — in `content.py` as the editorial default and in
+`keywords.json` as the operator switch (the JSON value wins, so pinning does not
+need a code change). `rank_posts()` floats pinned guides to the top in two
+stable passes, which keeps the date order intact inside both groups.
+
+Where they land:
+
+| Page | Pinned treatment |
+| ---- | ---------------- |
+| `index.html` | the lead story becomes the hero; any further pinned guides fill a "Start here" band under it |
+| `guides.html`, `category-*.html`, `species-*.html` | a full-width banner card with a red **Pinned** ribbon, above the chronological grid |
+| `species.html` | ranked inside each group |
+
+`audit_pinned()` reads the written pages back and compares the document order of
+`pet-00N.html` links against `rank_posts()`, so a template that quietly drops the
+ranking fails the build instead of shipping a homepage whose lead story drifts.
 
 ## Content integrity
 
@@ -358,6 +402,13 @@ a one-line selling point, a five-star row with fractional fill and a "Keeper
 verdict" score, the typical price, and the gradient CTA
 `Check best price on Amazon →`. The rail repeats a `--compact` variant, and the
 kit list at the end of each article renders the same products as three rows.
+
+The panel itself is frosted rather than filled: a translucent tint over the
+paper, `backdrop-filter: blur(18px) saturate(1.08)`, and an inset white
+top-highlight. On light paper a purely translucent panel reads as a printing
+mistake, so the inset highlight is what defines the edge; the 3 px category
+colour bar on the left is what makes three stacked cards readable as three
+different recommendations.
 
 Star counts and review volumes are **not** fabricated — the card shows the
 editorial score unless a real `rating` is supplied in the catalogue.

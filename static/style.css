@@ -916,6 +916,11 @@ button { font: inherit; }
 
 .prose { max-width: var(--measure); counter-reset: sec; }
 
+/* The magazine container. `.prose` is only ever rendered inside an article, so
+   the editorial layer (lede, parameter badges, numbered headings) lives here
+   rather than on the body copy element itself. */
+.prose--magazine { text-wrap: pretty; }
+
 .prose > p {
   font-size: 17.5px;
   line-height: 1.78;
@@ -1283,10 +1288,21 @@ button { font: inherit; }
   gap: 22px;
   margin: 2.2em 0;
   padding: 18px;
-  background: var(--paper-2);
-  border: 1px solid var(--line);
+  /* Frosted rather than filled: the card is a pane of glass laid over the
+     page, so it keeps a translucent tint and lets the paper's warmth through.
+     The inset highlight is what sells the edge — without it a translucent
+     panel on light paper reads as a printing mistake. */
+  background:
+    radial-gradient(130% 150% at 100% 0%, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0) 62%),
+    rgba(243, 239, 231, 0.62);
+  backdrop-filter: blur(18px) saturate(1.08);
+  -webkit-backdrop-filter: blur(18px) saturate(1.08);
+  border: 1px solid rgba(255, 255, 255, 0.72);
   border-radius: 3px;
-  box-shadow: 0 22px 40px -34px rgba(20, 18, 15, 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 26px 46px -34px rgba(20, 18, 15, 0.5),
+    0 0 0 1px rgba(20, 18, 15, 0.05);
   position: relative;
 }
 
@@ -1961,6 +1977,7 @@ button { font: inherit; }
 
 .collection__meta {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 10px;
   font-size: 10.5px;
@@ -1999,8 +2016,192 @@ button { font: inherit; }
   color: var(--paper);
 }
 
+/* "06 field guides" must not break across two lines when the row is tight —
+   the phrase is a single unit of meaning, unlike the wrapping chip row. */
+.collection__meta span { white-space: nowrap; }
+
 @media (max-width: 430px) {
   .collection { padding: 44px 0 36px; }
   .collection__dek { font-size: 15px; }
   .collection__chips { margin-top: 22px; }
+}
+
+/* ==========================================================================
+   Magazine layer — lede, parameter badges, pinned slots
+   ========================================================================== */
+
+/* The opening paragraph is promoted to a lede by `add_lede()` in generate.py.
+   It keeps the drop cap, so the cap is rescaled against the larger size
+   instead of inheriting the 4.15em meant for 17.5px body copy. */
+.prose > p.lede {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 22px;
+  line-height: 1.52;
+  letter-spacing: -0.004em;
+  color: var(--ink);
+  margin: 0 0 1.45em;
+  text-wrap: pretty;
+}
+
+.prose > p.lede::first-letter { font-size: 3.05em; padding-right: 0.08em; }
+
+/* Parameter badges: `highlight_params()` wraps temps, percentages and
+   dimensions. Solid ink reads as data, not as a link — which is why it is not
+   the accent colour used for prose anchors. */
+.prose .badge {
+  display: inline-block;
+  padding: 0.06em 0.42em;
+  border-radius: 3px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--sans);
+  font-size: 0.84em;
+  font-weight: 600;
+  font-style: normal;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.005em;
+  line-height: 1.55;
+  white-space: nowrap;
+  vertical-align: baseline;
+}
+
+.prose > p.lede .badge {
+  font-size: 0.6em;
+  vertical-align: 0.14em;
+  background: rgba(20, 18, 15, 0.9);
+}
+
+/* --- pinned ribbon on cards ---------------------------------------------- */
+
+.card__pin {
+  position: absolute;
+  right: 12px; top: 12px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border-radius: 2px;
+}
+
+/* --- homepage "Start here" band ------------------------------------------ */
+
+.picks {
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+  padding: 40px 0 44px;
+}
+
+.picks__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 26px;
+}
+
+.picks__title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 27px;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+
+.picks__title em { font-style: italic; color: var(--accent); }
+
+.picks__note {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.picks__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2px;
+  background: var(--line-soft);
+}
+
+.pick a {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: start;
+  height: 100%;
+  padding: 22px 24px 22px 20px;
+  background: #fff;
+  transition: background 0.3s var(--ease);
+}
+
+.pick a:hover { background: var(--paper-2); }
+
+.pick__num {
+  font-family: var(--serif);
+  font-size: 26px;
+  line-height: 1;
+  color: var(--accent);
+  padding-top: 2px;
+}
+
+.pick__text { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+
+.pick__cat {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.pick__cat i { font-family: var(--serif); font-size: 12px; letter-spacing: 0; text-transform: none; }
+
+.pick__title {
+  font-family: var(--serif);
+  font-size: 20px;
+  line-height: 1.22;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.pick__dek {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.pick__go { font-size: 14px; color: var(--muted); transition: transform 0.3s var(--ease), color 0.3s var(--ease); }
+.pick a:hover .pick__go { color: var(--accent); transform: translateX(3px); }
+
+/* --- pinned banner on filtered indexes ----------------------------------- */
+
+.featured-band { padding: 40px 0 0; }
+
+.featured-band__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px;
+}
+
+.featured-band .card--wide { grid-column: auto; }
+
+@media (max-width: 760px) {
+  .prose > p.lede { font-size: 19px; }
+  .prose > p.lede::first-letter { font-size: 3.2em; }
+  .picks { padding: 32px 0 34px; }
+  .pick a { padding: 18px 18px 18px 16px; gap: 14px; }
+  .pick__title { font-size: 18px; }
+  .pick__dek { display: none; }
+  .featured-band { padding: 28px 0 0; }
 }

@@ -162,6 +162,17 @@ def taxonomy(posts: list[dict]) -> dict:
     return {"cats": cats, "groups": groups}
 
 
+def rank_posts(posts: list[dict]) -> list[dict]:
+    """Pinned guides first, then newest first.
+
+    Two stable passes: sort by date, then float the pinned ones up. That keeps
+    the date order intact inside both groups, so a pinned guide leads the page
+    without scrambling the chronology behind it.
+    """
+    by_date = sorted(posts, key=lambda p: p["date"], reverse=True)
+    return sorted(by_date, key=lambda p: not p.get("is_pinned"))
+
+
 def initials(name: str) -> str:
     parts = [p for p in name.replace("Dr.", "").split() if p]
     return "".join(p[0] for p in parts[:2]).upper()
@@ -354,6 +365,71 @@ def sanitize_body(body: str, post: dict) -> str:
 
     body = re.sub(r"<h([23])(?:\s[^>]*)?>(.*?)</h\1>", add_id, body, flags=re.S)
     return body.strip()
+
+
+# --------------------------------------------------------------------------- #
+# magazine typography
+# --------------------------------------------------------------------------- #
+
+# Temperatures, humidity percentages and physical dimensions are the numbers a
+# keeper actually scans for. They get a high-contrast badge so the eye can find
+# them in a wall of prose.
+_UNIT = r"(?:cm|mm|ft|inches?)"
+PARAM_RE = re.compile(
+    r"(?P<temp>\b\d{1,3}(?:\s*[–—-]\s*\d{1,3})?\s*°\s?[CF]\b)"
+    r"|(?P<pct>\b\d{1,3}(?:\s*[–—-]\s*\d{1,3})?\s*%)"
+    rf"|(?P<dim>\b\d+(?:\.\d+)?(?:\s*[×x]\s*\d+(?:\.\d+)?){{1,2}}\s*{_UNIT}\b)"
+    rf"|(?P<size>\b\d+(?:\.\d+)?(?:\s*[–—-]\s*\d+(?:\.\d+)?)?\s*{_UNIT}\b)",
+    re.I,
+)
+
+# Never badge text inside these: a badge in a link breaks the affordance, and
+# table cells already read as data. Headings keep their own type treatment.
+BADGE_SKIP = {"a", "code", "pre", "table", "thead", "tbody", "tr", "td", "th",
+              "h1", "h2", "h3", "h4", "h5", "h6"}
+
+
+def highlight_params(body: str) -> str:
+    """Wrap temps, percentages and dimensions in a badge, text nodes only.
+
+    Splitting on tags means a match can never fall inside an attribute or a
+    heading id; `skip` keeps the walk out of links, code and tables.
+    """
+    out: list[str] = []
+    skip = 0
+    for part in re.split(r"(<[^>]+>)", body):
+        if part.startswith("<"):
+            name = re.match(r"</?\s*([a-zA-Z0-9]+)", part)
+            tag = name.group(1).lower() if name else ""
+            if tag in BADGE_SKIP:
+                if part.startswith("</"):
+                    skip = max(0, skip - 1)
+                elif not part.rstrip().endswith("/>"):
+                    skip += 1
+            out.append(part)
+        elif skip or not part.strip():
+            out.append(part)
+        else:
+            out.append(PARAM_RE.sub(
+                lambda m: f'<span class="badge">{m.group(0)}</span>', part))
+    return "".join(out)
+
+
+def add_lede(body: str) -> str:
+    """Promote the opening paragraph to a magazine lede.
+
+    Only a bare `<p>` is touched, so a body that opens with a component is left
+    alone. The drop cap itself is pure CSS on `p:first-of-type`.
+    """
+    m = re.search(r"<p(\s[^>]*)?>", body)
+    if not m or "lede" in (m.group(1) or ""):
+        return body
+    return body[:m.start()] + '<p class="lede">' + body[m.end():]
+
+
+def magazine_body(body: str) -> str:
+    """Apply the editorial layer to a sanitised body."""
+    return add_lede(highlight_params(body))
 
 
 def faq_pairs(body: str) -> list[tuple[str, str]]:
@@ -582,15 +658,19 @@ def footer_html(tax: dict) -> str:
 """
 
 
-def card_html(post: dict, wide: bool = False) -> str:
+def card_html(post: dict, wide: bool = False, pin: bool = False) -> str:
     author = AUTHORS[post["author"]]
     cls = "card card--wide" if wide else "card"
+    if pin:
+        cls += " card--pinned"
+    ribbon = '<span class="card__pin">Pinned</span>' if pin else ""
     return f"""
 <article class="{cls}">
   <a class="card__media" href="{post['id']}.html" tabindex="-1" aria-hidden="true">
     <img src="static/images/{post['image']}" alt="{e(post['alt'])}"
          width="1536" height="1024" loading="lazy" decoding="async">
     <span class="card__tag">{e(post['category'])}</span>
+    {ribbon}
   </a>
   <div class="card__body">
     <div class="card__cat"><i>{e(post['sci'])}</i></div>
@@ -612,15 +692,18 @@ def card_html(post: dict, wide: bool = False) -> str:
 # --------------------------------------------------------------------------- #
 
 def render_index(posts: list[dict]) -> str:
-    featured = posts[0]
-    rest = posts[1:]
+    # Pinned guides lead the page; everything behind them stays chronological.
+    ordered = rank_posts(posts)
+    featured = ordered[0]
+    picks = [p for p in ordered[1:] if p.get("is_pinned")]
+    rest = [p for p in ordered[1:] if not p.get("is_pinned")]
     lead, others = rest[0], rest[1:]
     cards = card_html(lead, wide=True) + "".join(card_html(p) for p in others)
 
     tax = taxonomy(posts)
     by_cat: dict[str, list[dict]] = {}
     by_group: dict[str, list[dict]] = {}
-    for p in posts:
+    for p in ordered:
         by_cat.setdefault(p["category"], []).append(p)
         by_group.setdefault(p["group"], []).append(p)
 
@@ -671,7 +754,7 @@ def render_index(posts: list[dict]) -> str:
             "name": "Field guides",
             "itemListElement": [
                 {"@type": "ListItem", "position": i + 1, "url": absolute(p["id"] + ".html"), "name": p["title"]}
-                for i, p in enumerate(posts)
+                for i, p in enumerate(ordered)
             ],
         },
     ]
@@ -686,6 +769,41 @@ def render_index(posts: list[dict]) -> str:
     )
     doc += nav_html(tax)
 
+    fk = "Pinned field guide" if featured.get("is_pinned") else "Featured field guide"
+
+    # The remaining pinned guides get their own band under the hero, so the
+    # flagship picks read as an editorial shortlist rather than three identical
+    # cards competing with the lead story.
+    picks_html = ""
+    if picks:
+        rows = "".join(
+            f"""
+        <li class="pick">
+          <a href="{p['id']}.html">
+            <span class="pick__num">{i + 1:02d}</span>
+            <span class="pick__text">
+              <span class="pick__cat">{e(p['category'])} · <i>{e(p['sci'])}</i></span>
+              <span class="pick__title">{e(p['title'])}</span>
+              <span class="pick__dek">{e(p['dek'])}</span>
+            </span>
+            <span class="pick__go" aria-hidden="true">→</span>
+          </a>
+        </li>"""
+            for i, p in enumerate(picks)
+        )
+        picks_html = f"""
+  <section class="picks" aria-labelledby="picks-title">
+    <div class="container">
+      <div class="picks__head">
+        <h2 class="picks__title" id="picks-title">Start <em>here</em></h2>
+        <span class="picks__note">The guides we hand a new keeper first.</span>
+      </div>
+      <ol class="picks__list">{rows}
+      </ol>
+    </div>
+  </section>
+"""
+
     doc += f"""
 <main id="main">
   <section class="hero">
@@ -695,7 +813,7 @@ def render_index(posts: list[dict]) -> str:
     </div>
     <div class="container hero__inner">
       <div class="hero__content">
-      <div class="hero__kicker"><span>◆</span> Featured field guide</div>
+      <div class="hero__kicker"><span>◆</span> {fk}</div>
       <h1 class="hero__title"><a href="{featured['id']}.html">{e(featured['title'])}</a></h1>
       <p class="hero__dek">{e(featured['dek'])}</p>
       <div class="hero__meta">
@@ -716,7 +834,7 @@ def render_index(posts: list[dict]) -> str:
     </div>
     <div class="hero__credit">{credit_html(featured['image'])}</div>
   </section>
-
+{picks_html}
   <section class="intro" id="about">
     <div class="container intro__grid">
       <div>
@@ -791,7 +909,16 @@ def render_collection(
     real URL, so the filter works with JavaScript disabled.
     """
     canonical = absolute(slug + ".html")
-    listed = posts if sections is None else [p for _, items in sections for p in items]
+    if sections is None:
+        ordered = rank_posts(posts)
+        pinned = [p for p in ordered if p.get("is_pinned")]
+        stream = [p for p in ordered if not p.get("is_pinned")]
+        listed = ordered
+    else:
+        pinned = []
+        stream = []
+        sections = [(h, rank_posts(items)) for h, items in sections]
+        listed = [p for _, items in sections for p in items]
 
     jsonld = [
         {
@@ -845,10 +972,19 @@ def render_collection(
 """
 
     if sections is None:
-        doc += f"""
+        band = ""
+        if pinned:
+            band = f"""
+  <section class="featured-band" aria-label="Pinned guides">
+    <div class="container">
+      <div class="featured-band__grid">{"".join(card_html(p, wide=True, pin=True) for p in pinned)}</div>
+    </div>
+  </section>
+"""
+        doc += band + f"""
   <section class="section">
     <div class="container">
-      <div class="grid">{"".join(card_html(p) for p in posts)}</div>
+      <div class="grid">{"".join(card_html(p) for p in stream)}</div>
     </div>
   </section>
 """
@@ -1107,7 +1243,7 @@ def render_article(post: dict, body: str, related: list[dict], tax: dict) -> str
     <div class="article-layout">
       <div>
         {render_facts(post)}
-        <div class="prose">
+        <div class="prose prose--magazine">
           {body}
         </div>
         {render_gear(post)}
@@ -1267,6 +1403,9 @@ def collect() -> list[dict]:
         post.update({
             "id": item["id"],
             "keyword": item["target_keyword"],
+            # keywords.json is the operator-facing switchboard, so an explicit
+            # `is_pinned` there wins over the editorial default in content.py.
+            "is_pinned": bool(item.get("is_pinned", post.get("is_pinned", False))),
             "_item": item,
             "_kit": kit,
             "primary": kit[0] if kit else None,
@@ -1371,7 +1510,7 @@ def audit_content(posts: list[dict]) -> list[str]:
             problems.append(f"{p['id']}.html <h1> does not match its title")
 
         h2 = re.search(r"<h2[^>]*>(.*?)</h2>", p["_body"], re.S)
-        prose = re.search(r'<div class="prose">(.*?)</div>\s*<section class="gear"', doc, re.S)
+        prose = re.search(r'<div class="prose[^"]*">(.*?)</div>\s*<section class="gear"', doc, re.S)
         if h2 and prose:
             needle = html.unescape(strip_tags(h2.group(1))).strip()
             if needle and needle not in html.unescape(prose.group(1)):
@@ -1410,6 +1549,56 @@ def audit_collections(posts: list[dict], tax: dict) -> list[str]:
         got = card_ids(f"species-{s}.html")
         if got != expect:
             problems.append(f"species-{s}.html lists {sorted(got)}, expected {sorted(expect)}")
+
+    return problems
+
+
+def audit_pinned(posts: list[dict], tax: dict) -> list[str]:
+    """Pinned guides must lead every list, everything behind them newest-first.
+
+    Reads the written pages instead of the in-memory list, so a template that
+    quietly drops `rank_posts` (or renders the banner after the grid) fails the
+    build rather than shipping a homepage whose lead story changes every run.
+    """
+    problems: list[str] = []
+    known = {p["id"] for p in posts}
+
+    def order(name: str) -> list[str]:
+        page = ROOT / name
+        if not page.exists():
+            problems.append(f"{name} was not written")
+            return []
+        seen: set[str] = set()
+        out: list[str] = []
+        for m in re.finditer(r'href="(pet-\d+)\.html"', page.read_text(encoding="utf-8")):
+            pid = m.group(1)
+            if pid in known and pid not in seen:
+                seen.add(pid)
+                out.append(pid)
+        return out
+
+    cases: list[tuple[str, list[str]]] = [
+        ("index.html", [p["id"] for p in rank_posts(posts)]),
+        ("guides.html", [p["id"] for p in rank_posts(posts)]),
+    ]
+    for c, s in tax["cats"]:
+        items = [p for p in posts if p["category"] == c]
+        cases.append((f"category-{s}.html", [p["id"] for p in rank_posts(items)]))
+    for g, s in tax["groups"]:
+        items = [p for p in posts if p["group"] == g]
+        cases.append((f"species-{s}.html", [p["id"] for p in rank_posts(items)]))
+
+    # species.html groups the archive, so its expected order is the per-group
+    # ranking concatenated in taxonomy order.
+    species_expect: list[str] = []
+    for g, _ in tax["groups"]:
+        species_expect += [p["id"] for p in rank_posts([p for p in posts if p["group"] == g])]
+    cases.append(("species.html", species_expect))
+
+    for name, want in cases:
+        got = order(name)
+        if got != want:
+            problems.append(f"{name} order {got} != {want}")
 
     return problems
 
@@ -1495,7 +1684,10 @@ def build(refresh: bool = False, batch: int = 0) -> None:
     for post in posts:
         force = refresh and (not batch or post["id"] in forced)
         body, source = resolve_body(post["_item"], post, force)
-        post["_body"] = aff.inject_cards(sanitize_body(body, post), post)
+        # The editorial layer runs on the sanitised body only: badges and the
+        # lede must never be able to reach inside a commerce card, and the card
+        # markup is injected afterwards, so `highlight_params` cannot see it.
+        post["_body"] = aff.inject_cards(magazine_body(sanitize_body(body, post)), post)
         post["_read"] = read_time(post["_body"])
         print(f"  {post['id']}  {post['species']:<22} body: {source}")
 
@@ -1516,11 +1708,13 @@ def build(refresh: bool = False, batch: int = 0) -> None:
 
     cards = sum(p["_body"].count('<aside class="amz-card') for p in posts)
     print(f"  wrote index.html + {len(posts)} article pages + {len(indexes)} index pages")
+    print(f"  pinned: {', '.join(p['id'] for p in posts if p['is_pinned']) or 'none'}")
     print(f"  affiliate: {sum(len(p['_kit']) for p in posts)} products, {cards} in-article cards")
     print("  wrote sitemap.xml, robots.txt, feed.xml")
     print(f"  base url: {SITE_URL}")
 
-    problems = audit(posts, tax) + audit_content(posts) + audit_collections(posts, tax)
+    problems = (audit(posts, tax) + audit_content(posts)
+                + audit_collections(posts, tax) + audit_pinned(posts, tax))
     if problems:
         for p in problems:
             print(f"  ✗ {p}")
