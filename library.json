@@ -1142,5 +1142,133 @@
       "bird"
     ],
     "body_html": ""
+  },
+  {
+    "id": "pet-025",
+    "slug": "blue-tongue-skink-obesity",
+    "title": "Blue-Tongue Skink Obesity: Reading Fat Reserves in the Tail Before the Liver",
+    "dek": "A skink is meant to be broad across the back. It is not meant to be broad at the base of the tail, and that is where the fat that overwhelms the liver is stored.",
+    "target_keyword": "blue tongue skink obesity overweight",
+    "topic": "Tiliqua scincoides body condition scoring and hepatic lipidosis",
+    "category": "Feeding Guide",
+    "group": "Reptiles",
+    "species": "Blue-Tongue Skink",
+    "sci": "Tiliqua scincoides",
+    "author": "mara",
+    "date": "2026-10-31",
+    "is_pinned": false,
+    "image": "blue-tongue-skink.jpg",
+    "alt": "A juvenile eastern blue-tongue skink in grass, banded grey-brown body with a broad blunt head resting on the ground.",
+    "caption": "Tiliqua scincoides. The tail base is the readable part: a skink carrying too much fat stores it there first, weeks before the liver shows it.",
+    "facts": [
+      [
+        "Species",
+        "Tiliqua scincoides"
+      ],
+      [
+        "Adult length",
+        "40–60 cm"
+      ],
+      [
+        "Adult weight",
+        "400–600 g"
+      ],
+      [
+        "Basking spot",
+        "30–35 °C / 86–95 °F"
+      ],
+      [
+        "Cool end",
+        "22–25 °C / 72–77 °F"
+      ],
+      [
+        "Adult feeding",
+        "every 2–3 days"
+      ]
+    ],
+    "kit": [
+      [
+        "kitchen-scale",
+        "Weigh weekly. A skink that gains 30 g in a month on the same ration is being fed a diet too dense in fat, not too large in volume.",
+        "weight"
+      ],
+      [
+        "calcium-d3",
+        "A growing skink deposits bone faster than an adult; the ratio matters more than the total, and it is easy to over-supplement an obese one.",
+        "calcium"
+      ]
+    ],
+    "tags": [
+      "blue tongue skink",
+      "Tiliqua scincoides",
+      "obesity",
+      "body condition",
+      "reptile"
+    ],
+    "body_html": ""
+  },
+  {
+    "id": "pet-026",
+    "slug": "russian-tortoise-hibernation",
+    "title": "Russian Tortoise Hibernation: The Weight Threshold That Decides Whether to Brumate",
+    "dek": "Brumation is not a calendar event, it is a metabolic budget. Below one ratio the animal has nothing to spend, and a fridge in November becomes the cause of death rather than the method.",
+    "target_keyword": "russian tortoise hibernation weight jackson ratio",
+    "topic": "Testudo horsfieldii pre-brumation assessment and weight thresholds",
+    "category": "Habitat Setup",
+    "group": "Reptiles",
+    "species": "Russian Tortoise",
+    "sci": "Testudo horsfieldii",
+    "author": "nell",
+    "date": "2026-10-31",
+    "is_pinned": false,
+    "image": "russian-tortoise.jpg",
+    "alt": "A Russian tortoise on short grass, domed tan-and-black carapace with the head extended forward and one foreleg visible.",
+    "caption": "Testudo horsfieldii. The Jackson ratio compares weight to carapace length; a tortoise under about 0.19 has no reserve to spend through a winter.",
+    "facts": [
+      [
+        "Species",
+        "Testudo horsfieldii"
+      ],
+      [
+        "Adult length",
+        "13–20 cm"
+      ],
+      [
+        "Adult weight",
+        "300–500 g"
+      ],
+      [
+        "Jackson ratio",
+        "0.19–0.22"
+      ],
+      [
+        "Brumation temp",
+        "2–5 °C / 36–41 °F"
+      ],
+      [
+        "Brumation length",
+        "8–16 weeks"
+      ]
+    ],
+    "kit": [
+      [
+        "kitchen-scale",
+        "Grams against straight-line carapace length, not a feel for the animal — the ratio is the only part of this decision that is measurable.",
+        "weight"
+      ],
+      [
+        "ir-thermometer",
+        "A fridge set to 4 °C and a fridge that reaches 4 °C at the probe are two different claims; measure where the tortoise actually sits.",
+        "measure"
+      ]
+    ],
+    "tags": [
+      "russian tortoise",
+      "Testudo horsfieldii",
+      "brumation",
+      "hibernation",
+      "reptile"
+    ],
+    "body_html": ""
   }
 ]

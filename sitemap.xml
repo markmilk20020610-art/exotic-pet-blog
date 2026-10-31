@@ -2,9 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://exotic-pet-blog.markmilk20020610.workers.dev/</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://exotic-pet-blog.markmilk20020610.workers.dev/pet-025.html</loc>
+    <lastmod>2026-10-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://exotic-pet-blog.markmilk20020610.workers.dev/pet-026.html</loc>
+    <lastmod>2026-10-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://exotic-pet-blog.markmilk20020610.workers.dev/pet-007.html</loc>
@@ -152,19 +164,19 @@
   </url>
   <url>
     <loc>https://exotic-pet-blog.markmilk20020610.workers.dev/guides.html</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://exotic-pet-blog.markmilk20020610.workers.dev/category-feeding-guide.html</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://exotic-pet-blog.markmilk20020610.workers.dev/category-habitat-setup.html</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -176,7 +188,7 @@
   </url>
   <url>
     <loc>https://exotic-pet-blog.markmilk20020610.workers.dev/species.html</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -212,7 +224,7 @@
   </url>
   <url>
     <loc>https://exotic-pet-blog.markmilk20020610.workers.dev/species-reptiles.html</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
