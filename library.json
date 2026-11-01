@@ -1270,5 +1270,133 @@
       "reptile"
     ],
     "body_html": ""
+  },
+  {
+    "id": "pet-027",
+    "slug": "african-clawed-frog-feeding",
+    "title": "African Clawed Frog Feeding: Why an Aquatic Frog Eats Past the Point of Floating",
+    "dek": "Xenopus will take food every time food appears, which is an asset in a laboratory and a hazard in a tank. The limit is nitrogen, not appetite.",
+    "target_keyword": "african clawed frog feeding amount",
+    "topic": "Xenopus laevis ration, ammonia loading and buoyancy",
+    "category": "Feeding Guide",
+    "group": "Amphibians",
+    "species": "African Clawed Frog",
+    "sci": "Xenopus laevis",
+    "author": "idris",
+    "date": "2026-11-01",
+    "is_pinned": false,
+    "image": "african-clawed-frog.jpg",
+    "alt": "An African clawed frog seen from above in shallow water, smooth olive-grey body with webbed hind feet and clawed toes spread.",
+    "caption": "Xenopus laevis. A frog that floats tail-down after feeding is not relaxed — it is carrying gas it cannot vent, and the ration is the first thing to check.",
+    "facts": [
+      [
+        "Species",
+        "Xenopus laevis"
+      ],
+      [
+        "Adult length",
+        "10–12 cm"
+      ],
+      [
+        "Adult weight",
+        "60–110 g"
+      ],
+      [
+        "Temperature",
+        "20–24 °C / 68–75 °F"
+      ],
+      [
+        "pH",
+        "6.5–8.0"
+      ],
+      [
+        "Ammonia",
+        "0 mg/L, always"
+      ]
+    ],
+    "kit": [
+      [
+        "kitchen-scale",
+        "Ration by body weight, not by how fast the frog takes it — the feeding response never stops, so it cannot be the signal.",
+        "weight"
+      ],
+      [
+        "critical-care",
+        "A frog that has stopped eating is usually a water-quality problem; support feeding buys days while the tank is corrected.",
+        "feeding"
+      ]
+    ],
+    "tags": [
+      "african clawed frog",
+      "Xenopus laevis",
+      "feeding",
+      "ammonia",
+      "amphibian"
+    ],
+    "body_html": ""
+  },
+  {
+    "id": "pet-028",
+    "slug": "hissing-cockroach-moult",
+    "title": "Madagascar Hissing Cockroach Moult Failure: The Humidity Window That Decides It",
+    "dek": "A nymph that cannot get out of its own exoskeleton is not unlucky. It dried out at the wrong moment, and the window is narrower than most care sheets admit.",
+    "target_keyword": "hissing cockroach moult stuck",
+    "topic": "Gromphadorhina portentosa ecdysis and humidity",
+    "category": "Troubleshooting",
+    "group": "Invertebrates",
+    "species": "Madagascar Hissing Cockroach",
+    "sci": "Gromphadorhina portentosa",
+    "author": "mara",
+    "date": "2026-11-01",
+    "is_pinned": false,
+    "image": "hissing-cockroach.jpg",
+    "alt": "Two Madagascar hissing cockroaches on a cork bark round, the nearer one glossy dark brown with segmented abdomen and visible antennae.",
+    "caption": "Gromphadorhina portentosa. A moulting nymph needs standing humidity at the moment it splits, and cannot move to find it.",
+    "facts": [
+      [
+        "Species",
+        "Gromphadorhina portentosa"
+      ],
+      [
+        "Adult length",
+        "5–8 cm"
+      ],
+      [
+        "Nymph instars",
+        "6–7"
+      ],
+      [
+        "Temperature",
+        "24–28 °C / 75–82 °F"
+      ],
+      [
+        "Humidity",
+        "60–80 %"
+      ],
+      [
+        "Moult interval",
+        "6–8 weeks"
+      ]
+    ],
+    "kit": [
+      [
+        "hygrometer",
+        "One probe at substrate level, where the nymph actually moults — a reading taken at the top of the tub is a reading of the room.",
+        "measure"
+      ],
+      [
+        "coco-fibre",
+        "A substrate deep enough to hold moisture is the mechanism; spraying the glass is not.",
+        "substrate"
+      ]
+    ],
+    "tags": [
+      "hissing cockroach",
+      "Gromphadorhina portentosa",
+      "moult",
+      "humidity",
+      "invertebrate"
+    ],
+    "body_html": ""
   }
 ]
