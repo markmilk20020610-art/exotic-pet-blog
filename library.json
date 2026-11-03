@@ -1398,5 +1398,133 @@
       "invertebrate"
     ],
     "body_html": ""
+  },
+  {
+    "id": "pet-029",
+    "slug": "ferret-adrenal-disease",
+    "title": "Ferret Adrenal Disease: Reading the Season Out of Sequence",
+    "dek": "A ferret that goes bald from the tail forward in January is not moulting oddly. Its adrenal gland is telling the body it is spring, all year.",
+    "target_keyword": "ferret adrenal disease symptoms hair loss",
+    "topic": "Mustela putorius furo hyperadrenocorticism and photoperiod",
+    "category": "Troubleshooting",
+    "group": "Exotic Mammals",
+    "species": "Ferret",
+    "sci": "Mustela putorius furo",
+    "author": "nell",
+    "date": "2026-11-03",
+    "is_pinned": false,
+    "image": "ferret.jpg",
+    "alt": "Head and shoulders of a pale ferret emerging from a soft blanket, dark eye, pink nose and rounded ear in sharp focus.",
+    "caption": "Mustela putorius furo. Symmetrical alopecia starting at the tail base and moving forward is the pattern to look for, not a general scruffiness.",
+    "facts": [
+      [
+        "Species",
+        "Mustela putorius furo"
+      ],
+      [
+        "Adult weight",
+        "0.7–2.0 kg"
+      ],
+      [
+        "Life span",
+        "6–10 years"
+      ],
+      [
+        "Typical onset",
+        "3–5 years old"
+      ],
+      [
+        "Photoperiod",
+        "14–16 h in summer"
+      ],
+      [
+        "Risk factor",
+        "early neutering"
+      ]
+    ],
+    "kit": [
+      [
+        "kitchen-scale",
+        "Muscle loss around the hindquarters shows on a scale weeks before it shows in the shape of the animal.",
+        "weight"
+      ],
+      [
+        "critical-care",
+        "A ferret with an adrenal tumour often eats less; support feeding is what keeps the weight on while the diagnosis is confirmed.",
+        "feeding"
+      ]
+    ],
+    "tags": [
+      "ferret",
+      "Mustela putorius furo",
+      "adrenal disease",
+      "alopecia",
+      "exotic mammal"
+    ],
+    "body_html": ""
+  },
+  {
+    "id": "pet-030",
+    "slug": "cockatiel-chronic-egg-laying",
+    "title": "Cockatiel Chronic Egg Laying: The Light Schedule That Switches It Off",
+    "dek": "Removing the eggs does not stop the cycle, it restarts it. What ends a chronic layer's season is a shorter day and a depleted calcium reserve that has to be caught early.",
+    "target_keyword": "cockatiel chronic egg laying",
+    "topic": "Nymphicus hollandicus photoperiod, chronic oviposition and calcium",
+    "category": "Troubleshooting",
+    "group": "Birds",
+    "species": "Cockatiel",
+    "sci": "Nymphicus hollandicus",
+    "author": "idris",
+    "date": "2026-11-03",
+    "is_pinned": false,
+    "image": "cockatiel.jpg",
+    "alt": "Three cockatiels perched in a row on a bare branch, grey plumage with white wing bars and orange cheek patches, crests raised.",
+    "caption": "Nymphicus hollandicus. A hen that lays clutch after clutch is responding to day length and food supply, not to the absence of a mate.",
+    "facts": [
+      [
+        "Species",
+        "Nymphicus hollandicus"
+      ],
+      [
+        "Adult weight",
+        "80–120 g"
+      ],
+      [
+        "Clutch size",
+        "4–7 eggs"
+      ],
+      [
+        "Incubation",
+        "18–21 days"
+      ],
+      [
+        "Target photoperiod",
+        "10–12 h"
+      ],
+      [
+        "Life span",
+        "15–25 years"
+      ]
+    ],
+    "kit": [
+      [
+        "kitchen-scale",
+        "A laying hen loses calcium by the gram; weighing weekly catches the slide before the first soft-shelled egg does.",
+        "weight"
+      ],
+      [
+        "calcium-d3",
+        "A hen mid-clutch is drawing on bone, so the supplement has to be in the food before the next egg, not after a fracture.",
+        "calcium"
+      ]
+    ],
+    "tags": [
+      "cockatiel",
+      "Nymphicus hollandicus",
+      "egg laying",
+      "calcium",
+      "bird"
+    ],
+    "body_html": ""
   }
 ]
